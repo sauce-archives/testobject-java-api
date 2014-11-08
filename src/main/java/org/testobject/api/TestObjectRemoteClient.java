@@ -20,9 +20,9 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
-import org.testobject.rest.api.BatchReportResource;
-import org.testobject.rest.api.BatchReportResource.BatchReport;
-import org.testobject.rest.api.BatchResource;
+import org.testobject.rest.api.TestSuiteReportResource;
+import org.testobject.rest.api.TestSuiteReportResource.TestSuiteReport;
+import org.testobject.rest.api.TestSuiteResource;
 import org.testobject.rest.api.UploadResource;
 import org.testobject.rest.api.UserResource;
 
@@ -36,9 +36,9 @@ import com.google.common.base.Predicates;
 public class TestObjectRemoteClient implements TestObjectClient {
 
 	private final UserResource user;
-	private final BatchResource batch;
 	private final UploadResource upload;
-	private final BatchReportResource batchReport;
+	private final TestSuiteResource testSuite;
+	private final TestSuiteReportResource testSuiteReport;
 
 	private final Client client;
 
@@ -61,9 +61,9 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		WebTarget target = client.target(baseUrl);
 
 		user = WebResourceFactory.newResource(UserResource.class, target);
-		batch = WebResourceFactory.newResource(BatchResource.class, target);
 		upload = WebResourceFactory.newResource(UploadResource.class, target);
-		batchReport = WebResourceFactory.newResource(BatchReportResource.class, target);
+		testSuite = WebResourceFactory.newResource(TestSuiteResource.class, target);
+		testSuiteReport = WebResourceFactory.newResource(TestSuiteReportResource.class, target);
 	}
 
 	public void login(String username, String password) {
@@ -71,11 +71,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		Preconditions.checkState(Response.Status.OK.getStatusCode() == response.getStatus());
 	}
 
-	public void updateInstrumentationBatch(String user, String project, long batch, InputStream appApk, InputStream testApk) {
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream testApk) {
 		String appUploadId = uploadFile(user, project, appApk).replace("\"", "");
 		String testUploadId = uploadFile(user, project, testApk).replace("\"", "");
 
-		Response response = this.batch.updateInstrumentationBatch(user, project, batch, new BatchResource.UpdateInstrumentationBatchRequest(appUploadId, testUploadId));
+		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite, new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
 		Preconditions.checkState(Response.Status.NO_CONTENT.getStatusCode() == response.getStatus());
 	}
 
@@ -92,20 +92,20 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		}
 	}
 
-	public long runInstrumentationBatch(String user, String project, long batch) {
-		return this.batch.runInstrumentationBatch(user, project, batch);
+	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
+		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
 	}
 
-	public BatchReport waitForBatchReport(final String user, final String project, final long batchReportId) {
-		Callable<BatchReport> callable = new Callable<BatchReport>() {
-		    public BatchReport call() throws Exception {
-		    	BatchReport batchReport = TestObjectRemoteClient.this.batchReport.getReport(user, project, batchReportId);
-		        return batchReport.isRunning() == false ? batchReport : null;
+	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
+		Callable<TestSuiteReport> callable = new Callable<TestSuiteReport>() {
+		    public TestSuiteReport call() throws Exception {
+		    	TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId);
+		        return testSuiteReport.isRunning() == false ? testSuiteReport : null;
 		    }
 		};
 
-		Retryer<BatchReport> retryer = RetryerBuilder.<BatchReport>newBuilder()
-		        .retryIfResult(Predicates.<BatchReport>isNull())
+		Retryer<TestSuiteReport> retryer = RetryerBuilder.<TestSuiteReport>newBuilder()
+		        .retryIfResult(Predicates.<TestSuiteReport>isNull())
 		        .withWaitStrategy(WaitStrategies.exponentialWait(30, TimeUnit.MINUTES))
 		        .build();
 		try {

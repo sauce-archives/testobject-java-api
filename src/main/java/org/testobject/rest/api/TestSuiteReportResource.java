@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Path("users/{user}/projects/{project}/batchReports")
-public interface BatchReportResource {
+public interface TestSuiteReportResource {
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public class BatchReport {
+	public class TestSuiteReport {
 
 		public enum Status {
 			UNKNOWN(-1), SUCCESS(0), WARNING(1), FAILURE(2);
@@ -142,7 +142,7 @@ public interface BatchReportResource {
 
 		private final long id;
 
-		private final long batchId;
+		private final long testSuiteId;
 		private final String name;
 		private final List<TestView> tests;
 		private final List<DeviceView> devices;
@@ -156,11 +156,11 @@ public interface BatchReportResource {
 
 		private boolean running;
 
-		public BatchReport(long id, long batchId, String name, long startTime, long duration, Status status,
+		public TestSuiteReport(long id, long testSuiteId, String name, long startTime, long duration, Status status,
 				List<TestView> tests, List<DeviceView> devices,
 				List<ReportEntry> reports, String networkSpeed) {
 			this.id = id;
-			this.batchId = batchId;
+			this.testSuiteId = testSuiteId;
 			this.name = name;
 			this.startTime = startTime;
 			this.duration = duration;
@@ -172,11 +172,11 @@ public interface BatchReportResource {
 		}
 
 		@JsonCreator
-		public BatchReport(@JsonProperty("batchId") long batchId, @JsonProperty("name") String name,
+		public TestSuiteReport(@JsonProperty("batchId") long testSuiteId, @JsonProperty("name") String name,
 				@JsonProperty("startTime") long startTime, @JsonProperty("tests") List<TestView> tests,
 				@JsonProperty("devices") List<DeviceView> devices, @JsonProperty("reports") List<ReportEntry> reports,
 				@JsonProperty("networkSpeed") String networkSpeed, @JsonProperty("running") boolean running) {
-			this(-1, batchId, name, startTime, 0, Status.UNKNOWN, tests, devices, reports, networkSpeed);
+			this(-1, testSuiteId, name, startTime, 0, Status.UNKNOWN, tests, devices, reports, networkSpeed);
 			this.running = running;
 		}
 
@@ -184,8 +184,8 @@ public interface BatchReportResource {
 			return id;
 		}
 
-		public long getBatchId() {
-			return batchId;
+		public long getTestSuiteId() {
+			return testSuiteId;
 		}
 
 		public String getName() {
@@ -235,7 +235,7 @@ public interface BatchReportResource {
 	}
 	
 	@GET
-	@Path("{batchReport}")
-	BatchReport getReport(@PathParam("user") String user, @PathParam("project") String project, @PathParam("batchReport") long batchReport);
+	@Path("{testSuiteReport}")
+	TestSuiteReport getReport(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuiteReport") long batchReport);
 
 }

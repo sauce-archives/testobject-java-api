@@ -3,7 +3,7 @@ package org.testobject.api;
 import java.io.Closeable;
 import java.io.InputStream;
 
-import org.testobject.rest.api.BatchReportResource.BatchReport;
+import org.testobject.rest.api.TestSuiteReportResource.TestSuiteReport;
 
 public interface TestObjectClient extends Closeable {
 	
@@ -50,11 +50,11 @@ public interface TestObjectClient extends Closeable {
 	
 	public void login(String username, String password);
 	
-	public void updateInstrumentationBatch(String user, String project, long batch, InputStream appApk, InputStream instrumentationAPK);
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream instrumentationAPK);
 	
-	public long runInstrumentationBatch(String user, String project, long batch);
+	public long startInstrumentationTestSuite(String user, String project, long testSuite);
 	
-	public BatchReport waitForBatchReport(String user, String project, long batchReport);
+	public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
 	
 	public void close();
 

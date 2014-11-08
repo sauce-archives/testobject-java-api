@@ -14,10 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("users/{user}/projects/{project}/batches")
-public interface BatchResource {
+public interface TestSuiteResource {
 
 	@XmlRootElement
-	public class UpdateInstrumentationBatchRequest {
+	public class UpdateInstrumentationTestSuiteRequest {
 
 		@XmlElement
 		public final String appUploadId;
@@ -25,7 +25,7 @@ public interface BatchResource {
 		@XmlElement
 		public final String testUploadId;
 
-		public UpdateInstrumentationBatchRequest(String appUploadId, String testUploadId) {
+		public UpdateInstrumentationTestSuiteRequest(String appUploadId, String testUploadId) {
 			this.appUploadId = appUploadId;
 			this.testUploadId = testUploadId;
 		}
@@ -33,13 +33,13 @@ public interface BatchResource {
 	}
 
 	@PUT
-	@Path("instrumentation/{batch}")
-	public Response updateInstrumentationBatch(@PathParam("user") String user, @PathParam("project") String project,
-			@PathParam("batch") long batch,
-			UpdateInstrumentationBatchRequest request);
+	@Path("instrumentation/{testSuite}")
+	public Response updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+			@PathParam("testSuite") long testSuite,
+			UpdateInstrumentationTestSuiteRequest request);
 
 	@POST
-	@Path("instrumentation/{batch}/replay")
-	public long runInstrumentationBatch(@PathParam("user") String user, @PathParam("project") String project, @PathParam("batch") long batch);
+	@Path("instrumentation/{testSuite}/replay")
+	public long runInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuite") long testSuite);
 
 }
