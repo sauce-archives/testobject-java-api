@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -41,11 +42,19 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	private final Client client;
 
-	public TestObjectRemoteClient(String baseUrl) {
+	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.connectorProvider(new ApacheConnectorProvider());
 		clientConfig.register(JacksonFeature.class);
 		clientConfig.register(MultiPartFeature.class);
+		
+		if(proxySettings != null){
+			clientConfig.getProperties().put(ClientProperties.PROXY_URI, "http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
+			if(proxySettings.getUsername() != null){
+				clientConfig.getProperties().put(ClientProperties.PROXY_USERNAME, proxySettings.getUsername());
+				clientConfig.getProperties().put(ClientProperties.PROXY_PASSWORD, proxySettings.getPassword());
+			}
+		}
 
 		client = ClientBuilder.newClient(clientConfig);
 
