@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.testobject</groupId>
 	<artifactId>testobject-java-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>TestObject Java API</name>
 
 	<build>
@@ -39,6 +39,7 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:testobject/testobject-java-api.git</connection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
