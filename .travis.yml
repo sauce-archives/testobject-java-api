@@ -1,8 +1,8 @@
 language: java
 env:
   global:
-  - secure: P5mYviFXds4+IQGA1i7kA9P3XYZ9kZEIk4PVN3utIRNlzEKFOUUmp0YIxdfMFCBHtvL83tJ9wO209sU/3qSyFy4+Ge3kjilcpc78M1hzI1+GeQ20Ht/mrFcjij1+V0JMa/5RjF/Zne9QbIJYoHuck7zM61dmpibilMSBXBBz7D0=
-  - secure: RKsoWHBhYurh+nMGb9tL64qpvKSFH+iEYMBsNVB/+t/30sOoqb6YovZ1eQxjQ5uiV5AtENM3HbiddKo0BFIAWzpsWyYsPs9PE1Q0nv+247LWcO/isnxMcLxBG4e5hEG79iIGgUSYthubEAIOBK2bhv6szoxb7Ghb2acMYI3FGXk=
+  - secure: bBCiLDfY1zhAGf9E57SKSdCMevItwKDmuseqwzl1oR1kvyG0x7gwRH6i7aLkKjB89Npm1oWzbmprHHW30XnhD5NVgzJrNwsy/wi0MBmmuDFjmhbMRd16zwOp63E30n4fKZcK7WnNLe1i+IIpjzLGnXcCQor0XWM5D24ff+B7B3A=
+  - secure: Z2iClS4HuN6+f5BUZWUn2ffzKiKkczmkDVNeT067UJkgm+ArgwSJM/nvZ3ZxCYV/trjjJG0NGzbOrbfTo1qQI6iMfrwH3TUcpJbXRdbHo0hrCFj1V3VYFM+OrWbmnOHGAqAlvEo6uIJv5qI546sdbGl/YA8ND1JCKIa/4cxyzV4=
 after_success:
 - mvn deploy --settings settings.xml
 notifications:
