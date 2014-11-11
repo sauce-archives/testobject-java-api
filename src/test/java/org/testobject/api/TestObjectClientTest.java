@@ -4,15 +4,14 @@ import java.io.InputStream;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestObjectClientTest {
 	
-	private static final String USER = "foobar";
-	private static final String PASSWORD = "funkybob";
+	private static final String USER = "testobject";
+	private static final String PASSWORD = "ThinkPadT420s";
 	
-	private static final String PROJECT = "calculator";
+	private static final String PROJECT = "zeppelin-ad-disposition";
 	private static final long TEST_SUITE = 17;
 	
 	private static InputStream APP_APK = TestObjectClientTest.class.getResourceAsStream("calculator-debug-unaligned.apk");
@@ -22,10 +21,10 @@ public class TestObjectClientTest {
 	
 	@Before
 	public void setup(){
-		client = TestObjectClient.Factory.create("http://localhost:7070/rest");
+		client = TestObjectClient.Factory.create("https://app.testobject.com/api/rest");
 	}
 
-	@Ignore @Test
+	@Test
 	public void testLogin() {
 		client.login(USER, PASSWORD);
 		

@@ -3,7 +3,7 @@ package org.testobject.api;
 import java.io.Closeable;
 import java.io.InputStream;
 
-import org.testobject.rest.api.TestSuiteReportResource.TestSuiteReport;
+import org.testobject.rest.api.TestSuiteReport;
 
 public interface TestObjectClient extends Closeable {
 	

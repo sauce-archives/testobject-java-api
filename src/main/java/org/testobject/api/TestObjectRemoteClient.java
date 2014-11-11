@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -20,8 +21,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
+import org.testobject.rest.api.TestSuiteReport;
 import org.testobject.rest.api.TestSuiteReportResource;
-import org.testobject.rest.api.TestSuiteReportResource.TestSuiteReport;
 import org.testobject.rest.api.TestSuiteResource;
 import org.testobject.rest.api.UploadResource;
 import org.testobject.rest.api.UserResource;
@@ -47,10 +48,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		clientConfig.connectorProvider(new ApacheConnectorProvider());
 		clientConfig.register(JacksonFeature.class);
 		clientConfig.register(MultiPartFeature.class);
-		
-		if(proxySettings != null){
-			clientConfig.getProperties().put(ClientProperties.PROXY_URI, "http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
-			if(proxySettings.getUsername() != null){
+
+		if (proxySettings != null) {
+			clientConfig.getProperties().put(ClientProperties.PROXY_URI,
+					"http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
+			if (proxySettings.getUsername() != null) {
 				clientConfig.getProperties().put(ClientProperties.PROXY_USERNAME, proxySettings.getUsername());
 				clientConfig.getProperties().put(ClientProperties.PROXY_PASSWORD, proxySettings.getPassword());
 			}
@@ -68,14 +70,16 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	public void login(String username, String password) {
 		Response response = user.login(username, password);
-		Preconditions.checkState(Response.Status.OK.getStatusCode() == response.getStatus());
+		Preconditions.checkState(Response.Status.OK.getStatusCode() == response.getStatus(), "expected status " + Response.Status.OK
+				+ " but was " + response.getStatus());
 	}
 
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream testApk) {
 		String appUploadId = uploadFile(user, project, appApk).replace("\"", "");
 		String testUploadId = uploadFile(user, project, testApk).replace("\"", "");
 
-		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite, new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
+		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
+				new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
 		Preconditions.checkState(Response.Status.NO_CONTENT.getStatusCode() == response.getStatus());
 	}
 
@@ -85,7 +89,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 			form.field("userId", user);
 			form.field("projectId", project);
 			form.bodyPart(new StreamDataBodyPart("file", appApk));
-			
+
 			return upload.uploadFile(form);
 		} finally {
 			close(form);
@@ -98,20 +102,27 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
 		Callable<TestSuiteReport> callable = new Callable<TestSuiteReport>() {
-		    public TestSuiteReport call() throws Exception {
-		    	TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId);
-		        return testSuiteReport.isRunning() == false ? testSuiteReport : null;
-		    }
+			public TestSuiteReport call() throws Exception {
+				TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
+						MediaType.APPLICATION_JSON);
+				return testSuiteReport.isRunning() == false ? testSuiteReport : null;
+			}
 		};
 
-		Retryer<TestSuiteReport> retryer = RetryerBuilder.<TestSuiteReport>newBuilder()
-		        .retryIfResult(Predicates.<TestSuiteReport>isNull())
-		        .withWaitStrategy(WaitStrategies.exponentialWait(30, TimeUnit.MINUTES))
-		        .build();
+		Retryer<TestSuiteReport> retryer = RetryerBuilder.<TestSuiteReport> newBuilder()
+				.retryIfResult(Predicates.<TestSuiteReport> isNull())
+				.withWaitStrategy(WaitStrategies.exponentialWait(60, TimeUnit.MINUTES))
+				.build();
+
 		try {
-		    return retryer.call(callable);
+			TestSuiteReport testSuiteReport = retryer.call(callable);
+			if (testSuiteReport.isRunning()) {
+				throw new RuntimeException("wait for testSuiteReport failed after 60min");
+			}
+			
+			return testSuiteReport;
 		} catch (RetryException e) {
-		    throw new RuntimeException(e);
+			throw new RuntimeException(e);
 		} catch (ExecutionException e) {
 			throw new RuntimeException(e);
 		}
@@ -120,7 +131,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	public void close() {
 		client.close();
 	}
-	
+
 	private static void close(Closeable closeable) {
 		try {
 			closeable.close();
