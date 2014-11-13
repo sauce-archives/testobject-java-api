@@ -95,17 +95,22 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
 		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
 	}
-
+	
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
+		return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
+	}
+
+
+	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs) {
 		long start = now();
-		while(TimeUnit.MILLISECONDS.toMinutes(now() - start) < 60){
+		while((now() - start) < waitTimeoutMs){
 			TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
 					MediaType.APPLICATION_JSON);
 			if(testSuiteReport.isRunning() == false){
 				return testSuiteReport;
 			}
 			
-			sleep(TimeUnit.SECONDS.toMillis(30));
+			sleep(sleepTimeMs);
 		}
 
 		throw new IllegalStateException("unable to get test suite report result after 60min");
