@@ -3,8 +3,6 @@ package org.testobject.api;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.client.Client;
@@ -26,13 +24,6 @@ import org.testobject.rest.api.TestSuiteReportResource;
 import org.testobject.rest.api.TestSuiteResource;
 import org.testobject.rest.api.UploadResource;
 import org.testobject.rest.api.UserResource;
-
-import com.github.rholder.retry.RetryException;
-import com.github.rholder.retry.Retryer;
-import com.github.rholder.retry.RetryerBuilder;
-import com.github.rholder.retry.WaitStrategies;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
 
 public class TestObjectRemoteClient implements TestObjectClient {
 
@@ -70,8 +61,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	public void login(String username, String password) {
 		Response response = user.login(username, password);
-		Preconditions.checkState(Response.Status.OK.getStatusCode() == response.getStatus(), "expected status " + Response.Status.OK
-				+ " but was " + response.getStatus());
+		
+		if(Response.Status.OK.getStatusCode() == response.getStatus()){
+			throw new IllegalStateException("expected status " + Response.Status.OK + " but was " + response.getStatus());
+		}
 	}
 
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream testApk) {
@@ -80,7 +73,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
 				new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
-		Preconditions.checkState(Response.Status.NO_CONTENT.getStatusCode() == response.getStatus());
+		
+		if(Response.Status.NO_CONTENT.getStatusCode() == response.getStatus()){
+			throw new IllegalStateException("expected status " + Response.Status.NO_CONTENT + " but was " + response.getStatus());
+		}
 	}
 
 	private String uploadFile(String user, String project, InputStream appApk) {
@@ -101,31 +97,30 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
-		Callable<TestSuiteReport> callable = new Callable<TestSuiteReport>() {
-			public TestSuiteReport call() throws Exception {
-				TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
-						MediaType.APPLICATION_JSON);
-				return testSuiteReport.isRunning() == false ? testSuiteReport : null;
-			}
-		};
-
-		Retryer<TestSuiteReport> retryer = RetryerBuilder.<TestSuiteReport> newBuilder()
-				.retryIfResult(Predicates.<TestSuiteReport> isNull())
-				.withWaitStrategy(WaitStrategies.exponentialWait(60, TimeUnit.MINUTES))
-				.build();
-
-		try {
-			TestSuiteReport testSuiteReport = retryer.call(callable);
-			if (testSuiteReport.isRunning()) {
-				throw new RuntimeException("wait for testSuiteReport failed after 60min");
+		long start = now();
+		while(TimeUnit.MILLISECONDS.toMinutes(now() - start) < 60){
+			TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
+					MediaType.APPLICATION_JSON);
+			if(testSuiteReport.isRunning() == false){
+				return testSuiteReport;
 			}
 			
-			return testSuiteReport;
-		} catch (RetryException e) {
-			throw new RuntimeException(e);
-		} catch (ExecutionException e) {
+			sleep(TimeUnit.SECONDS.toMillis(30));
+		}
+
+		throw new IllegalStateException("unable to get test suite report result after 60min");
+	}
+
+	private void sleep(long sleepTime) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private long now() {
+		return System.currentTimeMillis();
 	}
 
 	public void close() {
