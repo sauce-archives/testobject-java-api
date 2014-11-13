@@ -62,7 +62,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	public void login(String username, String password) {
 		Response response = user.login(username, password);
 		
-		if(Response.Status.OK.getStatusCode() == response.getStatus()){
+		if(Response.Status.OK.getStatusCode() != response.getStatus()){
 			throw new IllegalStateException("expected status " + Response.Status.OK + " but was " + response.getStatus());
 		}
 	}
@@ -74,7 +74,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
 				new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
 		
-		if(Response.Status.NO_CONTENT.getStatusCode() == response.getStatus()){
+		if(Response.Status.NO_CONTENT.getStatusCode() != response.getStatus()){
 			throw new IllegalStateException("expected status " + Response.Status.NO_CONTENT + " but was " + response.getStatus());
 		}
 	}
