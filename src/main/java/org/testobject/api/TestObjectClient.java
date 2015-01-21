@@ -1,7 +1,7 @@
 package org.testobject.api;
 
 import java.io.Closeable;
-import java.io.InputStream;
+import java.io.File;
 
 import org.testobject.rest.api.TestSuiteReport;
 
@@ -50,7 +50,7 @@ public interface TestObjectClient extends Closeable {
 	
 	public void login(String username, String password);
 	
-	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream instrumentationAPK);
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK);
 	
 	public long startInstrumentationTestSuite(String user, String project, long testSuite);
 	

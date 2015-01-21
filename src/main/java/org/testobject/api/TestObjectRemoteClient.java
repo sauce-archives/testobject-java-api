@@ -1,29 +1,26 @@
 package org.testobject.api;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.testobject.rest.api.TestSuiteReport;
 import org.testobject.rest.api.TestSuiteReportResource;
+import org.testobject.rest.api.TestSuiteReportResourceImpl;
 import org.testobject.rest.api.TestSuiteResource;
+import org.testobject.rest.api.TestSuiteResourceImpl;
 import org.testobject.rest.api.UploadResource;
+import org.testobject.rest.api.UploadResourceImpl;
 import org.testobject.rest.api.UserResource;
+import org.testobject.rest.api.UserResourceImpl;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.client.apache.ApacheHttpClient;
+import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
+import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 
 public class TestObjectRemoteClient implements TestObjectClient {
 
@@ -35,61 +32,36 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final Client client;
 
 	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
-		ClientConfig clientConfig = new ClientConfig();
-		clientConfig.connectorProvider(new ApacheConnectorProvider());
-		clientConfig.register(JacksonFeature.class);
-		clientConfig.register(MultiPartFeature.class);
-
+		ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
+		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
+		
 		if (proxySettings != null) {
-			clientConfig.getProperties().put(ClientProperties.PROXY_URI,
-					"http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
+			config.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
 			if (proxySettings.getUsername() != null) {
-				clientConfig.getProperties().put(ClientProperties.PROXY_USERNAME, proxySettings.getUsername());
-				clientConfig.getProperties().put(ClientProperties.PROXY_PASSWORD, proxySettings.getPassword());
+				config.getState().setProxyCredentials(AuthScope.ANY_REALM, proxySettings.getHost(), proxySettings.getPort(), proxySettings.getUsername(), proxySettings.getPassword());
 			}
 		}
+		
+		client = ApacheHttpClient.create(config);
+		
+		WebResource resource = client.resource(baseUrl);
 
-		client = ClientBuilder.newClient(clientConfig);
-
-		WebTarget target = client.target(baseUrl);
-
-		user = WebResourceFactory.newResource(UserResource.class, target);
-		upload = WebResourceFactory.newResource(UploadResource.class, target);
-		testSuite = WebResourceFactory.newResource(TestSuiteResource.class, target);
-		testSuiteReport = WebResourceFactory.newResource(TestSuiteReportResource.class, target);
+		user = new UserResourceImpl(resource);
+		upload = new UploadResourceImpl(resource);
+		testSuite = new TestSuiteResourceImpl(resource);
+		testSuiteReport = new TestSuiteReportResourceImpl(resource);
 	}
 
 	public void login(String username, String password) {
-		Response response = user.login(username, password);
-		
-		if(Response.Status.OK.getStatusCode() != response.getStatus()){
-			throw new IllegalStateException("expected status " + Response.Status.OK + " but was " + response.getStatus());
-		}
+		user.login(username, password);
 	}
 
-	public void updateInstrumentationTestSuite(String user, String project, long testSuite, InputStream appApk, InputStream testApk) {
-		String appUploadId = uploadFile(user, project, appApk).replace("\"", "");
-		String testUploadId = uploadFile(user, project, testApk).replace("\"", "");
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk) {
+		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
+		String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
 
-		Response response = this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
+		this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
 				new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
-		
-		if(Response.Status.NO_CONTENT.getStatusCode() != response.getStatus()){
-			throw new IllegalStateException("expected status " + Response.Status.NO_CONTENT + " but was " + response.getStatus());
-		}
-	}
-
-	private String uploadFile(String user, String project, InputStream appApk) {
-		FormDataMultiPart form = new FormDataMultiPart();
-		try {
-			form.field("userId", user);
-			form.field("projectId", project);
-			form.bodyPart(new StreamDataBodyPart("file", appApk));
-
-			return upload.uploadFile(form);
-		} finally {
-			close(form);
-		}
 	}
 
 	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
@@ -129,15 +101,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	public void close() {
-		client.close();
-	}
-
-	private static void close(Closeable closeable) {
-		try {
-			closeable.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		client.destroy();
 	}
 
 }

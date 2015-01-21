@@ -7,7 +7,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,10 +19,13 @@ public interface TestSuiteResource {
 	public class UpdateInstrumentationTestSuiteRequest {
 
 		@XmlElement
-		public final String appUploadId;
+		public String appUploadId;
 		
 		@XmlElement
-		public final String testUploadId;
+		public String testUploadId;
+		
+		@SuppressWarnings("unused")
+		private UpdateInstrumentationTestSuiteRequest(){ }
 
 		public UpdateInstrumentationTestSuiteRequest(String appUploadId, String testUploadId) {
 			this.appUploadId = appUploadId;
@@ -34,7 +36,7 @@ public interface TestSuiteResource {
 
 	@PUT
 	@Path("instrumentation/{testSuite}")
-	public Response updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+	public void updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
 			@PathParam("testSuite") long testSuite,
 			UpdateInstrumentationTestSuiteRequest request);
 
