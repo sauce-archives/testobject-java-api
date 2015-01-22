@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestObjectClientTest {
@@ -24,7 +25,7 @@ public class TestObjectClientTest {
 		client = TestObjectClient.Factory.create("https://app.testobject.com/api/rest");
 	}
 
-	@Test
+	@Test @Ignore
 	public void testLogin() {
 		client.login(USER, PASSWORD);
 		
