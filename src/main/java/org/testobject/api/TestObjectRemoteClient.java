@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.testobject.rest.api.TestSuiteReport;
 import org.testobject.rest.api.TestSuiteReportResource;
@@ -38,7 +39,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		if (proxySettings != null) {
 			config.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
 			if (proxySettings.getUsername() != null) {
-				config.getState().setProxyCredentials(AuthScope.ANY_REALM, proxySettings.getHost(), proxySettings.getPort(), proxySettings.getUsername(), proxySettings.getPassword());
+				config.getState().getHttpState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxySettings.getUsername(), proxySettings.getPassword()));
 			}
 		}
 		
