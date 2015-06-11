@@ -1,11 +1,13 @@
 package org.testobject.api;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.testobject.rest.api.DeviceDescriptor;
 
 public class TestObjectClientTest {
 	
@@ -22,18 +24,26 @@ public class TestObjectClientTest {
 	
 	@Before
 	public void setup(){
-		client = TestObjectClient.Factory.create("https://app.testobject.com/api/rest");
+		client = TestObjectClient.Factory.create();
 	}
 
 	@Test @Ignore
 	public void testLogin() {
 		client.login(USER, PASSWORD);
-		
+
 		client.updateInstrumentationTestSuite(USER, PROJECT, TEST_SUITE, APP_APK, INSTRUMENTATION_APK);
-		
+
 		long testSuiteReport = client.startInstrumentationTestSuite(USER, PROJECT, TEST_SUITE);
-		
+
 		client.waitForSuiteReport(USER, PROJECT, testSuiteReport);
+	}
+
+	@Test @Ignore
+	public void testGetAvailableDescriptors() {
+		List<DeviceDescriptor> deviceDescriptors = client.listDevices();
+		for (DeviceDescriptor deviceDescriptor : deviceDescriptors) {
+			System.out.println(deviceDescriptor);
+		}
 	}
 	
 	@After

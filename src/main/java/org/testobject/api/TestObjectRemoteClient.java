@@ -1,21 +1,14 @@
 package org.testobject.api;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.testobject.rest.api.TestSuiteReport;
-import org.testobject.rest.api.TestSuiteReportResource;
-import org.testobject.rest.api.TestSuiteReportResourceImpl;
-import org.testobject.rest.api.TestSuiteResource;
-import org.testobject.rest.api.TestSuiteResourceImpl;
-import org.testobject.rest.api.UploadResource;
-import org.testobject.rest.api.UploadResourceImpl;
-import org.testobject.rest.api.UserResource;
-import org.testobject.rest.api.UserResourceImpl;
+import org.testobject.rest.api.*;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -29,6 +22,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final UploadResource upload;
 	private final TestSuiteResource testSuite;
 	private final TestSuiteReportResource testSuiteReport;
+	private final DeviceDescriptorsResource deviceDescriptors;
 
 	private final Client client;
 
@@ -51,6 +45,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		upload = new UploadResourceImpl(resource);
 		testSuite = new TestSuiteResourceImpl(resource);
 		testSuiteReport = new TestSuiteReportResourceImpl(resource);
+		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
 	}
 
 	public void login(String username, String password) {
@@ -87,6 +82,12 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		}
 
 		throw new IllegalStateException("unable to get test suite report result after 60min");
+	}
+
+
+	@Override
+	public List<DeviceDescriptor> listDevices() {
+		return deviceDescriptors.listDevices();
 	}
 
 	private void sleep(long sleepTime) {

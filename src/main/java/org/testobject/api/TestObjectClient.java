@@ -2,12 +2,14 @@ package org.testobject.api;
 
 import java.io.Closeable;
 import java.io.File;
+import java.util.List;
 
+import org.testobject.rest.api.DeviceDescriptor;
 import org.testobject.rest.api.TestSuiteReport;
 
 public interface TestObjectClient extends Closeable {
-	
-	public final class ProxySettings {
+
+	final class ProxySettings {
 		
 		private final String host;
 		private final int port;
@@ -38,7 +40,14 @@ public interface TestObjectClient extends Closeable {
 		}
 	}
 
-	public final class Factory {
+	final class Factory {
+
+		private static final String BASE_URL = "https://app.testobject.com/api/rest";
+
+		public static TestObjectClient create() {
+			return create(BASE_URL, null);
+		}
+
 		public static TestObjectClient create(String baseUrl) {
 			return create(baseUrl, null);
 		}
@@ -55,7 +64,9 @@ public interface TestObjectClient extends Closeable {
 	public long startInstrumentationTestSuite(String user, String project, long testSuite);
 	
 	public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
-	
+
+	List<DeviceDescriptor> listDevices();
+
 	public void close();
 
 }
