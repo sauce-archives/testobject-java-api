@@ -10,7 +10,7 @@ import org.testobject.rest.api.TestSuiteReport;
 public interface TestObjectClient extends Closeable {
 
 	final class ProxySettings {
-		
+
 		private final String host;
 		private final int port;
 		private final String username;
@@ -22,19 +22,19 @@ public interface TestObjectClient extends Closeable {
 			this.username = username;
 			this.password = password;
 		}
-		
+
 		public String getHost() {
 			return host;
 		}
-		
+
 		public int getPort() {
 			return port;
 		}
-		
+
 		public String getUsername() {
 			return username;
 		}
-		
+
 		public String getPassword() {
 			return password;
 		}
@@ -51,19 +51,22 @@ public interface TestObjectClient extends Closeable {
 		public static TestObjectClient create(String baseUrl) {
 			return create(baseUrl, null);
 		}
-		
+
 		public static TestObjectClient create(String baseUrl, ProxySettings proxySettings) {
 			return new TestObjectRemoteClient(baseUrl, proxySettings);
 		}
 	}
-	
+
 	public void login(String username, String password);
-	
+
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK);
-	
+
 	public long startInstrumentationTestSuite(String user, String project, long testSuite);
-	
+
 	public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
+
+	void createAppVersion(String user, String project, File appApk);
+	long startQualityReport(String user, String project);
 
 	List<DeviceDescriptor> listDevices();
 

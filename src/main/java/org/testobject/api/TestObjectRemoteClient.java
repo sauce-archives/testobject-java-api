@@ -20,8 +20,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	private final UserResource user;
 	private final UploadResource upload;
+	private final AppVersionResource appVersion;
 	private final TestSuiteResource testSuite;
 	private final TestSuiteReportResource testSuiteReport;
+	private final QualityReportResource qualityReport;
 	private final DeviceDescriptorsResource deviceDescriptors;
 
 	private final Client client;
@@ -43,8 +45,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 		user = new UserResourceImpl(resource);
 		upload = new UploadResourceImpl(resource);
+		appVersion = new AppVersionResourceImpl(resource);
 		testSuite = new TestSuiteResourceImpl(resource);
 		testSuiteReport = new TestSuiteReportResourceImpl(resource);
+		qualityReport = new QualityReportResourceImpl(resource);
 		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
 	}
 
@@ -68,7 +72,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
 	}
 
-
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs) {
 		long start = now();
 		while((now() - start) < waitTimeoutMs){
@@ -82,6 +85,19 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		}
 
 		throw new IllegalStateException("unable to get test suite report result after 60min");
+	}
+
+	@Override
+	public void createAppVersion(String userId, String projectId, File appApk) {
+		String appUploadId = upload.uploadFile(userId, projectId, appApk).replace("\"", "");
+
+		this.appVersion.createAppVersion(userId, projectId,
+				new AppVersionResource.CreateAppVersionRequest(appUploadId));
+	}
+
+	@Override
+	public long startQualityReport(String userId, String projectId) {
+		return qualityReport.startQualityReport(userId, projectId);
 	}
 
 
