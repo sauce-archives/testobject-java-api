@@ -16,7 +16,7 @@ public class TestSuiteResourceImpl implements TestSuiteResource {
 
 	@Override
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite,
-			UpdateInstrumentationTestSuiteRequest request) {
+			InstrumentationTestSuiteRequest request) {
 		ClientResponse response = resource
 				.path("users").path(user).path("projects").path(project).path("batches").path("instrumentation").path(Long.toString(testSuite))
 				.type(MediaType.APPLICATION_JSON)
@@ -27,6 +27,22 @@ public class TestSuiteResourceImpl implements TestSuiteResource {
 			throw new IllegalStateException("expected status " + Response.Status.NO_CONTENT + " but was " + response.getStatus());
 		}
 	}
+
+    @Override
+    public Long createInstrumentationTestSuite(String user, String project, long testSuite,
+                                               InstrumentationTestSuiteRequest request) {
+        request.toString();
+        ClientResponse response = resource
+                .path("users").path(user).path("projects").path(project).path("batches").path("instrumentation").path("newSuite").path(Long.toString(testSuite))
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.TEXT_PLAIN)
+                .put(ClientResponse.class, request);
+
+        if(Response.Status.OK.getStatusCode() != response.getStatus()){
+            throw new IllegalStateException("expected status " + Response.Status.OK + " but was " + response.getStatus());
+        }
+        return  new Long(response.getEntity(String.class));
+    }
 
 	@Override
 	public long runInstrumentationTestSuite(String user, String project, long testSuite) {

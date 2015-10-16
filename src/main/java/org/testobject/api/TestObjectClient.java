@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.testobject.rest.api.DeviceDescriptor;
 import org.testobject.rest.api.TestSuiteReport;
+import org.testobject.rest.api.TestSuiteResource;
 
 public interface TestObjectClient extends Closeable {
 
@@ -63,7 +64,9 @@ public interface TestObjectClient extends Closeable {
 
 	public long startInstrumentationTestSuite(String user, String project, long testSuite);
 
-	public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
+    public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
+
+    public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
 
 	void createAppVersion(String user, String project, File appApk);
 	long startQualityReport(String user, String project);
