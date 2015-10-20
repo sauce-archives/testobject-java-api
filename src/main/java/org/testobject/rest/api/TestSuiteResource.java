@@ -16,8 +16,6 @@ public interface TestSuiteResource {
 
     public class InstrumentationTestSuiteRequest {
 
-
-
         @JsonProperty
         public String appUploadId;
 
