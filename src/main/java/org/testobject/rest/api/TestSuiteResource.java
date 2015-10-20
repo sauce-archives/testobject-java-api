@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 import java.util.Set;
 
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,22 +27,7 @@ public interface TestSuiteResource {
         public String name;
 
         @JsonProperty
-        public Type type;
-
-        @JsonProperty
-        public Boolean typeRun;
-
-        @JsonProperty
-        public Set<String> typeToRun;
-
-        @JsonProperty
-        public Boolean annotationsRun;
-
-        @JsonProperty
-        public Set<String> annotations;
-
-        @JsonProperty
-        public Set<String> sizesToRun;
+        public Map<String, String> configuration;
 
         @JsonProperty
         public Set<String> devices;
@@ -55,14 +41,9 @@ public interface TestSuiteResource {
             this.testUploadId = testUploadId;
         }
 
-        public InstrumentationTestSuiteRequest(String name, Type type, Boolean typeRun, Set<String> typeToRun, Boolean annotationsRun, Set<String> annotations, Set<String> sizesToRun, Set<String> devices) {
+        public InstrumentationTestSuiteRequest(String name, Map<String, String> configuration, Set<String> devices) {
             this.name = name;
-            this.type = type;
-            this.typeRun = typeRun;
-            this.typeToRun = typeToRun;
-            this.annotations = annotations;
-            this.annotationsRun = annotationsRun;
-            this.sizesToRun = sizesToRun;
+            this.configuration = configuration;
             this.devices = devices;
         }
     }
