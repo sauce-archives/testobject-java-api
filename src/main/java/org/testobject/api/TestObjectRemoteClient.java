@@ -55,12 +55,14 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		user.login(username, password);
 	}
 
-	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk) {
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest request) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
 		String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
+        request.testUploadId = testUploadId;
+        request.appUploadId = appUploadId;
 
 		this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
-				new TestSuiteResource.InstrumentationTestSuiteRequest(appUploadId, testUploadId));
+				request);
 	}
     public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
         String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");

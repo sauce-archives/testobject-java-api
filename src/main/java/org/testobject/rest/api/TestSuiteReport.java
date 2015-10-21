@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TestSuiteReport {
 
 	public enum Status {
-		UNKNOWN(-1), SUCCESS(0), WARNING(1), FAILURE(2);
+		SKIPPED(-2), UNKNOWN(-1), SUCCESS(0), WARNING(1), FAILURE(2);
 
 		private final int level;
 

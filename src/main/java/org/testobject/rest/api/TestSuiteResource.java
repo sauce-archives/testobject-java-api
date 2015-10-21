@@ -11,11 +11,8 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("users/{user}/projects/{project}/batches")
 public interface TestSuiteResource {
-    public enum Type {
-        TEST_CLASS, TEST_CASE, TEST_PACKAGE
-    }
 
-    public class InstrumentationTestSuiteRequest {
+    class InstrumentationTestSuiteRequest {
 
         @JsonProperty
         public String appUploadId;
