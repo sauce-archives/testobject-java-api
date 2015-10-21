@@ -43,7 +43,7 @@ public interface TestObjectClient extends Closeable {
 
 	final class Factory {
 
-		private static final String BASE_URL = "https://127.0.0.1:9000/api/rest";
+		private static final String BASE_URL = "https://app.testobject.com/api/rest";
 
 		public static TestObjectClient create() {
 			return create(BASE_URL, null);
