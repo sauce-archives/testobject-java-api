@@ -43,6 +43,10 @@ public interface TestSuiteResource {
             this.configuration = configuration;
             this.devices = devices;
         }
+        public InstrumentationTestSuiteRequest(Map<String, String> configuration) {
+            this.configuration = configuration;
+        }
+
     }
 
     @PUT
