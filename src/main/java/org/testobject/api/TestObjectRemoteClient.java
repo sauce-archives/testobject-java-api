@@ -42,8 +42,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		client = ApacheHttpClient.create(config);
 		
 		WebResource resource = client.resource(baseUrl);
-
-		user = new UserResourceImpl(resource);
+        user = new UserResourceImpl(resource);
 		upload = new UploadResourceImpl(resource);
 		appVersion = new AppVersionResourceImpl(resource);
 		testSuite = new TestSuiteResourceImpl(resource);
@@ -56,13 +55,24 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		user.login(username, password);
 	}
 
-	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk) {
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest request) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
 		String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
+        request.testUploadId = testUploadId;
+        request.appUploadId = appUploadId;
 
 		this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
-				new TestSuiteResource.UpdateInstrumentationTestSuiteRequest(appUploadId, testUploadId));
+				request);
 	}
+    public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
+        String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
+        String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
+        instrumentationTestSuiteRequest.appUploadId = appUploadId;
+        instrumentationTestSuiteRequest.testUploadId = testUploadId;
+
+        return this.testSuite.createInstrumentationTestSuite(user, project, testSuite,
+                instrumentationTestSuiteRequest);
+    }
 
 	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
 		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);

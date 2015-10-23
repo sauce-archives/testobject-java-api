@@ -36,7 +36,7 @@ public class TestObjectClientTest {
 	public void testStartSuite() {
 		client.login(USER, PASSWORD);
 
-		client.updateInstrumentationTestSuite(USER, PROJECT, TEST_SUITE, APP_APK, INSTRUMENTATION_APK);
+		client.updateInstrumentationTestSuite(USER, PROJECT, TEST_SUITE, APP_APK, INSTRUMENTATION_APK,null);
 
 		long testSuiteReport = client.startInstrumentationTestSuite(USER, PROJECT, TEST_SUITE);
 

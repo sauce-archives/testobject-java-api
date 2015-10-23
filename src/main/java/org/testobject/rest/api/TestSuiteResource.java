@@ -1,47 +1,67 @@
 package org.testobject.rest.api;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Map;
+import java.util.Set;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("users/{user}/projects/{project}/batches")
 public interface TestSuiteResource {
 
-	@XmlRootElement
-	public class UpdateInstrumentationTestSuiteRequest {
+    class InstrumentationTestSuiteRequest {
 
-		@XmlElement
-		public String appUploadId;
-		
-		@XmlElement
-		public String testUploadId;
-		
-		@SuppressWarnings("unused")
-		private UpdateInstrumentationTestSuiteRequest(){ }
+        @JsonProperty
+        public String appUploadId;
 
-		public UpdateInstrumentationTestSuiteRequest(String appUploadId, String testUploadId) {
-			this.appUploadId = appUploadId;
-			this.testUploadId = testUploadId;
-		}
+        @JsonProperty
+        public String testUploadId;
 
-	}
+        @JsonProperty
+        public String name;
 
-	@PUT
-	@Path("instrumentation/{testSuite}")
-	public void updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
-			@PathParam("testSuite") long testSuite,
-			UpdateInstrumentationTestSuiteRequest request);
+        @JsonProperty
+        public Map<String, String> configuration;
 
-	@POST
-	@Path("instrumentation/{testSuite}/replay")
-	public long runInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuite") long testSuite);
+        @JsonProperty
+        public Set<String> devices;
 
+        @SuppressWarnings("unused")
+        private InstrumentationTestSuiteRequest() {
+        }
+
+        public InstrumentationTestSuiteRequest(String appUploadId, String testUploadId) {
+            this.appUploadId = appUploadId;
+            this.testUploadId = testUploadId;
+        }
+
+        public InstrumentationTestSuiteRequest(String name, Map<String, String> configuration, Set<String> devices) {
+            this.name = name;
+            this.configuration = configuration;
+            this.devices = devices;
+        }
+        public InstrumentationTestSuiteRequest(Map<String, String> configuration) {
+            this.configuration = configuration;
+        }
+
+    }
+
+    @PUT
+    @Path("instrumentation/{testSuite}")
+    public void updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+                                               @PathParam("testSuite") long testSuite,
+                                               InstrumentationTestSuiteRequest request);
+
+    @POST
+    @Path("instrumentation/{testSuite}/replay")
+    public long runInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuite") long testSuite);
+
+    @PUT
+    @Path("instrumentation/newSuite/{testSuite}")
+    public Long createInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+                                               @PathParam("testSuite") long testSuite,
+                                               InstrumentationTestSuiteRequest request);
 }
