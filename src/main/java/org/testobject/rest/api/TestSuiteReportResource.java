@@ -18,4 +18,7 @@ public interface TestSuiteReportResource {
 	@Path("{testSuiteReport}")
 	TestSuiteReport getReport(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuiteReport") long batchReport, @HeaderParam("Accept") String mediatype);
 
+
+    String getXMLReport(@PathParam("user") String user, @PathParam("project") String project, @PathParam("testSuiteReport") long batchReport);
+
 }

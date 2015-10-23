@@ -68,8 +68,11 @@ public interface TestObjectClient extends Closeable {
 
     public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
 
-	void createAppVersion(String user, String project, File appApk);
-	long startQualityReport(String user, String project);
+    public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId);
+
+    void createAppVersion(String user, String project, File appApk);
+
+    long startQualityReport(String user, String project);
 
 	List<DeviceDescriptor> listDevices();
 
