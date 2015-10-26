@@ -21,13 +21,7 @@ public interface TestSuiteResource {
         public String testUploadId;
 
         @JsonProperty
-        public String name;
-
-        @JsonProperty
-        public Map<String, String> configuration;
-
-        @JsonProperty
-        public Set<String> devices;
+		public Boolean runAsPackage;
 
         @SuppressWarnings("unused")
         private InstrumentationTestSuiteRequest() {
@@ -38,14 +32,11 @@ public interface TestSuiteResource {
             this.testUploadId = testUploadId;
         }
 
-        public InstrumentationTestSuiteRequest(String name, Map<String, String> configuration, Set<String> devices) {
-            this.name = name;
-            this.configuration = configuration;
-            this.devices = devices;
+        public InstrumentationTestSuiteRequest(boolean runAsPackage) {
+			this.runAsPackage = runAsPackage;
+
         }
-        public InstrumentationTestSuiteRequest(Map<String, String> configuration) {
-            this.configuration = configuration;
-        }
+
 
     }
 
