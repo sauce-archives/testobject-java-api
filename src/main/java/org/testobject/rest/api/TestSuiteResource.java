@@ -21,10 +21,7 @@ public interface TestSuiteResource {
         public String testUploadId;
 
         @JsonProperty
-        public String name;
-
-        @JsonProperty
-		public boolean runAsPackage;
+		public Boolean runAsPackage;
 
         @SuppressWarnings("unused")
         private InstrumentationTestSuiteRequest() {
