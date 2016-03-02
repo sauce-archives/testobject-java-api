@@ -1,8 +1,9 @@
 package org.testobject.rest.api;
 
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
 
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,17 +12,17 @@ import java.util.List;
  */
 public class DeviceDescriptorsResourceImpl implements DeviceDescriptorsResource {
 
-    private final WebResource resource;
+    private final WebTarget target;
 
-    public DeviceDescriptorsResourceImpl(WebResource resource) {
-        this.resource = resource;
+    public DeviceDescriptorsResourceImpl(WebTarget target) {
+        this.target = target;
     }
 
     @Override
     public List<DeviceDescriptor> listDevices() {
 
-        List<DeviceDescriptor.DeviceContainer> deviceList = resource.path("descriptors").get(new GenericType<List<DeviceDescriptor.DeviceContainer>>() {});
-        List<String> available = resource.path("descriptors/availableDescriptors").get(new GenericType<List<String>>() {});
+        List<DeviceDescriptor.DeviceContainer> deviceList = target.path("descriptors").request(MediaType.APPLICATION_JSON).get(new GenericType<List<DeviceDescriptor.DeviceContainer>>() {});
+        List<String> available = target.path("descriptors/availableDescriptors").request(MediaType.APPLICATION_JSON).get(new GenericType<List<String>>(){});
 
         List<DeviceDescriptor> devices = new LinkedList<DeviceDescriptor>();
         for (DeviceDescriptor.DeviceContainer deviceContainer : deviceList) {

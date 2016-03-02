@@ -1,24 +1,23 @@
 package org.testobject.rest.api;
 
-import com.sun.jersey.api.client.WebResource;
-
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 public class QualityReportResourceImpl implements QualityReportResource {
 
-	private final WebResource resource;
+	private final WebTarget target;
 
-	public QualityReportResourceImpl(WebResource resource) {
-		this.resource = resource;
+	public QualityReportResourceImpl(WebTarget target) {
+		this.target = target;
 	}
 
 	@Override
 	public long startQualityReport(String user, String project) {
-		return resource
+		return target
 				.path("users").path(user).path("projects").path(project).path("qualityReports").path("run")
-				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON)
-				.post(long.class);
+				.request(MediaType.APPLICATION_JSON)
+				.post(Entity.json(null), Long.class);
 	}
 
 }
