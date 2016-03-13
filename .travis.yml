@@ -12,7 +12,7 @@ install:
 after_success:
 - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $TRAVIS_BUILD_DIR/pubring.gpg.enc
   -out $TRAVIS_BUILD_DIR/pubring.gpg -d
-- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $$TRAVIS_BUILD_DIR/secring.gpg.enc
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $TRAVIS_BUILD_DIR/secring.gpg.enc
   -out $TRAVIS_BUILD_DIR/secring.gpg -d
 - mvn clean deploy --settings settings.xml -Dgpg.keyname=$GPG_KEYNAME -Dgpg.passphrase=$GPG_PASSPHRASE
   -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg
