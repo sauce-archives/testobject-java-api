@@ -9,14 +9,9 @@ cache:
 install:
 - mvn test -Dgpg.skip=true
 after_success:
-- mvn clean deploy --settings settings.xml -Dgpg.keyname=$GPG_KEYNAME -Dgpg.passphrase=$GPG_PASSPHRASE
-  -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg
-  -Dgpg.defaultKeyring=false
+- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv -in pubring.gpg.enc -out pubring.gpg -d
+- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv -in secring.gpg.enc -out secring.gpg -d
+- mvn clean deploy --settings settings.xml -Dgpg.keyname=$GPG_KEYNAME -Dgpg.passphrase=$GPG_PASSPHRASE -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg -Dgpg.defaultKeyring=false
 notifications:
   slack:
     secure: n4Wjj39xafqRkhsBJZ003iA8WGOajCloRrf4z4t0OpEhlGZ8n6jCtiwq0+98sPJLU5mczhLkc46UBubB1ppdlngUQILt2N3AAvezrOGKUhxq5Sdl6XDSu/GW2Rhxo+18X/1A0ndkoYdLmFkTqm3Xgxo1qddgbIIH9lITqXz3dyo=
-before_install:
-- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv
-  -in pubring.gpg.enc -out pubring.gpg -d
-- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv
-  -in secring.gpg.enc -out secring.gpg -d
