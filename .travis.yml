@@ -6,7 +6,7 @@ env:
 cache:
   directories:
     - $HOME/.m2
-script:
+install:
   - mvn test -Dgpg.skip=true
 after_success:
   - openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv -in pubring.gpg.enc -out pubring.gpg -d
