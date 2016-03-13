@@ -4,7 +4,9 @@ env:
   - secure: bBCiLDfY1zhAGf9E57SKSdCMevItwKDmuseqwzl1oR1kvyG0x7gwRH6i7aLkKjB89Npm1oWzbmprHHW30XnhD5NVgzJrNwsy/wi0MBmmuDFjmhbMRd16zwOp63E30n4fKZcK7WnNLe1i+IIpjzLGnXcCQor0XWM5D24ff+B7B3A=
   - secure: Z2iClS4HuN6+f5BUZWUn2ffzKiKkczmkDVNeT067UJkgm+ArgwSJM/nvZ3ZxCYV/trjjJG0NGzbOrbfTo1qQI6iMfrwH3TUcpJbXRdbHo0hrCFj1V3VYFM+OrWbmnOHGAqAlvEo6uIJv5qI546sdbGl/YA8ND1JCKIa/4cxyzV4=
 after_success:
-- mvn deploy --settings settings.xml
+- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv -in pubring.gpg.enc -out pubring.gpg -d
+- openssl aes-256-cbc -K $encrypted_bfb8b049ccf7_key -iv $encrypted_bfb8b049ccf7_iv -in secring.gpg.enc -out secring.gpg -d
+- mvn clean deploy --settings settings.xml -Dgpg.passphrase=$GPG_PASSPHRASE -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg
 notifications:
   slack:
     secure: n4Wjj39xafqRkhsBJZ003iA8WGOajCloRrf4z4t0OpEhlGZ8n6jCtiwq0+98sPJLU5mczhLkc46UBubB1ppdlngUQILt2N3AAvezrOGKUhxq5Sdl6XDSu/GW2Rhxo+18X/1A0ndkoYdLmFkTqm3Xgxo1qddgbIIH9lITqXz3dyo=
