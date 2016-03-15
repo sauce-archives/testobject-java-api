@@ -1,6 +1,15 @@
 package org.testobject.api;
 
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.SslConfigurator;
+import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
@@ -29,18 +38,27 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final Client client;
 
 	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
-		System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+
+		X509HostnameVerifier defaultHostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+		SslConfigurator sslConfig = SslConfigurator.newInstance();
+		LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslConfig.createSSLContext(),
+				defaultHostnameVerifier);
+
+		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+				.register("http", PlainConnectionSocketFactory.getSocketFactory())
+				.register("https", sslSocketFactory)
+				.build();
 
 		ClientConfig config = new ClientConfig();
+		config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager(registry));
 
-		SslConfigurator sslConfig = SslConfigurator.newInstance();
-		ApacheConnectorProvider provider = new ApacheConnectorProvider();
+		config.property(ApacheClientProperties.SSL_CONFIG, sslConfig);
 
-		config.connectorProvider(provider);
+		ApacheConnectorProvider connector = new ApacheConnectorProvider();
 
+		config.connectorProvider(connector);
 		config.register(MultiPartFeature.class);
 		config.register(JacksonFeature.class);
-
 
 		if (proxySettings != null) {
 			config.getProperties().put(ClientProperties.PROXY_URI,
@@ -55,10 +73,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 						ClientProperties.PROXY_PASSWORD,
 						proxySettings.getPassword()
 				);
-
 			}
 		}
-		client = ClientBuilder.newBuilder().sslContext(sslConfig.createSSLContext()).newClient(config);
+
+		client = ClientBuilder.newBuilder().newClient(config);
 
 		WebTarget resource = client.target(baseUrl);
 		user = new UserResourceImpl(resource);
