@@ -1,10 +1,24 @@
 language: java
 env:
   global:
-  - secure: bBCiLDfY1zhAGf9E57SKSdCMevItwKDmuseqwzl1oR1kvyG0x7gwRH6i7aLkKjB89Npm1oWzbmprHHW30XnhD5NVgzJrNwsy/wi0MBmmuDFjmhbMRd16zwOp63E30n4fKZcK7WnNLe1i+IIpjzLGnXcCQor0XWM5D24ff+B7B3A=
-  - secure: Z2iClS4HuN6+f5BUZWUn2ffzKiKkczmkDVNeT067UJkgm+ArgwSJM/nvZ3ZxCYV/trjjJG0NGzbOrbfTo1qQI6iMfrwH3TUcpJbXRdbHo0hrCFj1V3VYFM+OrWbmnOHGAqAlvEo6uIJv5qI546sdbGl/YA8ND1JCKIa/4cxyzV4=
+  - secure: hNHWoqd0DuZXeaIymCjFDVXw7zuAr8on9yli9Kwr4Rw5Ga1FvZOa2noe1RjP0AC+b7S1vvR8ijbGOOn0bM9PfgfrfglqI/3rM/CkxkYOOvzJAbAzYjM9psFGR4RhhD3IaSomvXKRvRO39rIYXZH4/2+73tzbYRe24Xvb4KmYfV8=
+  - secure: mqLzHvJZz12m7eHwqbDJW70WfcJ+9W9L15yFJjKhSmYZ6dHSUq11oLciRw+vW/rzSN0NUJeFu+IhHoC8JJPXk4SjB0ahZGc2EmI6tdE5Dr6HmgpnKuQl2X/WoCWu1S7vWYcCHb5pfVQ5Rh6Ue4m9XyBK9rr6zJziT4o2GMJTy5M=
+  - secure: W2XFx+Z0RQ0LlC1ndt5fJbpG7+KW3XB9HxbV6ciKlUJczccTp3TsntZ+7BsOB0awkCY0kWp9DiRSZOvf2DiF3ZwxPaqYrdONqXB2+QYj/d0r9VkemBWeeC+lYFvdYAd9QlXFeI7LgrsrQcO57Jks1iNtFt7NDZvApVXinO81ln4=
+  - secure: aC+SlnkWQEkYrzVZoE0GRmLhuVt7QaogOnSAwowCJaerU7Psd0nViC63q43EMrZ0IlCX3s75mnTyTW1lpmoSo/E/tPsldw4Qi9uFEgXz15+jZP9Sk6yVTywDCGbrSbN45sY2lZDxws2lDNY4OZB7TbGKvz19O1Qduiy8R34WSLQ=
+  - secure: nwrAViaZNt8ghsLbCbmBeWRA3VY7/g7V/wzLfCU1PZIZusjPgnh9KzUHyCgd6klYSFk9sswllauFNlSDIKgBc+1Ubp5R05KeG9EBaUEdB/bMxjBDiXijYdhqx2/WJQRovIscERD2ufoIc9axc/cWam3agc5ZVGgtr3u4b7Hr8lI=
+cache:
+  directories:
+  - $HOME/.m2
+install:
+- mvn test -Dgpg.skip=true
 after_success:
-- mvn deploy --settings settings.xml
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $TRAVIS_BUILD_DIR/pubring.gpg.enc
+  -out $TRAVIS_BUILD_DIR/pubring.gpg -d
+- openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $TRAVIS_BUILD_DIR/secring.gpg.enc
+  -out $TRAVIS_BUILD_DIR/secring.gpg -d
+- mvn clean deploy --settings settings.xml -Dgpg.keyname=$GPG_KEYNAME -Dgpg.passphrase=$GPG_PASSPHRASE
+  -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg
+  -Dgpg.defaultKeyring=false
 notifications:
   slack:
     secure: n4Wjj39xafqRkhsBJZ003iA8WGOajCloRrf4z4t0OpEhlGZ8n6jCtiwq0+98sPJLU5mczhLkc46UBubB1ppdlngUQILt2N3AAvezrOGKUhxq5Sdl6XDSu/GW2Rhxo+18X/1A0ndkoYdLmFkTqm3Xgxo1qddgbIIH9lITqXz3dyo=
