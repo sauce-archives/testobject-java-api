@@ -25,7 +25,7 @@ public class UploadResourceImpl implements UploadResource {
 		form.field("projectId", project);
 		form.bodyPart(new FileDataBodyPart("file", apk, MediaType.APPLICATION_OCTET_STREAM_TYPE));
 		MediaType contentType = MediaType.MULTIPART_FORM_DATA_TYPE;
-		contentType = Boundary.addBoundary(contentType); // import org.glassfish.jersey.media.multipart.Boundary;
+		contentType = Boundary.addBoundary(contentType);
 
 		return target.path("upload").path("file").request().post(Entity.entity(form, contentType), String.class);
 	}
