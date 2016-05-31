@@ -1,14 +1,25 @@
 package org.testobject.api;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.client.apache.ApacheHttpClient;
-import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
-import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.glassfish.jersey.SslConfigurator;
+import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.*;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.util.List;
@@ -16,123 +27,156 @@ import java.util.concurrent.TimeUnit;
 
 public class TestObjectRemoteClient implements TestObjectClient {
 
-    private final UserResource user;
-    private final UploadResource upload;
-    private final AppVersionResource appVersion;
-    private final TestSuiteResource testSuite;
-    private final TestSuiteReportResource testSuiteReport;
-    private final QualityReportResource qualityReport;
-    private final DeviceDescriptorsResource deviceDescriptors;
+	private final UserResource user;
+	private final UploadResource upload;
+	private final AppVersionResource appVersion;
+	private final TestSuiteResource testSuite;
+	private final TestSuiteReportResource testSuiteReport;
+	private final QualityReportResource qualityReport;
+	private final DeviceDescriptorsResource deviceDescriptors;
 
-    private final Client client;
+	private final Client client;
 
-    public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
-        ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
-        config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
+	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
 
-        if (proxySettings != null) {
-            config.getProperties().put(DefaultApacheHttpClientConfig.PROPERTY_PROXY_URI, "http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
-            if (proxySettings.getUsername() != null) {
-                config.getState().getHttpState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxySettings.getUsername(), proxySettings.getPassword()));
-            }
-        }
+		X509HostnameVerifier defaultHostnameVerifier = SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
+		SslConfigurator sslConfig = SslConfigurator.newInstance();
+		LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslConfig.createSSLContext(),
+				new String[]{"TLSv1.1","TLSv1.2"},
+				null,
+				defaultHostnameVerifier);
 
-        client = ApacheHttpClient.create(config);
+		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+				.register("http", PlainConnectionSocketFactory.getSocketFactory())
+				.register("https", sslSocketFactory)
+				.build();
 
-        WebResource resource = client.resource(baseUrl);
-        user = new UserResourceImpl(resource);
-        upload = new UploadResourceImpl(resource);
-        appVersion = new AppVersionResourceImpl(resource);
-        testSuite = new TestSuiteResourceImpl(resource);
-        testSuiteReport = new TestSuiteReportResourceImpl(resource);
-        qualityReport = new QualityReportResourceImpl(resource);
-        deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
-    }
+		ClientConfig config = new ClientConfig();
+		config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager(registry));
 
-    public void login(String username, String password) {
-        user.login(username, password);
-    }
+		config.property(ApacheClientProperties.SSL_CONFIG, sslConfig);
 
-    public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest request) {
-        String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
-        String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
-        request.testUploadId = testUploadId;
-        request.appUploadId = appUploadId;
+		ApacheConnectorProvider connector = new ApacheConnectorProvider();
 
-        this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
-                request);
-    }
+		config.connectorProvider(connector);
+		config.register(MultiPartFeature.class);
+		config.register(JacksonFeature.class);
 
-    public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
-        String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
-        String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
-        instrumentationTestSuiteRequest.appUploadId = appUploadId;
-        instrumentationTestSuiteRequest.testUploadId = testUploadId;
+		if (proxySettings != null) {
+			config.getProperties().put(ClientProperties.PROXY_URI,
+					"http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
+			if (proxySettings.getUsername() != null) {
+				config.getProperties().put(
+						ClientProperties.PROXY_USERNAME,
+						proxySettings.getUsername()
+				);
 
-        return this.testSuite.createInstrumentationTestSuite(user, project, testSuite,
-                instrumentationTestSuiteRequest);
-    }
+				config.getProperties().put(
+						ClientProperties.PROXY_PASSWORD,
+						proxySettings.getPassword()
+				);
+			}
+		}
 
-    public long startInstrumentationTestSuite(String user, String project, long testSuite) {
-        return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
-    }
+		client = ClientBuilder.newBuilder().newClient(config);
 
-    public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
-        return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
-    }
+		WebTarget resource = client.target(baseUrl);
+		user = new UserResourceImpl(resource);
+		upload = new UploadResourceImpl(resource);
+		appVersion = new AppVersionResourceImpl(resource);
+		testSuite = new TestSuiteResourceImpl(resource);
+		testSuiteReport = new TestSuiteReportResourceImpl(resource);
+		qualityReport = new QualityReportResourceImpl(resource);
+		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
+	}
 
-    public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs) {
-        long start = now();
-        while ((now() - start) < waitTimeoutMs) {
-            TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
-                    MediaType.APPLICATION_JSON);
-            if (testSuiteReport.isRunning() == false) {
-                return testSuiteReport;
-            }
+	public void login(String username, String password) {
+		user.login(username, password);
+	}
 
-            sleep(sleepTimeMs);
-        }
+	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
+			TestSuiteResource.InstrumentationTestSuiteRequest request) {
+		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
+		String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
+		request.testUploadId = testUploadId;
+		request.appUploadId = appUploadId;
 
-        throw new IllegalStateException("unable to get test suite report result after 60min");
-    }
-    @Override
-    public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId) {
-        return TestObjectRemoteClient.this.testSuiteReport.getXMLReport(user, project, testSuiteReportId);
-    }
+		this.testSuite.updateInstrumentationTestSuite(user, project, testSuite,
+				request);
+	}
 
-    @Override
-    public void createAppVersion(String userId, String projectId, File appApk) {
-        String appUploadId = upload.uploadFile(userId, projectId, appApk).replace("\"", "");
+	public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
+			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
+		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
+		String testUploadId = upload.uploadFile(user, project, testApk).replace("\"", "");
+		instrumentationTestSuiteRequest.appUploadId = appUploadId;
+		instrumentationTestSuiteRequest.testUploadId = testUploadId;
 
-        this.appVersion.createAppVersion(userId, projectId,
-                new AppVersionResource.CreateAppVersionRequest(appUploadId));
-    }
+		return this.testSuite.createInstrumentationTestSuite(user, project, testSuite,
+				instrumentationTestSuiteRequest);
+	}
 
-    @Override
-    public long startQualityReport(String userId, String projectId) {
-        return qualityReport.startQualityReport(userId, projectId);
-    }
+	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
+		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
+	}
 
+	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
+		return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
+	}
 
-    @Override
-    public List<DeviceDescriptor> listDevices() {
-        return deviceDescriptors.listDevices();
-    }
+	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs) {
+		long start = now();
+		while ((now() - start) < waitTimeoutMs) {
+			TestSuiteReport testSuiteReport = TestObjectRemoteClient.this.testSuiteReport.getReport(user, project, testSuiteReportId,
+					MediaType.APPLICATION_JSON);
+			if (testSuiteReport.isRunning() == false) {
+				return testSuiteReport;
+			}
 
-    private void sleep(long sleepTime) {
-        try {
-            Thread.sleep(sleepTime);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			sleep(sleepTimeMs);
+		}
 
-    private long now() {
-        return System.currentTimeMillis();
-    }
+		throw new IllegalStateException("unable to get test suite report result after 60min");
+	}
 
-    public void close() {
-        client.destroy();
-    }
+	@Override
+	public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId) {
+		return TestObjectRemoteClient.this.testSuiteReport.getXMLReport(user, project, testSuiteReportId);
+	}
+
+	@Override
+	public void createAppVersion(String userId, String projectId, File appApk) {
+		String appUploadId = upload.uploadFile(userId, projectId, appApk).replace("\"", "");
+
+		this.appVersion.createAppVersion(userId, projectId,
+				new AppVersionResource.CreateAppVersionRequest(appUploadId));
+	}
+
+	@Override
+	public long startQualityReport(String userId, String projectId) {
+		return qualityReport.startQualityReport(userId, projectId);
+	}
+
+	@Override
+	public List<DeviceDescriptor> listDevices() {
+		return deviceDescriptors.listDevices();
+	}
+
+	private void sleep(long sleepTime) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private long now() {
+		return System.currentTimeMillis();
+	}
+
+	public void close() {
+		client.close();
+	}
 
 }

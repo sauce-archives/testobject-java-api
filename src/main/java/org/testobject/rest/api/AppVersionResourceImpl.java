@@ -1,24 +1,22 @@
 package org.testobject.rest.api;
 
-import com.sun.jersey.api.client.WebResource;
-
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 public class AppVersionResourceImpl implements AppVersionResource {
 
-	private final WebResource resource;
+	private final WebTarget target;
 
-	public AppVersionResourceImpl(WebResource resource) {
-		this.resource = resource;
+	public AppVersionResourceImpl(WebTarget target) {
+		this.target = target;
 	}
 
 	@Override
 	public void createAppVersion(String userId, String projectId, CreateAppVersionRequest request) {
-		resource
-				.path("users").path(userId).path("projects").path(projectId).path("apps")
-				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON)
-				.post(request);
+		target.path("users").path(userId).path("projects").path(projectId).path("apps")
+				.request(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(request, MediaType.APPLICATION_JSON));
 	}
 
 }

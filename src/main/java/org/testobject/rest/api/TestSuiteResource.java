@@ -1,11 +1,10 @@
 package org.testobject.rest.api;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
-import java.util.Set;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
