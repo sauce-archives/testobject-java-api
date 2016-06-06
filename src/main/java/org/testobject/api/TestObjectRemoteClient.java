@@ -39,10 +39,10 @@ public class TestObjectRemoteClient implements TestObjectClient {
 
 	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
 
-		X509HostnameVerifier defaultHostnameVerifier = SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
+		X509HostnameVerifier defaultHostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 		SslConfigurator sslConfig = SslConfigurator.newInstance();
 		LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslConfig.createSSLContext(),
-				new String[]{"TLSv1.1","TLSv1.2"},
+				new String[] { "TLSv1", "TLSv1.1", "TLSv1.2" },
 				null,
 				defaultHostnameVerifier);
 
