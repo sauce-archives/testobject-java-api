@@ -1,5 +1,7 @@
 package org.testobject.rest.api;
 
+import org.testobject.rest.api.resource.TestSuiteResource;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;

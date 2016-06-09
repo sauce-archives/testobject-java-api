@@ -16,6 +16,11 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.*;
+import org.testobject.rest.api.model.DeviceDescriptor;
+import org.testobject.rest.api.model.PaginationObject;
+import org.testobject.rest.api.model.SessionReport;
+import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.resource.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -33,6 +38,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final TestSuiteResource testSuite;
 	private final TestSuiteReportResource testSuiteReport;
 	private final QualityReportResource qualityReport;
+	private final SessionReportResource sessionReport;
 	private final DeviceDescriptorsResource deviceDescriptors;
 
 	private final Client client;
@@ -88,6 +94,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		testSuiteReport = new TestSuiteReportResourceImpl(resource);
 		qualityReport = new QualityReportResourceImpl(resource);
 		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
+		sessionReport = new SessionReportResourceImpl(resource);
 	}
 
 	public void login(String username, String password) {
@@ -156,6 +163,16 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	@Override
 	public long startQualityReport(String userId, String projectId) {
 		return qualityReport.startQualityReport(userId, projectId);
+	}
+
+	@Override
+	public PaginationObject<SessionReport> getSessionReport(String user) {
+		return sessionReport.getSessionReport(user);
+	}
+
+	@Override
+	public PaginationObject<SessionReport> getSessionReport(String user, String userId, long offset, int limit, int lastDays) {
+		return sessionReport.getSessionReport(user, userId, offset, limit, lastDays);
 	}
 
 	@Override

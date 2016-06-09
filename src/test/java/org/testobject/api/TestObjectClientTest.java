@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.testobject.rest.api.DeviceDescriptor;
+import org.testobject.rest.api.model.DeviceDescriptor;
 
 import java.io.File;
 import java.util.List;

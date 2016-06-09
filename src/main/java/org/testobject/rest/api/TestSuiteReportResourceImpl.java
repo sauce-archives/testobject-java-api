@@ -1,5 +1,8 @@
 package org.testobject.rest.api;
 
+import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.resource.TestSuiteReportResource;
+
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
@@ -19,11 +22,11 @@ public class TestSuiteReportResourceImpl implements TestSuiteReportResource {
 				.get(TestSuiteReport.class);
 	}
 
-    @Override
-    public String getXMLReport(String user, String project, long batchReport) {
-        return target
-                .path("users").path(user).path("projects").path(project).path("batchReports").path(Long.toString(batchReport)).path("xml")
-                .request(MediaType.APPLICATION_XML)
-                .get(String.class);
-    }
+	@Override
+	public String getXMLReport(String user, String project, long batchReport) {
+		return target
+				.path("users").path(user).path("projects").path(project).path("batchReports").path(Long.toString(batchReport)).path("xml")
+				.request(MediaType.APPLICATION_XML)
+				.get(String.class);
+	}
 }

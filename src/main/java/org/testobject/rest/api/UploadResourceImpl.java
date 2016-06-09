@@ -4,6 +4,7 @@ package org.testobject.rest.api;
 import org.glassfish.jersey.media.multipart.Boundary;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.testobject.rest.api.resource.UploadResource;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;

@@ -1,6 +1,7 @@
 package org.testobject.rest.api;
 
 import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
+import org.testobject.rest.api.resource.UserResource;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
