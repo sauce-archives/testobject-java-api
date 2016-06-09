@@ -22,11 +22,11 @@ public class TestSuiteReportResourceImpl implements TestSuiteReportResource {
 				.get(TestSuiteReport.class);
 	}
 
-    @Override
-    public String getXMLReport(String user, String project, long batchReport) {
-        return target
-                .path("users").path(user).path("projects").path(project).path("batchReports").path(Long.toString(batchReport)).path("xml")
-                .request(MediaType.APPLICATION_XML)
-                .get(String.class);
-    }
+	@Override
+	public String getXMLReport(String user, String project, long batchReport) {
+		return target
+				.path("users").path(user).path("projects").path(project).path("batchReports").path(Long.toString(batchReport)).path("xml")
+				.request(MediaType.APPLICATION_XML)
+				.get(String.class);
+	}
 }
