@@ -1,5 +1,8 @@
 package org.testobject.rest.api;
 
+import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.resource.TestSuiteReportResource;
+
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 

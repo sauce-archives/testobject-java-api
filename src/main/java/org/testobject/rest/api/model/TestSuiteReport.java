@@ -1,4 +1,4 @@
-package org.testobject.rest.api;
+package org.testobject.rest.api.model;
 
 
 import org.codehaus.jackson.annotate.JsonCreator;

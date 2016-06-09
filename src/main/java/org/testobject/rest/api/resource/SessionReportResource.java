@@ -1,5 +1,8 @@
-package org.testobject.rest.api;
+package org.testobject.rest.api.resource;
 
+
+import org.testobject.rest.api.model.SessionReport;
+import org.testobject.rest.api.model.PaginationObject;
 
 public interface SessionReportResource {
 

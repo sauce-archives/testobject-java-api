@@ -1,4 +1,4 @@
-package org.testobject.rest.api;
+package org.testobject.rest.api.resource;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;

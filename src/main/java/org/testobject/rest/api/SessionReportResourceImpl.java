@@ -1,5 +1,9 @@
 package org.testobject.rest.api;
 
+import org.testobject.rest.api.model.PaginationObject;
+import org.testobject.rest.api.model.SessionReport;
+import org.testobject.rest.api.resource.SessionReportResource;
+
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;

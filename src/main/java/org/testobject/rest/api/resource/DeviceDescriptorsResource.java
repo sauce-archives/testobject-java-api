@@ -1,4 +1,6 @@
-package org.testobject.rest.api;
+package org.testobject.rest.api.resource;
+
+import org.testobject.rest.api.model.DeviceDescriptor;
 
 import java.util.List;
 

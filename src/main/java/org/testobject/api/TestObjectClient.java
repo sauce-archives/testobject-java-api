@@ -1,6 +1,10 @@
 package org.testobject.api;
 
-import org.testobject.rest.api.*;
+import org.testobject.rest.api.model.DeviceDescriptor;
+import org.testobject.rest.api.model.PaginationObject;
+import org.testobject.rest.api.model.SessionReport;
+import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.resource.TestSuiteResource;
 
 import java.io.Closeable;
 import java.io.File;
@@ -73,6 +77,8 @@ public interface TestObjectClient extends Closeable {
     long startQualityReport(String user, String project);
 
     PaginationObject<SessionReport> getSessionReport(String user);
+
+    PaginationObject<SessionReport> getSessionReport(String user, String userId, long offset, int limit, int lastDays);
 
     List<DeviceDescriptor> listDevices();
 
