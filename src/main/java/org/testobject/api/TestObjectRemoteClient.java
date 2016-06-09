@@ -33,6 +33,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final TestSuiteResource testSuite;
 	private final TestSuiteReportResource testSuiteReport;
 	private final QualityReportResource qualityReport;
+	private final SessionReportResource sessionReport;
 	private final DeviceDescriptorsResource deviceDescriptors;
 
 	private final Client client;
@@ -88,6 +89,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		testSuiteReport = new TestSuiteReportResourceImpl(resource);
 		qualityReport = new QualityReportResourceImpl(resource);
 		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
+		sessionReport = new SessionReportResourceImpl(resource);
 	}
 
 	public void login(String username, String password) {
@@ -156,6 +158,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	@Override
 	public long startQualityReport(String userId, String projectId) {
 		return qualityReport.startQualityReport(userId, projectId);
+	}
+
+	@Override
+	public PaginationObject<SessionReport> getSessionReport(String user) {
+		return sessionReport.getSessionReport(user);
 	}
 
 	@Override

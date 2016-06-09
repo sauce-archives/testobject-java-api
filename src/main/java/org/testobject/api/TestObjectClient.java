@@ -4,9 +4,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.util.List;
 
-import org.testobject.rest.api.DeviceDescriptor;
-import org.testobject.rest.api.TestSuiteReport;
-import org.testobject.rest.api.TestSuiteResource;
+import org.testobject.rest.api.*;
 
 public interface TestObjectClient extends Closeable {
 
@@ -58,24 +56,26 @@ public interface TestObjectClient extends Closeable {
 		}
 	}
 
-	public void login(String username, String password);
+	void login(String username, String password);
 
-	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK, TestSuiteResource.InstrumentationTestSuiteRequest request);
+	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK, TestSuiteResource.InstrumentationTestSuiteRequest request);
 
-	public long startInstrumentationTestSuite(String user, String project, long testSuite);
+	long startInstrumentationTestSuite(String user, String project, long testSuite);
 
-    public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
+	Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk, TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
 
-    public TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
+	TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
 
-    public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId);
+	String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId);
 
     void createAppVersion(String user, String project, File appApk);
 
     long startQualityReport(String user, String project);
 
+	PaginationObject<SessionReport> getSessionReport(String user);
+
 	List<DeviceDescriptor> listDevices();
 
-	public void close();
+	void close();
 
 }
