@@ -32,6 +32,7 @@ public class SessionReportResourceImpl implements SessionReportResource {
                 .queryParam("userId", userId).queryParam("offset", offset).queryParam("limit", limit)
                 .queryParam("lastDays", lastDays)
                 .request(MediaType.APPLICATION_JSON)
-                .get(new GenericType<PaginationObject<SessionReport>>() {});
+                .get(new GenericType<PaginationObject<SessionReport>>() {
+                });
     }
 }

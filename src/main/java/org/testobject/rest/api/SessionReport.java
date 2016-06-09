@@ -7,7 +7,6 @@ import org.testobject.rest.api.date.LocalDateTime;
 import java.util.List;
 
 
-
 public class SessionReport {
 
 

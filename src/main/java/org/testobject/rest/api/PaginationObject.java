@@ -25,7 +25,6 @@ public class PaginationObject<T> {
     }
 
 
-
     public static final class MetaData {
         private final long offset;
         private final long limit;
