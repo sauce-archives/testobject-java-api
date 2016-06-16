@@ -90,6 +90,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:testobject/testobject-java-api.git</connection>
 		<tag>HEAD</tag>
+		<url>https://github.com/testobject/testobject-java-api/</url>
 	</scm>
 
 	<distributionManagement>
