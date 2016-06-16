@@ -1,6 +1,6 @@
 package org.testobject.rest.api.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class DeviceDescriptor {
 
