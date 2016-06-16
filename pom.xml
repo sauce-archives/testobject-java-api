@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.testobject</groupId>
 	<artifactId>testobject-java-api</artifactId>
-	<version>0.0.20</version>
+	<version>0.0.19</version>
 	<name>TestObject Java API</name>
 
 	<properties>
@@ -46,7 +46,7 @@
 
 	<developers>
 		<developer>
-			<name>Andreas 2Lüdeke</name>
+			<name>Andreas Lüdeke</name>
 			<email>aluedeke@testobject.com</email>
 			<organization>TestObject GmbH</organization>
 		</developer>
