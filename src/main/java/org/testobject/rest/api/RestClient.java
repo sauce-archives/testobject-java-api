@@ -21,8 +21,8 @@ public class RestClient implements Closeable {
 
 	public static final String REST_APPIUM_PATH = "/rest/appium/v1/";
 	public static final String REST_DEVICES_PATH = "/rest/devices/v1/";
-	private Client client;
-	private WebTarget target;
+	private final Client client;
+	private final WebTarget target;
 
 	RestClient(Client client, WebTarget target) {
 		this.client = client;
@@ -95,7 +95,7 @@ public class RestClient implements Closeable {
 			addProxyConfiguration(config, baseUrl);
 
 			client = ClientBuilder.newClient(config);
-			client.register(new LoggingFilter());
+			client.register(LoggingFilter.class);
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
 					.nonPreemptive().credentials(token, "").build();
 			client.register(feature);
