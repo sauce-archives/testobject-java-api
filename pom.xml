@@ -3,8 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.testobject</groupId>
 	<artifactId>testobject-java-api</artifactId>
-	<version>0.0.19-SNAPSHOT</version>
-	<name>TestObject Java API</name>
+	<version>0.0.19</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +20,30 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -43,6 +66,10 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<name>TestObject Java Api</name>
+	<description>java wrapper for testobject's java apis</description>
+	<url>https://github.com/testobject/testobject-java-api/</url>
 
 	<developers>
 		<developer>
