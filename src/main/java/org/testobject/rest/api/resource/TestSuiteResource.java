@@ -1,6 +1,6 @@
 package org.testobject.rest.api.resource;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -10,6 +10,23 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("users/{user}/projects/{project}/batches")
 public interface TestSuiteResource {
+
+	@PUT
+	@Path("instrumentation/{testSuite}")
+	public void updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+			@PathParam("testSuite") long testSuite,
+			InstrumentationTestSuiteRequest request);
+
+	@POST
+	@Path("instrumentation/{testSuite}/replay")
+	public long runInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+			@PathParam("testSuite") long testSuite);
+
+	@PUT
+	@Path("instrumentation/newSuite/{testSuite}")
+	public Long createInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
+			@PathParam("testSuite") long testSuite,
+			InstrumentationTestSuiteRequest request);
 
 	class InstrumentationTestSuiteRequest {
 
@@ -49,21 +66,4 @@ public interface TestSuiteResource {
 		}
 
 	}
-
-	@PUT
-	@Path("instrumentation/{testSuite}")
-	public void updateInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
-			@PathParam("testSuite") long testSuite,
-			InstrumentationTestSuiteRequest request);
-
-	@POST
-	@Path("instrumentation/{testSuite}/replay")
-	public long runInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
-			@PathParam("testSuite") long testSuite);
-
-	@PUT
-	@Path("instrumentation/newSuite/{testSuite}")
-	public Long createInstrumentationTestSuite(@PathParam("user") String user, @PathParam("project") String project,
-			@PathParam("testSuite") long testSuite,
-			InstrumentationTestSuiteRequest request);
 }

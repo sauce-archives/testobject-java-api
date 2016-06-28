@@ -22,6 +22,7 @@ import org.testobject.rest.api.model.SessionReport;
 import org.testobject.rest.api.model.TestSuiteReport;
 import org.testobject.rest.api.resource.*;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -60,8 +61,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		ClientConfig config = new ClientConfig();
 		config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager(registry));
 
-		config.property(ApacheClientProperties.SSL_CONFIG, sslConfig);
-
 		ApacheConnectorProvider connector = new ApacheConnectorProvider();
 
 		config.connectorProvider(connector);
@@ -84,7 +83,8 @@ public class TestObjectRemoteClient implements TestObjectClient {
 			}
 		}
 
-		client = ClientBuilder.newBuilder().newClient(config);
+		SSLContext sslContext = sslConfig.createSSLContext();
+		client = ClientBuilder.newBuilder().sslContext(sslContext).newClient(config);
 
 		WebTarget resource = client.target(baseUrl);
 		user = new UserResourceImpl(resource);
