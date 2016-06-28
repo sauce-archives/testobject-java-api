@@ -64,6 +64,46 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<relocations>
+								<relocation>
+									<pattern>org.glassfish</pattern>
+									<shadedPattern>org.testobject.external.glassfish</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.apache</pattern>
+									<shadedPattern>org.testobject.external.apache</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.googl</pattern>
+									<shadedPattern>org.testobject.external.google</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.sun</pattern>
+									<shadedPattern>org.testobject.external.sun</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>net.sf.cglib</pattern>
+									<shadedPattern>org.testobject.external.cglib</shadedPattern>
+								</relocation>
+							</relocations>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
