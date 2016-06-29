@@ -1,9 +1,9 @@
 package org.testobject.rest.api.appium.common.data;
 
 
-import com.google.common.base.Optional;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jersey.repackaged.com.google.common.base.Optional;
 
 import java.util.Set;
 

@@ -77,24 +77,8 @@
 						<configuration>
 							<relocations>
 								<relocation>
-									<pattern>org.glassfish</pattern>
-									<shadedPattern>org.testobject.external.glassfish</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.apache</pattern>
-									<shadedPattern>org.testobject.external.apache</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>com.googl</pattern>
-									<shadedPattern>org.testobject.external.google</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>com.sun</pattern>
-									<shadedPattern>org.testobject.external.sun</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>net.sf.cglib</pattern>
-									<shadedPattern>org.testobject.external.cglib</shadedPattern>
+									<pattern>org.apache.http</pattern>
+									<shadedPattern>org.testobject.external.apache.http</shadedPattern>
 								</relocation>
 							</relocations>
 							<transformers>
@@ -172,9 +156,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-remote-driver</artifactId>
-			<version>2.48.2</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
 		</dependency>
 	</dependencies>
 
