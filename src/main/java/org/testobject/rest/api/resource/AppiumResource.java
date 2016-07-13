@@ -1,6 +1,5 @@
 package org.testobject.rest.api.resource;
 
-import org.openqa.selenium.remote.SessionId;
 import org.testobject.rest.api.RestClient;
 
 import javax.ws.rs.client.Entity;
@@ -17,22 +16,22 @@ public class AppiumResource {
 		this.client = client;
 	}
 
-	public void updateTestReportStatus(SessionId sessionId, boolean passed) {
+	public void updateTestReportStatus(String sessionId, boolean passed) {
 		client
 				.path("session")
-				.path(sessionId.toString())
+				.path(sessionId)
 				.path("test").request(MediaType.APPLICATION_JSON_TYPE)
 				.put(Entity.json(Collections.singletonMap("passed", passed)));
 	}
 
-	public void updateTestReportName(SessionId sessionId, String suiteName, String testName) {
+	public void updateTestReportName(String sessionId, String suiteName, String testName) {
 		Map<String, String> values = new HashMap<String, String>();
 		values.put("suiteName", suiteName);
 		values.put("testName", testName);
 
 		client
 				.path("session")
-				.path(sessionId.toString())
+				.path(sessionId)
 				.path("test")
 				.request(MediaType.APPLICATION_JSON_TYPE)
 				.put(Entity.json(Collections.singletonMap("passed", values)));
