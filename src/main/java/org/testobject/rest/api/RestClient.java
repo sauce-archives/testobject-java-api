@@ -95,10 +95,9 @@ public class RestClient implements Closeable {
 			addProxyConfiguration(config, baseUrl);
 
 			client = ClientBuilder.newClient(config);
+
 			client.register(LoggingFilter.class);
-			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
-					.nonPreemptive().credentials(token, "").build();
-			client.register(feature);
+			client.register(HttpAuthenticationFeature.basic(token, ""));
 
 			WebTarget target = client.target(baseUrl + path);
 			return new RestClient(client, target);
