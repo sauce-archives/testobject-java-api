@@ -9,7 +9,7 @@ import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.logging.LoggingFeature;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -96,7 +96,7 @@ public class RestClient implements Closeable {
 
 			client = ClientBuilder.newClient(config);
 
-			client.register(LoggingFilter.class);
+			client.register(new LoggingFeature());
 			client.register(HttpAuthenticationFeature.basic(token, ""));
 
 			WebTarget target = client.target(baseUrl + path);
