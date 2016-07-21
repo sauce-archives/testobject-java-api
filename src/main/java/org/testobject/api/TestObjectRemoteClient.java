@@ -97,10 +97,12 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		sessionReport = new SessionReportResourceImpl(resource);
 	}
 
+	@Override
 	public void login(String username, String password) {
 		user.login(username, password);
 	}
 
+	@Override
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest request) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
@@ -112,6 +114,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 				request);
 	}
 
+	@Override
 	public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
@@ -123,14 +126,17 @@ public class TestObjectRemoteClient implements TestObjectClient {
 				instrumentationTestSuiteRequest);
 	}
 
+	@Override
 	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
 		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
 	}
 
+	@Override
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
 		return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
 	}
 
+	@Override
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs,
 			long sleepTimeMs) {
 		long start = now();
