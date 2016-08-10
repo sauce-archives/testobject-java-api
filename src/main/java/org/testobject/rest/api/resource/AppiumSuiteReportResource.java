@@ -38,7 +38,7 @@ public class AppiumSuiteReportResource {
 				.path("reports").path(Long.toString(suiteReportId.value()))
 				.path("finish")
 				.request(MediaType.APPLICATION_JSON_TYPE)
-				.put(Entity.json(null), SuiteReport.class);
+				.put(Entity.json("ignored"), SuiteReport.class);
 	}
 
 	public TestReport finishTestReport(long suiteId, SuiteReport.Id suiteReportId, TestReport.Id testReportId, TestResult testResult) {
@@ -49,6 +49,14 @@ public class AppiumSuiteReportResource {
 				.path("finish")
 				.request(MediaType.APPLICATION_JSON_TYPE)
 				.put(Entity.json(testResult), TestReport.class);
+	}
+
+	private class SuiteResult {
+		public final boolean passed;
+
+		private SuiteResult(boolean passed) {
+			this.passed = passed;
+		}
 	}
 
 }
