@@ -62,7 +62,7 @@ public class TestObjectClientTest {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testGetTestReportAndVideo() throws IOException {
 		client.login(USER, PASSWORD);
 
