@@ -16,10 +16,7 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.*;
-import org.testobject.rest.api.model.DeviceDescriptor;
-import org.testobject.rest.api.model.PaginationObject;
-import org.testobject.rest.api.model.SessionReport;
-import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.*;
 
 import javax.net.ssl.SSLContext;
@@ -28,6 +25,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +39,8 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final QualityReportResource qualityReport;
 	private final SessionReportResource sessionReport;
 	private final DeviceDescriptorsResource deviceDescriptors;
+	private final TestReportResource testReportResource;
+	private final VideoResourceImpl videoResource;
 
 	private final Client client;
 
@@ -95,6 +95,8 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		qualityReport = new QualityReportResourceImpl(resource);
 		deviceDescriptors = new DeviceDescriptorsResourceImpl(resource);
 		sessionReport = new SessionReportResourceImpl(resource);
+		testReportResource = new TestReportResourceImpl(resource);
+		videoResource = new VideoResourceImpl(resource);
 	}
 
 	@Override
@@ -184,6 +186,16 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	@Override
 	public List<DeviceDescriptor> listDevices() {
 		return deviceDescriptors.listDevices();
+	}
+
+	@Override
+	public AppiumTestReport getTestReport(String user, String project, long reportId) {
+		return testReportResource.getTestReport(user, project, reportId).getReport();
+	}
+
+	@Override
+	public InputStream getVideo(String user, String project, String videoId) {
+		return videoResource.getScreenRecording(user, project, videoId).readEntity(InputStream.class);
 	}
 
 	private void sleep(long sleepTime) {
