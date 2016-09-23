@@ -13,7 +13,7 @@ import java.util.List;
 public class TestObjectClientTest {
 
 	private static final String USER = "testobject";
-	private static final String PASSWORD = "--------";
+	private static final String PASSWORD = "***REMOVED***";
 
 	private static final String PROJECT = "calculatortest";
 	private static final long TEST_SUITE = 17;
