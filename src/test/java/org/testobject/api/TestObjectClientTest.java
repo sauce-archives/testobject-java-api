@@ -4,17 +4,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.testobject.rest.api.model.AppiumTestReport;
 import org.testobject.rest.api.model.DeviceDescriptor;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestObjectClientTest {
 
 	private static final String USER = "testobject";
-	private static final String PASSWORD = "--------";
+	private static final String PASSWORD = "-----------";
 
-	private static final String PROJECT = "calculator";
+	private static final String PROJECT = "calculatortest";
 	private static final long TEST_SUITE = 17;
 
 	private static File APP_APK = new File(TestObjectClientTest.class.getResource("calculator-debug-unaligned.apk").getPath());
@@ -59,6 +62,21 @@ public class TestObjectClientTest {
 		for (DeviceDescriptor deviceDescriptor : deviceDescriptors) {
 			System.out.println(deviceDescriptor);
 		}
+	}
+
+	@Test @Ignore
+	public void testGetTestReportAndVideo() throws IOException {
+		client.login(USER, PASSWORD);
+
+		AppiumTestReport testReport = client.getTestReport("testobject", "appium-website", 9019);
+
+		File video = new File("/tmp/appium-website-video.mp4");
+
+		client.saveVideo("testobject", "appium-website", testReport.getVideoId(), video);
+
+		assertTrue(video.exists());
+		assertTrue(video.length() / 1024 > 1); // video over 1kb
+		System.out.println(video);
 	}
 
 	@After
