@@ -5,7 +5,6 @@ import org.testobject.rest.api.resource.TestSuiteResource;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 
 public interface TestObjectClient extends Closeable {
@@ -87,7 +86,7 @@ public interface TestObjectClient extends Closeable {
 
 	AppiumTestReport getTestReport(String user, String project, long reportId);
 
-	InputStream getVideo(String user, String project, String videoId);
+	File saveVideo(String user, String project, String videoId, File output);
 
 	void close();
 

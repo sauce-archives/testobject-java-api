@@ -10,10 +10,12 @@ import org.testobject.rest.api.model.DeviceDescriptor;
 import java.io.*;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 public class TestObjectClientTest {
 
 	private static final String USER = "testobject";
-	private static final String PASSWORD = "--------";
+	private static final String PASSWORD = "-----------";
 
 	private static final String PROJECT = "calculatortest";
 	private static final long TEST_SUITE = 17;
@@ -68,16 +70,13 @@ public class TestObjectClientTest {
 
 		AppiumTestReport testReport = client.getTestReport("testobject", "appium-website", 9019);
 
-		try (InputStream video = client.getVideo("testobject", "appium-website", testReport.getVideoId());
-			OutputStream file = new FileOutputStream("appium-website-video.mp4")) {
+		File video = new File("/tmp/appium-website-video.mp4");
 
-			int read;
-			byte[] bytes = new byte[1024];
+		client.saveVideo("testobject", "appium-website", testReport.getVideoId(), video);
 
-			while ((read = video.read(bytes)) != -1) {
-				file.write(bytes, 0, read);
-			}
-		}
+		assertTrue(video.exists());
+		assertTrue(video.length() / 1024 > 1); // video over 1kb
+		System.out.println(video);
 	}
 
 	@After

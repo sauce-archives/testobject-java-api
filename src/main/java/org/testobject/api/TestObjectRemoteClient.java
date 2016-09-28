@@ -24,8 +24,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -194,8 +193,21 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public InputStream getVideo(String user, String project, String videoId) {
-		return videoResource.getScreenRecording(user, project, videoId).readEntity(InputStream.class);
+	public File saveVideo(String user, String project, String videoId, File file) {
+		try (InputStream inputStream = videoResource.getScreenRecording(user, project, videoId).readEntity(InputStream.class);
+			OutputStream outputStream = new FileOutputStream(file)) {
+
+			int read;
+			byte[] bytes = new byte[1024];
+
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to save video", e);
+		}
+
+		return file;
 	}
 
 	private void sleep(long sleepTime) {
