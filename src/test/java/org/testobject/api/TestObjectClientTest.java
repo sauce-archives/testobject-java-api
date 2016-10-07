@@ -6,10 +6,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.testobject.rest.api.model.AppiumTestReport;
 import org.testobject.rest.api.model.DeviceDescriptor;
+import org.testobject.rest.api.model.SessionReport;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestObjectClientTest {
@@ -54,6 +57,19 @@ public class TestObjectClientTest {
 
 		long qualityReportId = client.startQualityReport(USER, PROJECT);
 		System.out.println(qualityReportId);
+	}
+
+	@Test @Ignore
+	public void testGetSessionReport() {
+		client.login(USER, PASSWORD);
+
+		List<SessionReport> reportList = client.getSessionReport(USER).getEntities();
+
+		assertTrue(!reportList.isEmpty());
+
+		for (SessionReport sessionReport : reportList) {
+			assertEquals(USER, sessionReport.getUserId());
+		}
 	}
 
 	@Test @Ignore
