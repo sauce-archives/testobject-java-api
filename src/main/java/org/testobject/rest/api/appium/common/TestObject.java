@@ -12,7 +12,7 @@ public @interface TestObject {
 
 	boolean testLocally() default false;
 
-	String testObjectApiEndpoint() default TestObjectCapabilities.TESTOBJECT_API_ENDPOINT;
+	String testObjectApiEndpoint() default "";
 
 	String testObjectApiKey() default "";
 

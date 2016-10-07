@@ -5,9 +5,9 @@ import java.net.URL;
 
 public final class TestObjectCapabilities {
 
-	public static final String TESTOBJECT_API_ENDPOINT = "https://appium.testobject.com:443/api";
-
-	public static final URL TESTOBJECT_APPIUM_ENDPOINT = toAppiumEndpointURL(TESTOBJECT_API_ENDPOINT);
+	public static final URL TESTOBJECT_BASE_ENDPOINT = getURL("https://appium.testobject.com:443");
+	public static final URL TESTOBJECT_API_ENDPOINT = toTestObjectApiEndpointUrl(TESTOBJECT_BASE_ENDPOINT);
+	public static final URL TESTOBJECT_APPIUM_ENDPOINT = toTestObjectAppiumEndpointURL(TESTOBJECT_BASE_ENDPOINT);
 
 	public static final String TESTOBJECT_API_KEY = "testobject_api_key";
 	public static final String TESTOBJECT_TEST_REPORT_ID = "testobject_test_report_id";
@@ -36,12 +36,32 @@ public final class TestObjectCapabilities {
 	private TestObjectCapabilities() {
 	}
 
-	public static URL toAppiumEndpointURL(String url) {
+	private static URL getURL(String url) {
 		try {
-			return new URL(url + "/appium/wd/hub");
+			return new URL(url);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
+	}
+
+	public static URL toTestObjectAppiumEndpointURL(URL baseURL) {
+		try {
+			return new URL("http", baseURL.getHost(), 80, "/wd/hub");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+	public static URL toTestObjectApiEndpointUrl(URL baseURL) {
+		try {
+			return new URL(baseURL.getProtocol(), baseURL.getHost(), baseURL.getPort(), "/api");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(TESTOBJECT_API_ENDPOINT.toString());
 	}
 
 }
