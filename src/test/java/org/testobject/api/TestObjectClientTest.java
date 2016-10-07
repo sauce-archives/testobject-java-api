@@ -6,15 +6,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.testobject.rest.api.model.AppiumTestReport;
 import org.testobject.rest.api.model.DeviceDescriptor;
-import org.testobject.rest.api.model.PaginationObject;
 import org.testobject.rest.api.model.SessionReport;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class TestObjectClientTest {
 
