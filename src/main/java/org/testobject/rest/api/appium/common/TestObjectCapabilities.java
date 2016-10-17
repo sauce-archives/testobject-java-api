@@ -60,8 +60,4 @@ public final class TestObjectCapabilities {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println(TESTOBJECT_API_ENDPOINT.toString());
-	}
-
 }
