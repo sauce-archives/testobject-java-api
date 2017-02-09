@@ -187,6 +187,8 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		return deviceDescriptors.listDevices();
 	}
 
+
+
 	@Override
 	public AppiumTestReport getTestReport(String user, String project, long reportId) {
 		return testReportResource.getTestReport(user, project, reportId).getReport();

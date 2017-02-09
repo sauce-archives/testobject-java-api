@@ -1,6 +1,7 @@
 package org.testobject.rest.api.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PaginationObject<T> {
 		return metadata;
 	}
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static final class MetaData {
 		private final long offset;
 		private final long limit;
