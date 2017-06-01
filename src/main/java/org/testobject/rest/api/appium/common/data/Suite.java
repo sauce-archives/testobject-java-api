@@ -3,10 +3,13 @@ package org.testobject.rest.api.appium.common.data;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Suite {
 
 	public static class Id extends org.testobject.rest.api.appium.common.data.Id<Integer> {
@@ -19,7 +22,7 @@ public class Suite {
 	private final String title;
 	private final long appVersionId;
 	private final String frameworkVersion;
-	private final Set<String> deviceIds;
+	private final Map<String, Set<String>> deviceIds;
 
 	@JsonCreator
 	public Suite(
@@ -27,7 +30,7 @@ public class Suite {
 			@JsonProperty("title") String title,
 			@JsonProperty("appVersionId") long appVersionId,
 			@JsonProperty("frameworkVersion") String frameworkVersion,
-			@JsonProperty("deviceIds") Set<String> deviceIds) {
+			@JsonProperty("deviceIds") Map<String, Set<String>> deviceIds) {
 
 		this.id = id;
 		this.title = title;
@@ -52,7 +55,7 @@ public class Suite {
 		return frameworkVersion;
 	}
 
-	public Set<String> getDeviceIds() {
+	public Map<String, Set<String>> getDeviceIds() {
 		return deviceIds;
 	}
 

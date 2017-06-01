@@ -20,8 +20,6 @@ public @interface TestObject {
 
 	long testObjectAppId() default 0;
 
-	String[] testObjectDeviceIds() default {};
-
 	int timeout() default 60;
 
 	TimeUnit timeoutUnit() default TimeUnit.MINUTES;

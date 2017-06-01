@@ -1,8 +1,10 @@
 package org.testobject.rest.api.appium.common.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestReport {
 
 	public static class Id extends org.testobject.rest.api.appium.common.data.Id<Integer> {
