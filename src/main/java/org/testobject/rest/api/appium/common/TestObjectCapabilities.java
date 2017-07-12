@@ -5,9 +5,17 @@ import java.net.URL;
 
 public final class TestObjectCapabilities {
 
-	public static final URL TESTOBJECT_BASE_ENDPOINT = getURL("https://appium.testobject.com:443");
-	public static final URL TESTOBJECT_API_ENDPOINT = toTestObjectApiEndpointUrl(TESTOBJECT_BASE_ENDPOINT);
-	public static final URL TESTOBJECT_APPIUM_ENDPOINT = toTestObjectAppiumEndpointURL(TESTOBJECT_BASE_ENDPOINT);
+	public static final URL TESTOBJECT_API_ENDPOINT = getURL("https://app.testobject.com:443/api");
+	public static final URL TESTOBJECT_APPIUM_ENDPOINT_US = getURL("https://us1.appium.testobject.com/wd/hub");
+	public static final URL TESTOBJECT_APPIUM_ENDPOINT_EU = getURL("https://eu1.appium.testobject.com/wd/hub");
+
+	/**
+	 *
+	 * @deprecated Devices are now available in seperate US and EU data centers.
+	 *   Please use either TESTOBJECT_APPIUM_ENDPOINT_US or TESTOBJECT_APPIUM_ENDPOINT_EU accordingly.
+	 */
+	@Deprecated
+	public static final URL TESTOBJECT_APPIUM_ENDPOINT = TESTOBJECT_APPIUM_ENDPOINT_EU;
 
 	public static final String TESTOBJECT_API_KEY = "testobject_api_key";
 	public static final String TESTOBJECT_TEST_REPORT_ID = "testobject_test_report_id";
@@ -39,22 +47,6 @@ public final class TestObjectCapabilities {
 	private static URL getURL(String url) {
 		try {
 			return new URL(url);
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
-
-	public static URL toTestObjectAppiumEndpointURL(URL baseURL) {
-		try {
-			return new URL("http", baseURL.getHost(), 80, "/wd/hub");
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
-
-	public static URL toTestObjectApiEndpointUrl(URL baseURL) {
-		try {
-			return new URL(baseURL.getProtocol(), baseURL.getHost(), baseURL.getPort(), "/api");
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
