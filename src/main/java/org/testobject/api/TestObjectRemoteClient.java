@@ -188,6 +188,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
+	public DeviceDescriptor getDeviceDescriptorForSession(String sessionId) {
+		return deviceDescriptors.getDeviceDescriptorForSession(sessionId);
+	}
+
+	@Override
 	public AppiumTestReport getTestReport(String user, String project, long reportId) {
 		return testReportResource.getTestReport(user, project, reportId).getReport();
 	}
