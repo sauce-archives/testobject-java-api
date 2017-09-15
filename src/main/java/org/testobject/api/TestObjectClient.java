@@ -16,6 +16,7 @@ public interface TestObjectClient extends Closeable {
 		private final int port;
 		private final String username;
 		private final String password;
+
 		public ProxySettings(String host, int port, String username, String password) {
 			this.host = host;
 			this.port = port;
@@ -40,6 +41,7 @@ public interface TestObjectClient extends Closeable {
 		}
 
 	}
+
 	final class Factory {
 
 		private static final String BASE_URL = "https://appium.testobject.com/api/rest";
@@ -57,6 +59,7 @@ public interface TestObjectClient extends Closeable {
 		}
 
 	}
+
 	void login(String username, String password);
 
 	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK,
@@ -83,6 +86,8 @@ public interface TestObjectClient extends Closeable {
 	PaginationObject<SessionReport> getSessionReport(String user, String userId, long offset, int limit, int lastDays);
 
 	List<DeviceDescriptor> listDevices();
+
+	DeviceDescriptor getDeviceDescriptorForSession(String sessionId);
 
 	AppiumTestReport getTestReport(String user, String project, long reportId);
 
