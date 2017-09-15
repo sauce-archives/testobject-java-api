@@ -36,8 +36,8 @@ public class DeviceDescriptorsResourceImpl implements DeviceDescriptorsResource 
     }
 
     @Override
-    public DeviceDescriptor getDeviceDescriptorForSession(String sessiontId) {
-        return target.path("v2").path("appium").path("session").path(sessiontId).path("device")
+    public DeviceDescriptor getDeviceDescriptorForSession(String sessionId) {
+        return target.path("v2").path("appium").path("session").path(sessionId).path("device")
                 .request(MediaType.APPLICATION_JSON)
                 .get(DeviceDescriptor.class);
     }
