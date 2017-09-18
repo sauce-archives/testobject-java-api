@@ -188,7 +188,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public DeviceDescriptor getDeviceDescriptorForSession(String sessionId) {
+	public DeviceDescriptor.DeviceContainer getDeviceDescriptorForSession(String sessionId) {
 		return deviceDescriptors.getDeviceDescriptorForSession(sessionId);
 	}
 
