@@ -87,8 +87,6 @@ public interface TestObjectClient extends Closeable {
 
 	List<DeviceDescriptor> listDevices();
 
-	DeviceDescriptor.DeviceContainer getDeviceDescriptorForSession(String sessionId);
-
 	AppiumTestReport getTestReport(String user, String project, long reportId);
 
 	File saveVideo(String user, String project, String videoId, File output);
