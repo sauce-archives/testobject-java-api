@@ -12,7 +12,7 @@ public class DeviceDescriptor {
 	public final OS os;
 	public final String osVersion;
 	public final boolean isAvailable;
-	
+
 	public DeviceDescriptor(DeviceContainer deviceContainer, boolean isAvailable) {
 		this.id = deviceContainer.id;
 		this.name = deviceContainer.name;
@@ -26,7 +26,7 @@ public class DeviceDescriptor {
 	public String toString() {
 		return id + " (" + name + "), " + os + " (" + osVersion + "), api: " + apiLevel + ", " + (isAvailable ? "available" : "not available");
 	}
-	
+
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DeviceContainer {
 		public String id;
@@ -35,5 +35,5 @@ public class DeviceDescriptor {
 		public OS os;
 		public String osVersion;
 	}
-	
+
 }
