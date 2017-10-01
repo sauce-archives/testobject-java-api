@@ -1,6 +1,5 @@
 package org.testobject.rest.api.resource;
 
-import com.google.common.base.Optional;
 import org.testobject.rest.api.RestClient;
 import org.testobject.rest.api.appium.common.data.SuiteReport;
 import org.testobject.rest.api.appium.common.data.Test;
@@ -10,6 +9,7 @@ import org.testobject.rest.api.appium.common.data.TestResult;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import java.util.Optional;
 import java.util.Set;
 
 public class AppiumSuiteReportResource {
