@@ -1,7 +1,7 @@
 package org.testobject.rest.api.appium.common.data;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.base.Preconditions;
+import jersey.repackaged.com.google.common.base.Preconditions;
 
 public abstract class Id<T> {
 

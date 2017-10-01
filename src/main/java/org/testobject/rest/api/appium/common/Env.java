@@ -1,6 +1,6 @@
 package org.testobject.rest.api.appium.common;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public class Env {
 
@@ -42,7 +42,7 @@ public class Env {
 
 
 	private static Optional<String> getenv(String key){
-		return Optional.fromNullable(System.getenv(key));
+		return Optional.ofNullable(System.getenv(key));
 	}
 }
 

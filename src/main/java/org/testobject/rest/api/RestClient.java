@@ -1,6 +1,5 @@
 package org.testobject.rest.api;
 
-import com.google.common.base.Optional;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -16,11 +15,12 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import java.io.Closeable;
 import java.net.URI;
+import java.util.Optional;
 
 public class RestClient implements Closeable {
 
 	public static final String REST_APPIUM_PATH = "/rest/v2/appium/";
-	public static final String REST_DEVICES_PATH = "/rest/devices/v1/";
+	public static final String REST_DEVICES_PATH = "/rest/v1/devices/";
 	private final Client client;
 	private final WebTarget target;
 
@@ -52,19 +52,19 @@ public class RestClient implements Closeable {
 		private static void addProxyConfiguration(ClientConfig config, String baseUrl) {
 			String protocol = URI.create(baseUrl).getScheme().toLowerCase();
 
-			Optional<String> proxyHost = Optional.fromNullable(System.getProperty(protocol + ".proxyHost"));
+			Optional<String> proxyHost = Optional.ofNullable(System.getProperty(protocol + ".proxyHost"));
 			if (!proxyHost.isPresent()) {
 				return;
 			}
 
 			String host = proxyHost.get();
-			String port = Optional.fromNullable(System.getProperty(protocol + ".proxyPort")).or("8080");
-			String proxyProtocol = Optional.fromNullable(System.getProperty(protocol + ".proxyProtocol")).or("http");
+			String port = Optional.ofNullable(System.getProperty(protocol + ".proxyPort")).orElse("8080");
+			String proxyProtocol = Optional.ofNullable(System.getProperty(protocol + ".proxyProtocol")).orElse("http");
 			String url = proxyProtocol + "://" + host + ":" + port;
 			config.property(ClientProperties.PROXY_URI, url);
 
-			Optional<String> username = Optional.fromNullable(System.getProperty(protocol + ".proxyUser"));
-			Optional<String> password = Optional.fromNullable(System.getProperty(protocol + ".proxyPassword"));
+			Optional<String> username = Optional.ofNullable(System.getProperty(protocol + ".proxyUser"));
+			Optional<String> password = Optional.ofNullable(System.getProperty(protocol + ".proxyPassword"));
 			if (username.isPresent() && password.isPresent()) {
 				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username.get(), password.get());
 				CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
