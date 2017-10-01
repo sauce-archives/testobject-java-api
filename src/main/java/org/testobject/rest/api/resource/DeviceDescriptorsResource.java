@@ -8,6 +8,4 @@ public interface DeviceDescriptorsResource {
 
 	List<DeviceDescriptor> listDevices();
 
-	DeviceDescriptor getDeviceDescriptorForSession(String sessiontId);
-
 }
