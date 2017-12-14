@@ -49,6 +49,9 @@ public interface TestSuiteResource {
 		public List<String> sizesToRun;
 
 		@JsonProperty
+		public String tunnelIdentifier;
+
+		@JsonProperty
 		public boolean runAsPackage;
 
 		@SuppressWarnings("unused")
