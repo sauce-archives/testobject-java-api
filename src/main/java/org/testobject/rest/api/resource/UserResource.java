@@ -11,4 +11,8 @@ public interface UserResource {
 	@Path("login")
 	void login(@FormParam("user") String userName, @FormParam("password") String password);
 
+	@POST
+	@Path("loginwithapikey")
+	void loginWithApiKey(@FormParam("apikey") String apikey);
+
 }

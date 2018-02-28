@@ -62,6 +62,8 @@ public interface TestObjectClient extends Closeable {
 
 	void login(String username, String password);
 
+	void loginWithApiKey(String apiKey);
+
 	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK,
 			TestSuiteResource.InstrumentationTestSuiteRequest request);
 

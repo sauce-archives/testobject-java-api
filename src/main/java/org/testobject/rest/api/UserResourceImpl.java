@@ -34,4 +34,19 @@ public class UserResourceImpl implements UserResource {
 		}
 	}
 
+	@Override
+	public void loginWithApiKey(String apikey) {
+		MultivaluedMap<String, String> formData = new MultivaluedStringMap();
+		formData.add("apikey", apikey);
+
+		Response response =  target
+				.path("users").path("loginwithapikey")
+				.request()
+				.post(Entity.entity(formData,MediaType.APPLICATION_FORM_URLENCODED));
+
+		if(Response.Status.OK.getStatusCode() != response.getStatus()){
+			throw new IllegalStateException("expected status " + Response.Status.OK + " but was " + response.getStatus());
+		}
+	}
+
 }

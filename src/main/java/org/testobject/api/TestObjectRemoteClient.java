@@ -104,6 +104,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
+	public void loginWithApiKey(String apiKey) {
+		user.loginWithApiKey(apiKey);
+	}
+
+	@Override
 	public void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest request) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
