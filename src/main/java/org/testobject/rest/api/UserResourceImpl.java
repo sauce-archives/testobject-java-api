@@ -40,7 +40,7 @@ public class UserResourceImpl implements UserResource {
 		formData.add("apikey", apikey);
 
 		Response response =  target
-				.path("users").path("loginwithapikey")
+				.path("users").path("apikeylogin")
 				.request()
 				.post(Entity.entity(formData,MediaType.APPLICATION_FORM_URLENCODED));
 

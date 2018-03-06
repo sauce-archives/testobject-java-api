@@ -12,7 +12,7 @@ public interface UserResource {
 	void login(@FormParam("user") String userName, @FormParam("password") String password);
 
 	@POST
-	@Path("loginwithapikey")
+	@Path("apikeylogin")
 	void loginWithApiKey(@FormParam("apikey") String apikey);
 
 }
