@@ -147,6 +147,11 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
+	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
+		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
+	}
+
+	@Override
 	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId
 	) {
 		long start = now();
