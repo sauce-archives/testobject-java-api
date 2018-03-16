@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 public class TestObjectRemoteClient implements TestObjectClient {
 
-	private final UserResource user;
 	private final UploadResource upload;
 	private final AppVersionResource appVersion;
 	private final TestSuiteResource testSuite;
@@ -86,7 +85,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		client = ClientBuilder.newBuilder().sslContext(sslContext).newClient(config);
 
 		WebTarget resource = client.target(baseUrl);
-		user = new UserResourceImpl(resource);
 		upload = new UploadResourceImpl(resource);
 		appVersion = new AppVersionResourceImpl(resource);
 		testSuite = new TestSuiteResourceImpl(resource);
@@ -96,11 +94,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		sessionReport = new SessionReportResourceImpl(resource);
 		testReportResource = new TestReportResourceImpl(resource);
 		videoResource = new VideoResourceImpl(resource);
-	}
-
-	@Override
-	public void login(String username, String password) {
-		user.login(username, password);
 	}
 
 	@Override

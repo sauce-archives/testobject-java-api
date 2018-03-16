@@ -34,13 +34,7 @@ public class TestObjectClientTest {
 	}
 
 	@Test @Ignore
-	public void testLogin() {
-		client.login(USER, PASSWORD);
-	}
-
-	@Test @Ignore
 	public void testStartSuite() {
-		client.login(USER, PASSWORD);
 
 		client.updateInstrumentationTestSuite(USER, PROJECT, TEST_SUITE, APP_APK, INSTRUMENTATION_APK,null);
 
@@ -51,7 +45,6 @@ public class TestObjectClientTest {
 
 	@Test @Ignore
 	public void testStartQualityReport() {
-		client.login(USER, PASSWORD);
 
 		client.createAppVersion(USER, PROJECT, APP_APK);
 
@@ -61,7 +54,6 @@ public class TestObjectClientTest {
 
 	@Test @Ignore
 	public void testGetSessionReport() {
-		client.login(USER, PASSWORD);
 
 		List<SessionReport> reportList = client.getSessionReport(USER).getEntities();
 
@@ -82,7 +74,6 @@ public class TestObjectClientTest {
 
 	@Test @Ignore
 	public void testGetTestReportAndVideo() throws IOException {
-		client.login(USER, PASSWORD);
 
 		AppiumTestReport testReport = client.getTestReport("testobject", "appium-website", 9019);
 
