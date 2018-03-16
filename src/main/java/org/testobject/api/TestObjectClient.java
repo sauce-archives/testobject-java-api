@@ -63,12 +63,21 @@ public interface TestObjectClient extends Closeable {
 	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK,
 			TestSuiteResource.InstrumentationTestSuiteRequest request);
 
+	long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
+
 	long startInstrumentationTestSuite(String user, String project, long testSuite);
+
+	long uploadIpa(String apikey, File ipa);
 
 	Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
 
 	TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
+
+	String readXCUITestJunitReport(String apiKey, long testReportId);
+
+	XcuiTestReport waitForXcuiTestReport(String apiKey, long testSuiteReportId
+	);
 
 	TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs,
 			long sleepTimeMs);
