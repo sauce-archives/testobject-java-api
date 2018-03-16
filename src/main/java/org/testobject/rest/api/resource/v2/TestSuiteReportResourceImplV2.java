@@ -16,7 +16,7 @@ public class TestSuiteReportResourceImplV2 implements TestSuiteReportResourceV2 
 
 	@Override
 	public TestSuiteReport getReport(long batchReport, String mediatype, String apiKey) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((":" + apiKey).getBytes());
 
 		return target
 				.path("v2").path("batchReports").path(Long.toString(batchReport))
@@ -27,7 +27,7 @@ public class TestSuiteReportResourceImplV2 implements TestSuiteReportResourceV2 
 
 	@Override
 	public String getXMLReport(long batchReport, String apiKey) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((":" + apiKey).getBytes());
 
 		return target
 				.path("v2").path("batchReports").path(Long.toString(batchReport)).path("xml")

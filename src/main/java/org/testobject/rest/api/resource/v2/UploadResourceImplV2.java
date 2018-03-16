@@ -20,7 +20,7 @@ public class UploadResourceImplV2 implements UploadResourceV2 {
 
 	@Override
 	public String uploadFile(String apiKey, File apk) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((":" + apiKey).getBytes());
 
 		FormDataMultiPart form = new FormDataMultiPart();
 		form.bodyPart(new FileDataBodyPart("file", apk, MediaType.APPLICATION_OCTET_STREAM_TYPE));

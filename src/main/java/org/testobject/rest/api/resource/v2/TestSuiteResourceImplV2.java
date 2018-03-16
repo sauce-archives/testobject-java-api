@@ -16,7 +16,7 @@ public class TestSuiteResourceImplV2 implements TestSuiteResourceV2 {
 	@Override
 	public void updateInstrumentationTestSuite(long testSuite, InstrumentationTestSuiteRequest request, String apikey) {
 
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apikey).getBytes());
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((":" + apikey).getBytes());
 
 		Response response = target
 				.path("v2").path("batches").path("instrumentation").path(Long.toString(testSuite))
@@ -32,7 +32,7 @@ public class TestSuiteResourceImplV2 implements TestSuiteResourceV2 {
 	@Override
 	public long runInstrumentationTestSuite(long testSuite, String apikey) {
 
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apikey).getBytes());
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((":" + apikey).getBytes());
 
 		return target
 				.path("v2").path("batches").path("instrumentation").path(Long.toString(testSuite)).path("replay")
