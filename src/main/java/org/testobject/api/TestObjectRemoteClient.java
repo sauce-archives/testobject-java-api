@@ -115,8 +115,13 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public long uploadIpa(String apikey, File ipa) {
+	public long uploadRunnerIpa(String apikey, File ipa) {
 		return Long.parseLong(appStorageResource.uploadAppXcuiTest(apikey, ipa));
+	}
+
+	@Override
+	public long uploadAppIpa(String apikey, File ipa) {
+		return Long.parseLong(appStorageResource.uploadAppXcuiApp(apikey, ipa));
 	}
 
 	@Override

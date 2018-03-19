@@ -16,7 +16,9 @@ public interface TestObjectClient extends Closeable {
 
 	long startInstrumentationTestSuite(String user, String project, long testSuite);
 
-	long uploadIpa(String apikey, File ipa);
+	long uploadRunnerIpa(String apikey, File ipa);
+
+	long uploadAppIpa(String apikey, File ipa);
 
 	Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
