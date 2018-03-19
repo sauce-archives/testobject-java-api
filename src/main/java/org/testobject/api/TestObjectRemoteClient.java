@@ -152,17 +152,18 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId
+	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs
 	) {
 		long start = now();
 
-		while ((now() - start) < TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)) {
+		while ((now() - start) < waitTimeoutMs) {
 			XcuiTestReport testSuiteReport = TestObjectRemoteClient.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
 			if (testSuiteReport.isRunning() == false) {
 				return testSuiteReport;
 			}
 
-			sleep(1000);
+			sleep(sleepTimeMs);
 		}
 
 		throw new IllegalStateException("unable to get test suite report result after 60min");

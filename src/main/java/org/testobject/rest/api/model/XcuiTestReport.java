@@ -21,6 +21,8 @@ public class XcuiTestReport {
 	private final String videoId;
 	private final boolean isRunning;
 	private final String status;
+	private final Set<TestCaseGroup> getTestCaseGroups;
+
 	@JsonCreator
 	public XcuiTestReport(
 			@JsonProperty("projectPath") ProjectPath projectPath,
@@ -33,9 +35,10 @@ public class XcuiTestReport {
 			@JsonProperty("duration") int duration,
 			@JsonProperty("deviceDescriptor") DeviceDescriptor.DeviceContainer device,
 			@JsonProperty("videoId") String videoId,
-			@JsonProperty("running") boolean isRunning,
+			@JsonProperty("running") boolean running,
 			@JsonProperty("status") String status,
 			@JsonProperty("testCaseGroups") Set<TestCaseGroup> getTestCaseGroups) {
+
 		this.projectPath = projectPath;
 		this.id = id;
 		this.batchName = batchName;
@@ -46,8 +49,13 @@ public class XcuiTestReport {
 		this.duration = duration;
 		this.device = device;
 		this.videoId = videoId;
-		this.isRunning = isRunning;
+		this.isRunning = running;
 		this.status = status;
+		this.getTestCaseGroups = getTestCaseGroups;
+	}
+
+	public Set<TestCaseGroup> getGetTestCaseGroups() {
+		return getTestCaseGroups;
 	}
 
 	@Override

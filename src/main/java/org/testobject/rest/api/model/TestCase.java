@@ -1,5 +1,7 @@
 package org.testobject.rest.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TestCase {
 
 	private final String methodName;
@@ -8,7 +10,12 @@ public class TestCase {
 	private final long duration;
 	private final String status;
 
-	public TestCase(String className, String methodName, long startTime, long duration, String status) {
+	public TestCase(
+			@JsonProperty("className") String className,
+			@JsonProperty("methodName") String methodName,
+			@JsonProperty("startTime") long startTime,
+			@JsonProperty("duration") long duration,
+			@JsonProperty("status") String status) {
 		this.className = className;
 		this.methodName = methodName;
 		this.startTime = startTime;
