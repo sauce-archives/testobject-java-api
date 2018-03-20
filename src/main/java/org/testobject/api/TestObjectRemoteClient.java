@@ -18,8 +18,6 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.*;
 import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.*;
-import org.testobject.rest.api.resource.v2.InstrumentationResource;
-import org.testobject.rest.api.resource.v2.InstrumentationResourceImpl;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
@@ -41,10 +39,8 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	private final DeviceDescriptorsResource deviceDescriptors;
 	private final TestReportResource testReportResource;
 	private final VideoResourceImpl videoResource;
-	private final AppStorageResource appStorageResource;
 
 	private final Client client;
-	private final InstrumentationResource instrumentationResource;
 
 	public TestObjectRemoteClient(String baseUrl, ProxySettings proxySettings) {
 
@@ -98,8 +94,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		sessionReport = new SessionReportResourceImpl(resource);
 		testReportResource = new TestReportResourceImpl(resource);
 		videoResource = new VideoResourceImpl(resource);
-		instrumentationResource = new InstrumentationResourceImpl(resource);
-		appStorageResource = new AppStorageResource(resource);
+
 	}
 
 	@Override
@@ -115,16 +110,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public long uploadRunnerIpa(String apikey, File ipa) {
-		return Long.parseLong(appStorageResource.uploadAppXcuiTest(apikey, ipa));
-	}
-
-	@Override
-	public long uploadAppIpa(String apikey, File ipa) {
-		return Long.parseLong(appStorageResource.uploadAppXcuiApp(apikey, ipa));
-	}
-
-	@Override
 	public Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
 			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest) {
 		String appUploadId = upload.uploadFile(user, project, appApk).replace("\"", "");
@@ -137,11 +122,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
-		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
-	}
-
-	@Override
 	public long startInstrumentationTestSuite(String user, String project, long testSuite) {
 		return this.testSuite.runInstrumentationTestSuite(user, project, testSuite);
 	}
@@ -149,29 +129,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	@Override
 	public TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId) {
 		return waitForSuiteReport(user, project, testSuiteReportId, TimeUnit.MINUTES.toMillis(60), TimeUnit.SECONDS.toMillis(30));
-	}
-
-	@Override
-	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
-		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
-	}
-
-	@Override
-	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs
-	) {
-		long start = now();
-
-		while ((now() - start) < waitTimeoutMs) {
-			XcuiTestReport testSuiteReport = TestObjectRemoteClient.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
-			if (testSuiteReport.isRunning() == false) {
-				return testSuiteReport;
-			}
-
-			sleep(sleepTimeMs);
-		}
-
-		throw new IllegalStateException("unable to get test suite report result after 60min");
 	}
 
 	@Override
@@ -189,11 +146,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		}
 
 		throw new IllegalStateException("unable to get test suite report result after 60min");
-	}
-
-	@Override
-	public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId) {
-		return TestObjectRemoteClient.this.testSuiteReport.getXMLReport(user, project, testSuiteReportId);
 	}
 
 	@Override

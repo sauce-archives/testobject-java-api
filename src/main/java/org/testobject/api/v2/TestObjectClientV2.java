@@ -1,12 +1,38 @@
 package org.testobject.api.v2;
 
+import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.TestSuiteReport;
+import org.testobject.rest.api.model.XcuiTestReport;
 import org.testobject.rest.api.resource.v2.TestSuiteResourceV2.InstrumentationTestSuiteRequest;
 
 import java.io.Closeable;
 import java.io.File;
 
 public interface TestObjectClientV2 extends Closeable {
+
+	long uploadRunnerIpa(String apikey, File ipa);
+
+	long uploadAppIpa(String apikey, File ipa);
+
+	long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
+
+	String readXCUITestJunitReport(String apiKey, long testReportId);
+
+	XcuiTestReport waitForXcuiTestReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs
+	);
+
+	void updateInstrumentationTestSuite(long testSuite, File appApk, File instrumentationAPK,
+			InstrumentationTestSuiteRequest request, String apiKey);
+
+	long startInstrumentationTestSuite(long testSuite, String apiKey);
+
+	TestSuiteReport waitForSuiteReport(final long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs, String apiKey);
+
+	String readTestSuiteXMLReport(final long testSuiteReportId, String apiKey);
+
+	void close();
 
 	final class ProxySettings {
 
@@ -58,17 +84,5 @@ public interface TestObjectClientV2 extends Closeable {
 		}
 
 	}
-
-	void updateInstrumentationTestSuite(long testSuite, File appApk, File instrumentationAPK,
-			InstrumentationTestSuiteRequest request, String apiKey);
-
-	long startInstrumentationTestSuite(long testSuite, String apiKey);
-
-	TestSuiteReport waitForSuiteReport(final long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs, String apiKey);
-
-	String readTestSuiteXMLReport(final long testSuiteReportId, String apiKey);
-
-	void close();
 
 }

@@ -1,4 +1,4 @@
-package org.testobject.rest.api.resource;
+package org.testobject.rest.api.resource.v2;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
