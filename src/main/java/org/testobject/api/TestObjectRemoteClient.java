@@ -94,6 +94,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		sessionReport = new SessionReportResourceImpl(resource);
 		testReportResource = new TestReportResourceImpl(resource);
 		videoResource = new VideoResourceImpl(resource);
+
 	}
 
 	@Override
@@ -148,11 +149,6 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	}
 
 	@Override
-	public String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId) {
-		return TestObjectRemoteClient.this.testSuiteReport.getXMLReport(user, project, testSuiteReportId);
-	}
-
-	@Override
 	public void createAppVersion(String userId, String projectId, File appApk) {
 		String appUploadId = upload.uploadFile(userId, projectId, appApk).replace("\"", "");
 
@@ -188,7 +184,7 @@ public class TestObjectRemoteClient implements TestObjectClient {
 	@Override
 	public File saveVideo(String user, String project, String videoId, File file) {
 		try (InputStream inputStream = videoResource.getScreenRecording(user, project, videoId).readEntity(InputStream.class);
-			OutputStream outputStream = new FileOutputStream(file)) {
+				OutputStream outputStream = new FileOutputStream(file)) {
 
 			int read;
 			byte[] bytes = new byte[1024];

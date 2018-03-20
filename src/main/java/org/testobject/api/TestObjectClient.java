@@ -9,6 +9,35 @@ import java.util.List;
 
 public interface TestObjectClient extends Closeable {
 
+	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK,
+			TestSuiteResource.InstrumentationTestSuiteRequest request);
+
+	long startInstrumentationTestSuite(String user, String project, long testSuite);
+
+	Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
+			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
+
+	TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
+
+	TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs);
+
+	void createAppVersion(String user, String project, File appApk);
+
+	long startQualityReport(String user, String project);
+
+	PaginationObject<SessionReport> getSessionReport(String user);
+
+	PaginationObject<SessionReport> getSessionReport(String user, String userId, long offset, int limit, int lastDays);
+
+	List<DeviceDescriptor> listDevices();
+
+	AppiumTestReport getTestReport(String user, String project, long reportId);
+
+	File saveVideo(String user, String project, String videoId, File output);
+
+	void close();
+
 	final class ProxySettings {
 
 		private final String host;
@@ -59,36 +88,5 @@ public interface TestObjectClient extends Closeable {
 		}
 
 	}
-
-	void updateInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File instrumentationAPK,
-			TestSuiteResource.InstrumentationTestSuiteRequest request);
-
-	long startInstrumentationTestSuite(String user, String project, long testSuite);
-
-	Long createInstrumentationTestSuite(String user, String project, long testSuite, File appApk, File testApk,
-			TestSuiteResource.InstrumentationTestSuiteRequest instrumentationTestSuiteRequest);
-
-	TestSuiteReport waitForSuiteReport(String user, String project, long testSuiteReport);
-
-	TestSuiteReport waitForSuiteReport(final String user, final String project, final long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs);
-
-	String readTestSuiteXMLReport(final String user, final String project, final long testSuiteReportId);
-
-	void createAppVersion(String user, String project, File appApk);
-
-	long startQualityReport(String user, String project);
-
-	PaginationObject<SessionReport> getSessionReport(String user);
-
-	PaginationObject<SessionReport> getSessionReport(String user, String userId, long offset, int limit, int lastDays);
-
-	List<DeviceDescriptor> listDevices();
-
-	AppiumTestReport getTestReport(String user, String project, long reportId);
-
-	File saveVideo(String user, String project, String videoId, File output);
-
-	void close();
 
 }

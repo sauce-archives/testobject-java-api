@@ -15,13 +15,10 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.testobject.rest.api.resource.v2.TestSuiteReportResourceImplV2;
-import org.testobject.rest.api.resource.v2.TestSuiteResourceImplV2;
-import org.testobject.rest.api.resource.v2.UploadResourceImplV2;
+import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.TestSuiteReport;
-import org.testobject.rest.api.resource.v2.TestSuiteReportResourceV2;
-import org.testobject.rest.api.resource.v2.TestSuiteResourceV2;
-import org.testobject.rest.api.resource.v2.UploadResourceV2;
+import org.testobject.rest.api.model.XcuiTestReport;
+import org.testobject.rest.api.resource.v2.*;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
@@ -35,6 +32,8 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	private final UploadResourceV2 uploadV2;
 	private final TestSuiteResourceV2 testSuiteV2;
 	private final TestSuiteReportResourceV2 testSuiteReportV2;
+	private final InstrumentationResource instrumentationResource;
+	private final AppStorageResource appStorageResource;
 
 	private final Client client;
 
@@ -84,6 +83,46 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 		uploadV2 = new UploadResourceImplV2(resource);
 		testSuiteV2 = new TestSuiteResourceImplV2(resource);
 		testSuiteReportV2 = new TestSuiteReportResourceImplV2(resource);
+		instrumentationResource = new InstrumentationResourceImpl(resource);
+		appStorageResource = new AppStorageResource(resource);
+	}
+
+	@Override
+	public long uploadRunnerIpa(String apikey, File ipa) {
+		return Long.parseLong(appStorageResource.uploadAppXcuiTest(apikey, ipa));
+	}
+
+	@Override
+	public long uploadAppIpa(String apikey, File ipa) {
+		return Long.parseLong(appStorageResource.uploadAppXcuiApp(apikey, ipa));
+	}
+
+	@Override
+	public long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
+		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
+	}
+
+	@Override
+	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
+		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
+	}
+
+	@Override
+	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs
+	) {
+		long start = now();
+
+		while ((now() - start) < waitTimeoutMs) {
+			XcuiTestReport testSuiteReport = TestObjectRemoteClientV2.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
+			if (testSuiteReport.isRunning() == false) {
+				return testSuiteReport;
+			}
+
+			sleep(sleepTimeMs);
+		}
+
+		throw new IllegalStateException("unable to get test suite report result after 60min");
 	}
 
 	@Override
