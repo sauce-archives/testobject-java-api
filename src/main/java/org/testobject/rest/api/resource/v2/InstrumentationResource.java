@@ -1,6 +1,7 @@
 package org.testobject.rest.api.resource.v2;
 
 import org.testobject.rest.api.model.InstrumentationRequestData;
+import org.testobject.rest.api.model.StartXcuiTestResponse;
 import org.testobject.rest.api.model.XcuiTestReport;
 
 import javax.ws.rs.*;
@@ -13,7 +14,7 @@ public interface InstrumentationResource {
 
 	@POST
 	@Path("xcuitest")
-	long createAndStartXCUITestInstrumentation(@HeaderParam("Authorization") String apiKey,
+	StartXcuiTestResponse createAndStartXCUITestInstrumentation(@HeaderParam("Authorization") String apiKey,
 			InstrumentationRequestData requestData);
 
 	@GET
