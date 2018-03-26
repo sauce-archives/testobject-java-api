@@ -8,13 +8,16 @@ public class StartXcuiTestResponse {
 
 	private final long testReportId;
 	private final String testReportUrl;
+	private final String videoUrl;
 
 	public StartXcuiTestResponse(
 			@JsonProperty("testReportId") long testReportId,
-			@JsonProperty("testReportUrl") String testReportUrl
+			@JsonProperty("testReportUrl") String testReportUrl,
+			@JsonProperty("testReportUrl") String videoUrl
 	) {
 		this.testReportId = testReportId;
 		this.testReportUrl = testReportUrl;
+		this.videoUrl = videoUrl;
 	}
 
 	public long getTestReportId() {
@@ -23,5 +26,9 @@ public class StartXcuiTestResponse {
 
 	public String getTestReportUrl() {
 		return testReportUrl;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
 	}
 }
