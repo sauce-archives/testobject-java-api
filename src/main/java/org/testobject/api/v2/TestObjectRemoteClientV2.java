@@ -88,33 +88,33 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public long uploadRunnerIpa(String apikey, File ipa) {
-		return Long.parseLong(appStorageResource.uploadAppXcuiTest(apikey, ipa));
+	public long uploadRunnerIpa(String userName, String apikey, File ipa) {
+		return Long.parseLong(appStorageResource.uploadAppXcuiTest(userName, apikey, ipa));
 	}
 
 	@Override
-	public long uploadAppIpa(String apikey, File ipa) {
-		return Long.parseLong(appStorageResource.uploadAppXcuiApp(apikey, ipa));
+	public long uploadAppIpa(String userName, String apikey, File ipa) {
+		return Long.parseLong(appStorageResource.uploadAppXcuiApp(userName, apikey, ipa));
 	}
 
 	@Override
-	public long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
-		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
+	public long startXcuiTestSuite(String userName, String apiKey, InstrumentationRequestData requestData) {
+		return this.instrumentationResource.createAndStartXCUITestInstrumentation(userName, apiKey, requestData);
 	}
 
 	@Override
-	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
-		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
+	public String readXCUITestJunitReport(String userName, String apiKey, final long testReportId) {
+		return this.instrumentationResource.getJUnitReport(userName, apiKey, testReportId);
 	}
 
 	@Override
-	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs
-	) {
+	public XcuiTestReport waitForXcuiTestReport(String userName, String apiKey, long testSuiteReportId, long waitTimeoutMs,
+			long sleepTimeMs) {
 		long start = now();
 
 		while ((now() - start) < waitTimeoutMs) {
-			XcuiTestReport testSuiteReport = TestObjectRemoteClientV2.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
+			XcuiTestReport testSuiteReport = TestObjectRemoteClientV2.this.instrumentationResource
+					.getTestReport(userName, apiKey, testSuiteReportId);
 			if (testSuiteReport.isRunning() == false) {
 				return testSuiteReport;
 			}

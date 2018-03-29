@@ -10,17 +10,15 @@ import java.io.File;
 
 public interface TestObjectClientV2 extends Closeable {
 
-	long uploadRunnerIpa(String apikey, File ipa);
+	long uploadRunnerIpa(String userName, String apikey, File ipa);
 
-	long uploadAppIpa(String apikey, File ipa);
+	long uploadAppIpa(String userName, String apikey, File ipa);
 
-	long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
+	long startXcuiTestSuite(String userName, String apiKey, InstrumentationRequestData requestData);
 
-	String readXCUITestJunitReport(String apiKey, long testReportId);
+	String readXCUITestJunitReport(String userName, String apiKey, long testReportId);
 
-	XcuiTestReport waitForXcuiTestReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs
-	);
+	XcuiTestReport waitForXcuiTestReport(String userName, String apiKey, long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs);
 
 	void updateInstrumentationTestSuite(long testSuite, File appApk, File instrumentationAPK,
 			InstrumentationTestSuiteRequest request, String apiKey);

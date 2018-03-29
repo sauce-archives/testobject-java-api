@@ -16,8 +16,8 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public long createAndStartXCUITestInstrumentation(String apiKey, InstrumentationRequestData requestData) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+	public long createAndStartXCUITestInstrumentation(String userName, String apiKey, InstrumentationRequestData requestData) {
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((userName + ":" + apiKey).getBytes());
 
 		return target
 				.path("v2").path("instrumentation").path("xcuitest")
@@ -27,8 +27,8 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public String getJUnitReport(String apiKey, long reportId) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+	public String getJUnitReport(String userName, String apiKey, long reportId) {
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((userName + ":" + apiKey).getBytes());
 
 		return target
 				.path("v2").path("instrumentation").path("testreport").path(Long.toString(reportId)).path("junitreport")
@@ -38,8 +38,8 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public XcuiTestReport getTestReport(String apiKey, long reportId) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+	public XcuiTestReport getTestReport(String userName, String apiKey, long reportId) {
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((userName + ":" + apiKey).getBytes());
 		return target
 				.path("v2").path("instrumentation").path("testreport").path(Long.toString(reportId))
 				.request(MediaType.APPLICATION_JSON)

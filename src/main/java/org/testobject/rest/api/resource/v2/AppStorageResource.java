@@ -15,16 +15,16 @@ public class AppStorageResource {
 		this.target = target;
 	}
 
-	public String uploadAppXcuiTest(String apiKey, File ipa) {
-		return uploadXCUITestIPA(apiKey, ipa, "XCUITEST");
+	public String uploadAppXcuiTest(String userName, String apiKey, File ipa) {
+		return uploadXCUITestIPA(userName, apiKey, ipa, "XCUITEST");
 	}
 
-	public String uploadAppXcuiApp(String apiKey, File ipa) {
-		return uploadXCUITestIPA(apiKey, ipa, "NATIVE");
+	public String uploadAppXcuiApp(String userName, String apiKey, File ipa) {
+		return uploadXCUITestIPA(userName, apiKey, ipa, "NATIVE");
 	}
 
-	private String uploadXCUITestIPA(String apiKey, File ipa, String type) {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+	private String uploadXCUITestIPA(String userName, String apiKey, File ipa, String type) {
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString((userName + ":" + apiKey).getBytes());
 		try {
 			return target
 					.path("storage").path("upload")
