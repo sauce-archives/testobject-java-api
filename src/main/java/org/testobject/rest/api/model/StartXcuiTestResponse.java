@@ -11,10 +11,10 @@ public class StartXcuiTestResponse {
 
 	public StartXcuiTestResponse(
 			@JsonProperty("testReportId") long testReportId,
-			@JsonProperty("testReportUrl") String testReportUrl
+			@JsonProperty("testReportURL") String testReportURL
 	) {
 		this.testReportId = testReportId;
-		this.testReportUrl = testReportUrl;
+		this.testReportUrl = testReportURL;
 	}
 
 	public long getTestReportId() {
