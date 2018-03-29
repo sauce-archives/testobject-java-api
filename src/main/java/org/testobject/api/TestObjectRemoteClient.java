@@ -66,15 +66,15 @@ public class TestObjectRemoteClient implements TestObjectClient {
 		config.register(JacksonFeature.class);
 
 		if (proxySettings != null) {
-			config.getProperties().put(ClientProperties.PROXY_URI,
+			config.property(ClientProperties.PROXY_URI,
 					"http://" + proxySettings.getHost() + ":" + proxySettings.getPort());
 			if (proxySettings.getUsername() != null) {
-				config.getProperties().put(
+				config.property(
 						ClientProperties.PROXY_USERNAME,
 						proxySettings.getUsername()
 				);
 
-				config.getProperties().put(
+				config.property(
 						ClientProperties.PROXY_PASSWORD,
 						proxySettings.getPassword()
 				);
