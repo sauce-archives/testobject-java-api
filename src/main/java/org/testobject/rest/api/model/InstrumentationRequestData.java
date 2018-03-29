@@ -7,16 +7,42 @@ public class InstrumentationRequestData {
 	private final String appUnderTestAppId;
 	private final String dataCenterId;
 	private final String deviceName;
+	private final String platformVersion;
+	private final Boolean privateDevicesOnly;
+	private final Boolean tabletOnly;
+	private final Boolean phoneOnly;
 	private final String tunnelIdentifier;
 
 	public InstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
-			String deviceName, String tunnelIdentifier) {
+			String deviceName, String platformVersion, Boolean privateDevicesOnly, Boolean tabletOnly, Boolean phoneOnly,
+			String tunnelIdentifier) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
 		this.dataCenterId = dataCenterId;
 		this.deviceName = deviceName;
+		this.platformVersion = platformVersion;
+		this.privateDevicesOnly = privateDevicesOnly;
+		this.tabletOnly = tabletOnly;
+		this.phoneOnly = phoneOnly;
+
 		this.tunnelIdentifier = tunnelIdentifier;
+	}
+
+	public String getPlatformVersion() {
+		return platformVersion;
+	}
+
+	public Boolean getPrivateDevicesOnly() {
+		return privateDevicesOnly;
+	}
+
+	public Boolean getTabletOnly() {
+		return tabletOnly;
+	}
+
+	public Boolean getPhoneOnly() {
+		return phoneOnly;
 	}
 
 	public String getTestSpecAppId() {

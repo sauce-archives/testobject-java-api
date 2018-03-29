@@ -1,6 +1,7 @@
 package org.testobject.api.v2;
 
 import org.testobject.rest.api.model.InstrumentationRequestData;
+import org.testobject.rest.api.model.StartXcuiTestResponse;
 import org.testobject.rest.api.model.TestSuiteReport;
 import org.testobject.rest.api.model.XcuiTestReport;
 import org.testobject.rest.api.resource.v2.TestSuiteResourceV2.InstrumentationTestSuiteRequest;
@@ -14,7 +15,7 @@ public interface TestObjectClientV2 extends Closeable {
 
 	long uploadAppIpa(String apikey, File ipa);
 
-	long startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
+	StartXcuiTestResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
 
 	String readXCUITestJunitReport(String apiKey, long testReportId);
 

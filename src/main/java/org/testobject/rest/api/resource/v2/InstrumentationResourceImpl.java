@@ -1,6 +1,7 @@
 package org.testobject.rest.api.resource.v2;
 
 import org.testobject.rest.api.model.InstrumentationRequestData;
+import org.testobject.rest.api.model.StartXcuiTestResponse;
 import org.testobject.rest.api.model.XcuiTestReport;
 
 import javax.ws.rs.client.Entity;
@@ -16,14 +17,14 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public long createAndStartXCUITestInstrumentation(String apiKey, InstrumentationRequestData requestData) {
+	public StartXcuiTestResponse createAndStartXCUITestInstrumentation(String apiKey, InstrumentationRequestData requestData) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 
 		return target
 				.path("v2").path("instrumentation").path("xcuitest")
 				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorizationHeaderValue)
-				.post(Entity.json(requestData), Long.class);
+				.post(Entity.json(requestData), StartXcuiTestResponse.class);
 	}
 
 	@Override
