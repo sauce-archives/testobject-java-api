@@ -16,7 +16,7 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.model.InstrumentationRequestData;
-import org.testobject.rest.api.model.StartXcuiTestResponse;
+import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.TestSuiteReport;
 import org.testobject.rest.api.model.XcuiTestReport;
 import org.testobject.rest.api.resource.v2.*;
@@ -99,8 +99,13 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public StartXcuiTestResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
+	public StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
 		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
+	}
+
+	@Override
+	public StartInstrumentationResponse startAndroidSuite(String apiKey, InstrumentationRequestData requestData) {
+		return this.instrumentationResource.createAndStartAndroidInstrumentation(apiKey, requestData);
 	}
 
 	@Override
