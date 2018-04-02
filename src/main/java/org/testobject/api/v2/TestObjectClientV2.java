@@ -15,6 +15,10 @@ public interface TestObjectClientV2 extends Closeable {
 
 	long uploadAppIpa(String apikey, File ipa);
 
+	long uploadRunnerApk(String apikey, File apk);
+
+	long uploadAppApk(String apikey, File apk);
+
 	StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
 
 	StartInstrumentationResponse startAndroidSuite(String apiKey, InstrumentationRequestData requestData);
