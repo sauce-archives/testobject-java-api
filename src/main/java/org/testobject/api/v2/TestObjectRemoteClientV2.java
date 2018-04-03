@@ -16,7 +16,7 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.model.InstrumentationRequestData;
-import org.testobject.rest.api.model.StartXcuiTestResponse;
+import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.TestSuiteReport;
 import org.testobject.rest.api.model.XcuiTestReport;
 import org.testobject.rest.api.resource.v2.*;
@@ -99,12 +99,27 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public StartXcuiTestResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
+	public long uploadRunnerApk(String apikey, File apk) {
+		return Long.parseLong(appStorageResource.uploadAppAndroidTest(apikey, apk));
+	}
+
+	@Override
+	public long uploadAppApk(String apikey, File apk) {
+		return Long.parseLong(appStorageResource.uploadAppAndroidApp(apikey, apk));
+	}
+
+	@Override
+	public StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
 		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
 	}
 
 	@Override
-	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
+	public StartInstrumentationResponse startAndroidSuite(String apiKey, InstrumentationRequestData requestData) {
+		return this.instrumentationResource.createAndStartAndroidInstrumentation(apiKey, requestData);
+	}
+
+	@Override
+	public String readJunitReport(final String apiKey, final long testReportId) {
 		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
 	}
 

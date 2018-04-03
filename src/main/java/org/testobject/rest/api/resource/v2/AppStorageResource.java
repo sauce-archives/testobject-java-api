@@ -16,14 +16,22 @@ public class AppStorageResource {
 	}
 
 	public String uploadAppXcuiTest(String apiKey, File ipa) {
-		return uploadXCUITestIPA(apiKey, ipa, "XCUITEST");
+		return uploadFile(apiKey, ipa, "XCUITEST");
 	}
 
 	public String uploadAppXcuiApp(String apiKey, File ipa) {
-		return uploadXCUITestIPA(apiKey, ipa, "NATIVE");
+		return uploadFile(apiKey, ipa, "NATIVE");
 	}
 
-	private String uploadXCUITestIPA(String apiKey, File ipa, String type) {
+	public String uploadAppAndroidTest(String apiKey, File apk) {
+		return uploadFile(apiKey, apk, "ANDROID_INSTRUMENTATION_TEST");
+	}
+
+	public String uploadAppAndroidApp(String apiKey, File apk) {
+		return uploadFile(apiKey, apk, "NATIVE");
+	}
+
+	private String uploadFile(String apiKey, File file, String type) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 		try {
 			return target
@@ -31,7 +39,7 @@ public class AppStorageResource {
 					.request()
 					.header("Authorization", authorizationHeaderValue)
 					.header("App-Type", type)
-					.post(Entity.entity(Files.newInputStream(ipa.toPath()), MediaType.APPLICATION_OCTET_STREAM), String.class);
+					.post(Entity.entity(Files.newInputStream(file.toPath()), MediaType.APPLICATION_OCTET_STREAM), String.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
