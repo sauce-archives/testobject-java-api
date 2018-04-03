@@ -108,7 +108,6 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 		return Long.parseLong(appStorageResource.uploadAppAndroidApp(apikey, apk));
 	}
 
-
 	@Override
 	public StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData) {
 		return this.instrumentationResource.createAndStartXCUITestInstrumentation(apiKey, requestData);
