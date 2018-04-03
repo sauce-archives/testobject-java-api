@@ -31,7 +31,7 @@ public class AppStorageResource {
 		return uploadFile(apiKey, apk, "NATIVE");
 	}
 
-	private String uploadFile(String apiKey, File ipa, String type) {
+	private String uploadFile(String apiKey, File file, String type) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 		try {
 			return target
@@ -39,7 +39,7 @@ public class AppStorageResource {
 					.request()
 					.header("Authorization", authorizationHeaderValue)
 					.header("App-Type", type)
-					.post(Entity.entity(Files.newInputStream(ipa.toPath()), MediaType.APPLICATION_OCTET_STREAM), String.class);
+					.post(Entity.entity(Files.newInputStream(file.toPath()), MediaType.APPLICATION_OCTET_STREAM), String.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
