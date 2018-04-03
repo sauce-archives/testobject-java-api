@@ -120,7 +120,7 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public String readXCUITestJunitReport(final String apiKey, final long testReportId) {
+	public String readJunitReport(final String apiKey, final long testReportId) {
 		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
 	}
 

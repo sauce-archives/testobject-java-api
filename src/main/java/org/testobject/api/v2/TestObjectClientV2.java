@@ -23,7 +23,7 @@ public interface TestObjectClientV2 extends Closeable {
 
 	StartInstrumentationResponse startAndroidSuite(String apiKey, InstrumentationRequestData requestData);
 
-	String readXCUITestJunitReport(String apiKey, long testReportId);
+	String readJunitReport(String apiKey, long testReportId);
 
 	XcuiTestReport waitForXcuiTestReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
 			long sleepTimeMs
