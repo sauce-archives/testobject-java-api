@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class XcuiTestReport {
+public class InstrumentationReport {
 
 	private final ProjectPath projectPath;
 	private final long id;
@@ -24,7 +24,7 @@ public class XcuiTestReport {
 	private final Set<TestCaseGroup> getTestCaseGroups;
 
 	@JsonCreator
-	public XcuiTestReport(
+	public InstrumentationReport(
 			@JsonProperty("projectPath") ProjectPath projectPath,
 			@JsonProperty("id") long id,
 			@JsonProperty("batchName") String batchName,

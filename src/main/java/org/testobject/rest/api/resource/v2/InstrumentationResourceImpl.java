@@ -2,7 +2,7 @@ package org.testobject.rest.api.resource.v2;
 
 import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
-import org.testobject.rest.api.model.XcuiTestReport;
+import org.testobject.rest.api.model.InstrumentationReport;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -50,13 +50,13 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public XcuiTestReport getTestReport(String apiKey, long reportId) {
+	public InstrumentationReport getTestReport(String apiKey, long reportId) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 		return target
 				.path("v2").path("instrumentation").path("testreport").path(Long.toString(reportId))
 				.request(MediaType.APPLICATION_JSON)
 				.header("Authorization", authorizationHeaderValue)
-				.get(XcuiTestReport.class);
+				.get(InstrumentationReport.class);
 	}
 
 }

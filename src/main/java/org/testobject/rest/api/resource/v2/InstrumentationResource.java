@@ -2,7 +2,7 @@ package org.testobject.rest.api.resource.v2;
 
 import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
-import org.testobject.rest.api.model.XcuiTestReport;
+import org.testobject.rest.api.model.InstrumentationReport;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +30,6 @@ public interface InstrumentationResource {
 
 	@GET
 	@Path("testreport/{testReportId}")
-	XcuiTestReport getTestReport(@HeaderParam("Authorization") String authorizationHeader,
+	InstrumentationReport getTestReport(@HeaderParam("Authorization") String authorizationHeader,
 			@PathParam("testReportId") long reportId);
 }

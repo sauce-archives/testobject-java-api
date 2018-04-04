@@ -18,7 +18,7 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.TestSuiteReport;
-import org.testobject.rest.api.model.XcuiTestReport;
+import org.testobject.rest.api.model.InstrumentationReport;
 import org.testobject.rest.api.resource.v2.*;
 
 import javax.net.ssl.SSLContext;
@@ -125,13 +125,13 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public XcuiTestReport waitForXcuiTestReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
+	public InstrumentationReport waitForInstrumentationReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
 			long sleepTimeMs
 	) {
 		long start = now();
 
 		while ((now() - start) < waitTimeoutMs) {
-			XcuiTestReport testSuiteReport = TestObjectRemoteClientV2.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
+			InstrumentationReport testSuiteReport = TestObjectRemoteClientV2.this.instrumentationResource.getTestReport(apiKey, testSuiteReportId);
 			if (testSuiteReport.isRunning() == false) {
 				return testSuiteReport;
 			}
