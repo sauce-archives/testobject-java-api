@@ -3,7 +3,7 @@ package org.testobject.api.v2;
 import org.testobject.rest.api.model.InstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.TestSuiteReport;
-import org.testobject.rest.api.model.XcuiTestReport;
+import org.testobject.rest.api.model.InstrumentationReport;
 import org.testobject.rest.api.resource.v2.TestSuiteResourceV2.InstrumentationTestSuiteRequest;
 
 import java.io.Closeable;
@@ -25,7 +25,7 @@ public interface TestObjectClientV2 extends Closeable {
 
 	String readJunitReport(String apiKey, long testReportId);
 
-	XcuiTestReport waitForXcuiTestReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
+	InstrumentationReport waitForInstrumentationReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
 			long sleepTimeMs
 	);
 
