@@ -89,22 +89,22 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public long uploadRunnerIpa(String apikey, File ipa) {
+	public long uploadRunnerIpa(String apikey, File ipa) throws InvalidUserInputServerException {
 		return Long.parseLong(appStorageResource.uploadAppXcuiTest(apikey, ipa));
 	}
 
 	@Override
-	public long uploadAppIpa(String apikey, File ipa) {
+	public long uploadAppIpa(String apikey, File ipa) throws InvalidUserInputServerException {
 		return Long.parseLong(appStorageResource.uploadAppXcuiApp(apikey, ipa));
 	}
 
 	@Override
-	public long uploadRunnerApk(String apikey, File apk) {
+	public long uploadRunnerApk(String apikey, File apk) throws InvalidUserInputServerException {
 		return Long.parseLong(appStorageResource.uploadAppAndroidTest(apikey, apk));
 	}
 
 	@Override
-	public long uploadAppApk(String apikey, File apk) {
+	public long uploadAppApk(String apikey, File apk) throws InvalidUserInputServerException {
 		return Long.parseLong(appStorageResource.uploadAppAndroidApp(apikey, apk));
 	}
 
