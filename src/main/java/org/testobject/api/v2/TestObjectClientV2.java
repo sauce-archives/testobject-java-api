@@ -11,13 +11,13 @@ import java.io.File;
 
 public interface TestObjectClientV2 extends Closeable {
 
-	long uploadRunnerIpa(String apikey, File ipa);
+	long uploadRunnerIpa(String apikey, File ipa) throws InvalidUserInputServerException;
 
-	long uploadAppIpa(String apikey, File ipa);
+	long uploadAppIpa(String apikey, File ipa) throws InvalidUserInputServerException;
 
-	long uploadRunnerApk(String apikey, File apk);
+	long uploadRunnerApk(String apikey, File apk) throws InvalidUserInputServerException;
 
-	long uploadAppApk(String apikey, File apk);
+	long uploadAppApk(String apikey, File apk) throws InvalidUserInputServerException;
 
 	StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
 
