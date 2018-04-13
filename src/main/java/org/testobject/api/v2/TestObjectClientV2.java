@@ -8,6 +8,7 @@ import org.testobject.rest.api.resource.v2.TestSuiteResourceV2.InstrumentationTe
 
 import java.io.Closeable;
 import java.io.File;
+import java.util.concurrent.TimeoutException;
 
 public interface TestObjectClientV2 extends Closeable {
 
@@ -25,9 +26,10 @@ public interface TestObjectClientV2 extends Closeable {
 
 	String readJunitReport(String apiKey, long testReportId);
 
-	InstrumentationReport waitForInstrumentationReport(String apiKey, long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs
-	);
+	InstrumentationReport waitForInstrumentationReport(String apiKey,
+	                                                   long testSuiteReportId,
+	                                                   long waitTimeoutMs,
+	                                                   long sleepTimeMs) throws TimeoutException;
 
 	void updateInstrumentationTestSuite(long testSuite, File appApk, File instrumentationAPK,
 			InstrumentationTestSuiteRequest request, String apiKey);

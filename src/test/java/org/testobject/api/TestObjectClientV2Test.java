@@ -6,6 +6,8 @@ import org.testobject.api.v2.InvalidUserInputServerException;
 import org.testobject.api.v2.TestObjectClientV2;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class TestObjectClientV2Test {
 	@Rule
@@ -26,6 +28,15 @@ public class TestObjectClientV2Test {
 		expectedException.expect(InvalidUserInputServerException.class);
 		expectedException.expectMessage("IPA file is not a valid zip archive.");
 		client.uploadRunnerIpa(API_KEY, IPA_INVALID_BAD_ZIP);
+	}
+
+	@Test
+	public void testWaitForInstrumentationReportWhenWaitTimeoutIsTooBig() throws TimeoutException {
+		expectedException.expectMessage("The timeout should be a reasonable value: no more than 120 minutes. Got 600 minutes.");
+
+		long bigTimeout = TimeUnit.HOURS.toMillis(10);
+
+		client.waitForInstrumentationReport("", 0, bigTimeout, 0);
 	}
 
 	@After
