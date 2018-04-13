@@ -1,5 +1,6 @@
 package org.testobject.api.v2;
 
+import jersey.repackaged.com.google.common.base.Preconditions;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -27,6 +28,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 
@@ -124,9 +127,14 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 	}
 
 	@Override
-	public InstrumentationReport waitForInstrumentationReport(final String apiKey, final long testSuiteReportId, long waitTimeoutMs,
-			long sleepTimeMs
-	) {
+	public InstrumentationReport waitForInstrumentationReport(final String apiKey,
+	                                                          final long testSuiteReportId,
+	                                                          long waitTimeoutMs,
+	                                                          long sleepTimeMs) throws TimeoutException {
+		long waitTimeoutMinutes = TimeUnit.MILLISECONDS.toMinutes(waitTimeoutMs);
+		Preconditions.checkArgument(waitTimeoutMinutes <= TimeUnit.HOURS.toMinutes(2),
+				String.format("The timeout should be a reasonable value: no more than 120 minutes. Got %d minutes.", waitTimeoutMinutes));
+
 		long start = now();
 
 		while ((now() - start) < waitTimeoutMs) {
@@ -138,7 +146,9 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 			sleep(sleepTimeMs);
 		}
 
-		throw new IllegalStateException("unable to get test suite report result after 60min");
+		String exceptionMessage =
+				String.format("Unable to get a test suite report result after %d min.", waitTimeoutMinutes);
+		throw new TimeoutException(exceptionMessage);
 	}
 
 	@Override
