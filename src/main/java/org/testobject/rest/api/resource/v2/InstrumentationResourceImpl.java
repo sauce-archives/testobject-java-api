@@ -1,6 +1,7 @@
 package org.testobject.rest.api.resource.v2;
 
-import org.testobject.rest.api.model.InstrumentationRequestData;
+import org.testobject.rest.api.model.DynamicInstrumentationRequestData;
+import org.testobject.rest.api.model.StaticInstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.InstrumentationReport;
 
@@ -17,7 +18,7 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, InstrumentationRequestData requestData) {
+	public StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, StaticInstrumentationRequestData requestData) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 
 		return target
@@ -28,7 +29,18 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey, InstrumentationRequestData requestData) {
+	public StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData) {
+		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+
+		return target
+				.path("v2").path("instrumentation").path("xcuitest").path("dynamic")
+				.request(MediaType.APPLICATION_JSON)
+				.header("Authorization", authorizationHeaderValue)
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
+
+	@Override
+	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey, StaticInstrumentationRequestData requestData) {
 		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 
 		return target

@@ -2,13 +2,12 @@ package org.testobject.rest.api.model;
 
 import java.util.Map;
 
-public class InstrumentationRequestData {
-
+public class DynamicInstrumentationRequestData {
 	private final String testName;
 	private final String testSpecAppId;
 	private final String appUnderTestAppId;
 	private final String dataCenterId;
-	private final String deviceName;
+	private final DeviceNameQuery deviceNameQuery;
 	private final String platformVersion;
 	private final Boolean privateDevicesOnly;
 	private final Boolean tabletOnly;
@@ -16,14 +15,15 @@ public class InstrumentationRequestData {
 	private final String tunnelIdentifier;
 	private final Map<String, String> testOptions;
 
-	public InstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
-			String deviceName, String platformVersion, Boolean privateDevicesOnly, Boolean tabletOnly, Boolean phoneOnly,
-			String tunnelIdentifier, Map<String, String> testOptions) {
+	public DynamicInstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
+											 DeviceNameQuery deviceNameQuery, String platformVersion, Boolean privateDevicesOnly,
+											 Boolean tabletOnly, Boolean phoneOnly, String tunnelIdentifier,
+											 Map<String, String> testOptions) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
 		this.dataCenterId = dataCenterId;
-		this.deviceName = deviceName;
+		this.deviceNameQuery = deviceNameQuery;
 		this.platformVersion = platformVersion;
 		this.privateDevicesOnly = privateDevicesOnly;
 		this.tabletOnly = tabletOnly;
@@ -31,6 +31,22 @@ public class InstrumentationRequestData {
 
 		this.tunnelIdentifier = tunnelIdentifier;
 		this.testOptions = testOptions;
+	}
+
+	public String getTestSpecAppId() {
+		return testSpecAppId;
+	}
+
+	public String getAppUnderTestAppId() {
+		return appUnderTestAppId;
+	}
+
+	public String getDataCenterId() {
+		return dataCenterId;
+	}
+
+	public DeviceNameQuery getDeviceNameQuery() {
+		return deviceNameQuery;
 	}
 
 	public String getPlatformVersion() {
@@ -47,22 +63,6 @@ public class InstrumentationRequestData {
 
 	public Boolean getPhoneOnly() {
 		return phoneOnly;
-	}
-
-	public String getTestSpecAppId() {
-		return testSpecAppId;
-	}
-
-	public String getAppUnderTestAppId() {
-		return appUnderTestAppId;
-	}
-
-	public String getDataCenterId() {
-		return dataCenterId;
-	}
-
-	public String getDeviceName() {
-		return deviceName;
 	}
 
 	public String getTunnelIdentifier() {
