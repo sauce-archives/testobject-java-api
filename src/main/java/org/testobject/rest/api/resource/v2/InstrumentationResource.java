@@ -18,12 +18,19 @@ public interface InstrumentationResource {
 	StartInstrumentationResponse createAndStartXCUITestInstrumentation(@HeaderParam("Authorization") String apiKey,
 			StaticInstrumentationRequestData requestData);
 
+	@POST
+	@Path("xcuitest/dynamic")
 	StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData);
 
 	@POST
 	@Path("android")
 	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
 			StaticInstrumentationRequestData requestData);
+
+	@POST
+	@Path("android/dynamic")
+	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
+			DynamicInstrumentationRequestData requestData);
 
 	@GET
 	@Path("{testReportId}/junitreport")
