@@ -49,17 +49,6 @@ public class InstrumentationResourceImpl implements InstrumentationResource {
 	}
 
 	@Override
-	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey,
-			DynamicInstrumentationRequestData requestData) {
-		String authorizationHeaderValue = getAuthorizationHeaderValue(apiKey);
-		return target
-				.path("v2").path("instrumentation").path("android").path("dynamic")
-				.request(MediaType.APPLICATION_JSON)
-				.header("Authorization", authorizationHeaderValue)
-				.post(Entity.json(requestData), StartInstrumentationResponse.class);
-	}
-
-	@Override
 	public String getJUnitReport(String apiKey, long reportId) {
 		String authorizationHeaderValue = getAuthorizationHeaderValue(apiKey);
 		return target

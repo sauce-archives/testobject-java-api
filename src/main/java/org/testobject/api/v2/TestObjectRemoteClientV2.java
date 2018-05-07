@@ -123,10 +123,6 @@ public class TestObjectRemoteClientV2 implements TestObjectClientV2 {
 		return this.instrumentationResource.createAndStartAndroidInstrumentation(apiKey, requestData);
 	}
 
-	@Override public StartInstrumentationResponse startAndroidSuite(String apiKey, DynamicInstrumentationRequestData requestData) {
-		return this.instrumentationResource.createAndStartAndroidInstrumentation(apiKey, requestData);
-	}
-
 	@Override
 	public String readJunitReport(final String apiKey, final long testReportId) {
 		return this.instrumentationResource.getJUnitReport(apiKey, testReportId);
