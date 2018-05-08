@@ -1,9 +1,6 @@
 package org.testobject.api.v2;
 
-import org.testobject.rest.api.model.InstrumentationRequestData;
-import org.testobject.rest.api.model.StartInstrumentationResponse;
-import org.testobject.rest.api.model.TestSuiteReport;
-import org.testobject.rest.api.model.InstrumentationReport;
+import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.v2.TestSuiteResourceV2.InstrumentationTestSuiteRequest;
 
 import java.io.Closeable;
@@ -20,9 +17,11 @@ public interface TestObjectClientV2 extends Closeable {
 
 	long uploadAppApk(String apikey, File apk) throws InvalidUserInputServerException;
 
-	StartInstrumentationResponse startXcuiTestSuite(String apiKey, InstrumentationRequestData requestData);
+	StartInstrumentationResponse startXcuiTestSuite(String apiKey, StaticInstrumentationRequestData requestData);
 
-	StartInstrumentationResponse startAndroidSuite(String apiKey, InstrumentationRequestData requestData);
+	StartInstrumentationResponse startXcuiTestSuite(String apiKey, DynamicInstrumentationRequestData requestData);
+
+	StartInstrumentationResponse startAndroidSuite(String apiKey, StaticInstrumentationRequestData requestData);
 
 	String readJunitReport(String apiKey, long testReportId);
 

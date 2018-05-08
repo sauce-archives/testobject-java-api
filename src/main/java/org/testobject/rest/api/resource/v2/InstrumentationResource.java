@@ -1,6 +1,7 @@
 package org.testobject.rest.api.resource.v2;
 
-import org.testobject.rest.api.model.InstrumentationRequestData;
+import org.testobject.rest.api.model.DynamicInstrumentationRequestData;
+import org.testobject.rest.api.model.StaticInstrumentationRequestData;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.InstrumentationReport;
 
@@ -15,12 +16,16 @@ public interface InstrumentationResource {
 	@POST
 	@Path("xcuitest")
 	StartInstrumentationResponse createAndStartXCUITestInstrumentation(@HeaderParam("Authorization") String apiKey,
-			InstrumentationRequestData requestData);
+			StaticInstrumentationRequestData requestData);
+
+	@POST
+	@Path("xcuitest/dynamic")
+	StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData);
 
 	@POST
 	@Path("android")
 	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
-			InstrumentationRequestData requestData);
+			StaticInstrumentationRequestData requestData);
 
 	@GET
 	@Path("{testReportId}/junitreport")
