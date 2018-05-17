@@ -27,6 +27,11 @@ public interface InstrumentationResource {
 	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
 			StaticInstrumentationRequestData requestData);
 
+	@POST
+	@Path("android/dynamic")
+	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
+			DynamicInstrumentationRequestData requestData);
+
 	@GET
 	@Path("{testReportId}/junitreport")
 	@Produces(MediaType.APPLICATION_XML)
