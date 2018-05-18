@@ -13,7 +13,7 @@ public class TestObjectClientV2Test {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private static final String API_KEY = "E0B5898DA4914B1996CC7C05CE46BDAB";
+	private static final String API_KEY = "apiKey";
 	private static File IPA_INVALID_BAD_ZIP = new File(TestObjectClientV2Test.class.getResource("ipa-invalid-bad-zip-archive.ipa").getPath());
 
 	private TestObjectClientV2 client;
