@@ -1,8 +1,18 @@
 # TestObject Java Api
 
-## How to deploy
 
-The project is deployed to MvnRepository: https://mvnrepository.com/artifact/org.testobject/testobject-java-api
+## Installation
+
+TestObject Java API is available from
+[Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.testobject%22%20AND%20a%3A%22testobject-java-api%22).
+
+    <dependency>
+      <groupId>org.testobject</groupId>
+      <artifactId>testobject-java-api</artifactId>
+      <version>select a version</version>
+    </dependency>
+
+## How to deploy
 
 On every PR / merge to master Travis runs `mvn clean deploy`, which results in
 binary on Sonatype (this is configured in `pom.xml`).
