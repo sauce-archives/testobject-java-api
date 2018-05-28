@@ -1,5 +1,6 @@
 package org.testobject.rest.api.model;
 
+import java.util.List;
 import java.util.Map;
 
 public class StaticInstrumentationRequestData {
@@ -11,9 +12,10 @@ public class StaticInstrumentationRequestData {
 	private final String deviceName;
 	private final String tunnelIdentifier;
 	private final Map<String, String> testOptions;
+	private final List<String> testsToRun;
 
 	public StaticInstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
-											String deviceName, String tunnelIdentifier, Map<String, String> testOptions) {
+			String deviceName, String tunnelIdentifier, Map<String, String> testOptions, List<String> testsToRun) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
@@ -22,6 +24,7 @@ public class StaticInstrumentationRequestData {
 
 		this.tunnelIdentifier = tunnelIdentifier;
 		this.testOptions = testOptions;
+		this.testsToRun = testsToRun;
 	}
 
 	public String getTestSpecAppId() {
@@ -51,5 +54,9 @@ public class StaticInstrumentationRequestData {
 
 	public Map<String, String> getTestOptions() {
 		return testOptions;
+	}
+
+	public List<String> getTestsToRun() {
+		return testsToRun;
 	}
 }
