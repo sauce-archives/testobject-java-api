@@ -1,45 +1,90 @@
 package org.testobject.rest.api.resource.v2;
 
 import org.testobject.rest.api.model.DynamicInstrumentationRequestData;
-import org.testobject.rest.api.model.StaticInstrumentationRequestData;
-import org.testobject.rest.api.model.StartInstrumentationResponse;
 import org.testobject.rest.api.model.InstrumentationReport;
+import org.testobject.rest.api.model.StartInstrumentationResponse;
+import org.testobject.rest.api.model.StaticInstrumentationRequestData;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 
-@Path("v2/instrumentation")
-@Consumes({ MediaType.APPLICATION_JSON })
-@Produces({ MediaType.APPLICATION_JSON })
-public interface InstrumentationResource {
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 
-	@POST
-	@Path("xcuitest")
-	StartInstrumentationResponse createAndStartXCUITestInstrumentation(@HeaderParam("Authorization") String apiKey,
-			StaticInstrumentationRequestData requestData);
+public class InstrumentationResource {
 
-	@POST
-	@Path("xcuitest/dynamic")
-	StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData);
+	private final WebTarget target;
 
-	@POST
-	@Path("android")
-	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
-			StaticInstrumentationRequestData requestData);
+	public InstrumentationResource(WebTarget target) {
+		this.target = target;
+	}
 
-	@POST
-	@Path("android/dynamic")
-	StartInstrumentationResponse createAndStartAndroidInstrumentation(@HeaderParam("Authorization") String apiKey,
-			DynamicInstrumentationRequestData requestData);
+	public StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey, StaticInstrumentationRequestData requestData) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("xcuitest")
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
 
-	@GET
-	@Path("{testReportId}/junitreport")
-	@Produces(MediaType.APPLICATION_XML)
-	String getJUnitReport(@HeaderParam("Authorization") String authorizationHeader,
-			@PathParam("testReportId") long reportId);
+	public StartInstrumentationResponse createAndStartXCUITestInstrumentation(String apiKey,
+			DynamicInstrumentationRequestData requestData) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("xcuitest")
+				.path("dynamic")
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
 
-	@GET
-	@Path("testreport/{testReportId}")
-	InstrumentationReport getTestReport(@HeaderParam("Authorization") String authorizationHeader,
-			@PathParam("testReportId") long reportId);
+	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey, StaticInstrumentationRequestData requestData) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("android")
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
+
+	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("android")
+				.path("dynamic")
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
+
+	public String getJUnitReport(String apiKey, long reportId) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("testreport").path(Long.toString(reportId))
+				.path("junitreport")
+				.request(APPLICATION_XML)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.get(String.class);
+	}
+
+	public InstrumentationReport getTestReport(String apiKey, long reportId) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("testreport").path(Long.toString(reportId))
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.get(InstrumentationReport.class);
+	}
+
+	private String getApiKeyHeader(String apiKey) {
+		return "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+	}
+
 }

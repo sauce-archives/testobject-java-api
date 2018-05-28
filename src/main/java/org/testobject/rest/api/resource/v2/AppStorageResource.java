@@ -1,11 +1,10 @@
 package org.testobject.rest.api.resource.v2;
 
-import org.testobject.api.v2.InvalidUserInputServerException;
+import org.testobject.api.InvalidUserInputServerException;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +12,12 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static java.util.Base64.getEncoder;
+import static javax.ws.rs.core.MediaType.APPLICATION_OCTET_STREAM;
+
 public class AppStorageResource {
+
+	// TODO: not a v2 resource
 
 	private final WebTarget target;
 
@@ -38,24 +42,21 @@ public class AppStorageResource {
 	}
 
 	private String uploadFile(String apiKey, File file, String type) throws InvalidUserInputServerException {
-		String authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
+		String apiKeyHeader = "Basic " + getEncoder().encodeToString(("user" + ":" + apiKey).getBytes());
 		try {
 			return target
-					.path("storage").path("upload")
+					.path("storage")
+					.path("upload")
 					.request()
-					.header("Authorization", authorizationHeaderValue)
+					.header("Authorization", apiKeyHeader)
 					.header("App-Type", type)
-					.post(Entity.entity(Files.newInputStream(file.toPath()), MediaType.APPLICATION_OCTET_STREAM), String.class);
+					.post(Entity.entity(Files.newInputStream(file.toPath()), APPLICATION_OCTET_STREAM), String.class);
+
 		} catch (BadRequestException e) {
 			Response response = e.getResponse();
-
-			String errorMessage = parseConventionalErrorMessage(response).orElseThrow(
-				() -> new RuntimeException(e)
-			);
-
+			String errorMessage = parseConventionalErrorMessage(response).orElseThrow(() -> new RuntimeException(e));
 			throw new InvalidUserInputServerException(errorMessage);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		throw new RuntimeException();
@@ -69,8 +70,7 @@ public class AppStorageResource {
 				Object responseBodyObj = responseBody.get("message");
 
 				if (responseBodyObj instanceof String) {
-					String message = (String)responseBodyObj;
-
+					String message = (String) responseBodyObj;
 					return Optional.of(message);
 				}
 			}
