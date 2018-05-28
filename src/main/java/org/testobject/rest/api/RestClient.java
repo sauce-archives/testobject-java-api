@@ -88,7 +88,6 @@ public class RestClient implements Closeable {
 		}
 
 		public RestClient build() {
-
 			ClientConfig config = new ClientConfig();
 			config.property(ApacheClientProperties.DISABLE_COOKIES, true);
 

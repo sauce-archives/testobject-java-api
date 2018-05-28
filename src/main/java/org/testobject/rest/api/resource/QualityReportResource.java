@@ -1,19 +1,30 @@
 package org.testobject.rest.api.resource;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-@Path("users/{user}/projects/{project}/qualityReports")
-public interface QualityReportResource {
+import static java.util.Base64.getEncoder;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-	@POST
-	@Path("start")
-	long startQualityReport(@PathParam("user") String user, @PathParam("project") String project);
+public class QualityReportResource {
+
+	private final WebTarget target;
+
+	public QualityReportResource(WebTarget target) {
+		this.target = target;
+	}
+
+	public long startQualityReport(String userId, String projectId, String apiKey) {
+		String apiKeyHeader = "Basic " + getEncoder().encodeToString((":" + apiKey).getBytes());
+
+		return target
+				.path("users").path(userId)
+				.path("projects").path(projectId)
+				.path("qualityReports")
+				.path("run")
+				.request(APPLICATION_JSON)
+				.header("Authorization", apiKeyHeader)
+				.post(Entity.json(null), Long.class);
+	}
 
 }

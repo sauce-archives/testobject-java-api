@@ -1,4 +1,4 @@
-package org.testobject.api.v2;
+package org.testobject.api;
 
 public class InvalidUserInputServerException extends Exception {
 	public InvalidUserInputServerException(String message) {
