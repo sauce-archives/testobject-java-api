@@ -6,8 +6,8 @@ import org.testobject.rest.api.model.DeviceDescriptor.DeviceContainer;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DeviceDescriptorsResource {
 
@@ -38,11 +38,11 @@ public class DeviceDescriptorsResource {
 
 	private List<DeviceDescriptor> filterAvailable(List<DeviceContainer> descriptors) {
 		List<String> availableDescriptorIds = getAvailableDeviceDescriptorIds();
-		List<DeviceDescriptor> availableDeviceDescriptors = new LinkedList<>();
-		for (DeviceContainer deviceContainer : descriptors) {
-			availableDeviceDescriptors.add(new DeviceDescriptor(deviceContainer, availableDescriptorIds.contains(deviceContainer.id)));
-		}
-		return availableDeviceDescriptors;
+
+		return descriptors.stream()
+				.filter(deviceContainer -> availableDescriptorIds.contains(deviceContainer.id))
+				.map(deviceContainer -> new DeviceDescriptor(deviceContainer, true))
+				.collect(Collectors.toList());
 	}
 
 }
