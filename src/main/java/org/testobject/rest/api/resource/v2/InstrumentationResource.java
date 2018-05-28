@@ -51,6 +51,17 @@ public class InstrumentationResource {
 				.post(Entity.json(requestData), StartInstrumentationResponse.class);
 	}
 
+	public StartInstrumentationResponse createAndStartAndroidInstrumentation(String apiKey, DynamicInstrumentationRequestData requestData) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("android")
+				.path("dynamic")
+				.request(APPLICATION_JSON)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(requestData), StartInstrumentationResponse.class);
+	}
+
 	public String getJUnitReport(String apiKey, long reportId) {
 		return target
 				.path("v2")

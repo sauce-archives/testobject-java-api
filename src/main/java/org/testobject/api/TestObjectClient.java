@@ -90,6 +90,8 @@ public interface TestObjectClient extends Closeable {
 
 	StartInstrumentationResponse startAndroidSuite(String apiKey, StaticInstrumentationRequestData requestData);
 
+	StartInstrumentationResponse startAndroidSuite(String apiKey, DynamicInstrumentationRequestData requestData);
+
 	String readJunitReport(String apiKey, long testReportId);
 
 	InstrumentationReport waitForInstrumentationReport(String apiKey, long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs)

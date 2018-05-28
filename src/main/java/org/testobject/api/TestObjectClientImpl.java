@@ -193,6 +193,11 @@ public class TestObjectClientImpl implements TestObjectClient {
 	}
 
 	@Override
+	public StartInstrumentationResponse startAndroidSuite(String apiKey, DynamicInstrumentationRequestData requestData) {
+		return instrumentationResource.createAndStartAndroidInstrumentation(apiKey, requestData);
+	}
+
+	@Override
 	public String readJunitReport(String apiKey, long testReportId) {
 		return instrumentationResource.getJUnitReport(apiKey, testReportId);
 	}
