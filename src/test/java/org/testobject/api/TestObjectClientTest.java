@@ -35,14 +35,14 @@ public class TestObjectClientTest {
 		client = TestObjectClient.Factory.create("https://app.testobject.com/api/rest");
 	}
 
-	@Test
+	@Test @Ignore
 	public void testUploadingRunnerIpaWhichIsBrokenZipResultsInInvalidUserInputException() throws InvalidUserInputServerException {
 		expectedException.expect(InvalidUserInputServerException.class);
 		expectedException.expectMessage("IPA file is not a valid zip archive.");
 		client.uploadRunnerIpa(API_KEY, IPA_INVALID_BAD_ZIP);
 	}
 
-	@Test
+	@Test @Ignore
 	public void testWaitForInstrumentationReportWhenWaitTimeoutIsTooBig() throws TimeoutException {
 		expectedException.expectMessage("The timeout should be a reasonable value: no more than 120 minutes. Got 600 minutes.");
 
@@ -51,13 +51,13 @@ public class TestObjectClientTest {
 		client.waitForInstrumentationReport("", 0, bigTimeout, 0);
 	}
 
-	@Test
+	@Test @Ignore
 	public void testStartQualityReport() {
 		long qualityReportId = client.startQualityReport(USER_ID, PROJECT_ID, API_KEY);
 		System.out.println(qualityReportId);
 	}
 
-	@Test
+	@Test @Ignore
 	public void testGetSessionReport() {
 		List<SessionReport> sessionReports = client.getSessionReports(USER_ID, 0, 10, 30, API_KEY).getEntities();
 
@@ -68,7 +68,7 @@ public class TestObjectClientTest {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testGetAvailableDescriptors() {
 		List<DeviceDescriptor> deviceDescriptors = client.getAvailableDeviceDescriptors();
 
@@ -79,7 +79,15 @@ public class TestObjectClientTest {
 		assertTrue("No available device descriptors?", deviceDescriptors.size() > 0);
 	}
 
-	@Test
+	@Test @Ignore
+	public void testGetAvailableDeviceDescriptorIds() {
+		List<String> deviceDescriptors = client.getAvailableDeviceDescriptorIds();
+		System.out.println(deviceDescriptors);
+
+		assertTrue("No available device descriptor Ids?", deviceDescriptors.size() > 0);
+	}
+
+	@Test @Ignore
 	public void testGetTestReportAndVideo() {
 		long testReportId = 1;
 
@@ -93,7 +101,7 @@ public class TestObjectClientTest {
 		System.out.println(video);
 	}
 
-	@Test
+	@Test @Ignore
 	public void testUpdateTestReportStatus() {
 		long testReportId = 1;
 		String sessionId = "sessionId";
