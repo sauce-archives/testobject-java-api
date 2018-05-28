@@ -1,5 +1,6 @@
 package org.testobject.rest.api.resource.v2;
 
+import org.testobject.rest.api.RestClient;
 import org.testobject.rest.api.appium.common.data.SuiteReport;
 import org.testobject.rest.api.appium.common.data.Test;
 import org.testobject.rest.api.appium.common.data.TestReport;
@@ -14,17 +15,17 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 public class AppiumReportResource {
 
-	private final WebTarget target;
+	private final RestClient client;
 
-	public AppiumReportResource(WebTarget target) {
-		this.target = target;
+	public AppiumReportResource(RestClient client) {
+		this.client = client;
 	}
 
 	/**
 	 * Start a new suite execution including its test executions
 	 */
 	public SuiteReport startAppiumSuite(long suiteId, Optional<String> appId, Set<Test> tests) {
-		WebTarget target = this.target
+		WebTarget target = client
 				.path("v2")
 				.path("appium")
 				.path("suites").path(Long.toString(suiteId))
@@ -44,7 +45,7 @@ public class AppiumReportResource {
 	 * Marks all test executions contained in the specified suite execution as finished
 	 */
 	public SuiteReport finishAppiumSuite(long suiteId, SuiteReport.Id suiteReportId) {
-		return target
+		return client
 				.path("v2")
 				.path("appium")
 				.path("suites").path(Long.toString(suiteId))
@@ -59,7 +60,7 @@ public class AppiumReportResource {
 	 */
 	public TestReport finishAppiumTestReport(long suiteId, SuiteReport.Id batchReportId, TestReport.Id testReportId,
 			TestResult testResult) {
-		return target
+		return client
 				.path("v2")
 				.path("appium")
 				.path("suites").path(Long.toString(suiteId))
