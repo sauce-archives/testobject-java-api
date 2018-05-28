@@ -16,7 +16,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.testobject.rest.api.appium.common.data.*;
 import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.*;
 import org.testobject.rest.api.resource.v2.*;
@@ -28,8 +27,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import java.io.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -41,9 +38,6 @@ public class TestObjectClientImpl implements TestObjectClient {
 	private final ApiBatchReportResource apiBatchReportResource;
 	private final ApiBatchResource apiBatchResource;
 	private final ApiUploadResource apiUploadResource;
-	private final AppiumReportResource appiumReportResource;
-	private final AppiumSessionResource appiumSessionResource;
-	private final AppiumSuiteResource appiumSuiteResource;
 	private final AppStorageResource appStorageResource;
 	private final InstrumentationResource instrumentationResource;
 
@@ -62,9 +56,6 @@ public class TestObjectClientImpl implements TestObjectClient {
 		apiBatchReportResource = new ApiBatchReportResource(target);
 		apiBatchResource = new ApiBatchResource(target);
 		apiUploadResource = new ApiUploadResource(target);
-		appiumReportResource = new AppiumReportResource(target);
-		appiumSessionResource = new AppiumSessionResource(target);
-		appiumSuiteResource = new AppiumSuiteResource(target);
 		appStorageResource = new AppStorageResource(target);
 		instrumentationResource = new InstrumentationResource(target);
 
@@ -119,42 +110,6 @@ public class TestObjectClientImpl implements TestObjectClient {
 	@Override
 	public String uploadFile(String apiKey, File apk) {
 		return apiUploadResource.uploadFile(apiKey, apk);
-	}
-
-	@Override
-	public SuiteReport startAppiumSuite(long suiteId, Optional<String> appId, Set<Test> tests) {
-		return appiumReportResource.startAppiumSuite(suiteId, appId, tests);
-	}
-
-	@Override
-	public SuiteReport finishAppiumSuite(long suiteId, SuiteReport.Id suiteReportId) {
-		return appiumReportResource.finishAppiumSuite(suiteId, suiteReportId);
-	}
-
-	@Override
-	public TestReport finishAppiumTestReport(long suiteId, SuiteReport.Id suiteReportId, TestReport.Id testReportId,
-			TestResult testResult) {
-		return appiumReportResource.finishAppiumTestReport(suiteId, suiteReportId, testReportId, testResult);
-	}
-
-	@Override
-	public void updateTestReportStatus(String sessionId, boolean passed) {
-		appiumSessionResource.updateTestReportStatus(sessionId, passed);
-	}
-
-	@Override
-	public void updateTestReportName(String sessionId, String suiteName, String testName) {
-		appiumSessionResource.updateTestReportName(sessionId, suiteName, testName);
-	}
-
-	@Override
-	public Set<DataCenterSuite> readSuiteDeviceDescriptorIds(long suiteId) {
-		return appiumSuiteResource.readDeviceDescriptorIds(suiteId);
-	}
-
-	@Override
-	public Suite updateSuite(long suiteId, Suite suite) {
-		return appiumSuiteResource.updateSuite(suiteId, suite);
 	}
 
 	@Override
