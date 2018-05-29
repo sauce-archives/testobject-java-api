@@ -102,20 +102,6 @@ public class TestObjectClientTest {
 	}
 
 	@Test @Ignore
-	public void testUpdateTestReportStatus() {
-		long testReportId = 1;
-		String sessionId = "sessionId";
-
-		client.updateTestReportStatus(sessionId, false);
-		AppiumTestReport appiumTestReport = client.getTestReport(USER_ID, PROJECT_ID, testReportId, API_KEY).getReport();
-		assertEquals("FAILURE", appiumTestReport.getStatus());
-
-		client.updateTestReportStatus(sessionId, true);
-		appiumTestReport = client.getTestReport(USER_ID, PROJECT_ID, testReportId, API_KEY).getReport();
-		assertEquals("SUCCESS", appiumTestReport.getStatus());
-	}
-
-	@Test @Ignore
 	public void testStartSuite() {
 		long suiteId = 1;
 

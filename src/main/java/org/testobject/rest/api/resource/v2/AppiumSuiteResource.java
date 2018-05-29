@@ -1,11 +1,11 @@
 package org.testobject.rest.api.resource.v2;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.testobject.rest.api.RestClient;
 import org.testobject.rest.api.appium.common.data.DataCenterSuite;
 import org.testobject.rest.api.appium.common.data.Suite;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import java.util.Set;
 
@@ -13,17 +13,17 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 public class AppiumSuiteResource {
 
-	private final WebTarget target;
+	private final RestClient client;
 
-	public AppiumSuiteResource(WebTarget target) {
-		this.target = target;
+	public AppiumSuiteResource(RestClient client) {
+		this.client = client;
 	}
 
 	/**
 	 * Returns the IDs of the devices which you had selected for the specified suite
 	 */
 	public Set<DataCenterSuite> readDeviceDescriptorIds(long suiteId) {
-		return target
+		return client
 				.path("v2")
 				.path("appium")
 				.path("suites").path(Long.toString(suiteId))
@@ -37,7 +37,7 @@ public class AppiumSuiteResource {
 	 * Updates the properties of a suite
 	 */
 	public Suite updateSuite(long suiteId, Suite suite) {
-		return target
+		return client
 				.path("v2")
 				.path("appium")
 				.path("suites").path(Long.toString(suiteId))

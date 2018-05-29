@@ -1,14 +1,11 @@
 package org.testobject.api;
 
-import org.testobject.rest.api.appium.common.data.*;
 import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.v2.ApiBatchResource.InstrumentationTestSuiteRequest;
 
 import java.io.Closeable;
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 public interface TestObjectClient extends Closeable {
@@ -41,32 +38,6 @@ public interface TestObjectClient extends Closeable {
 	//
 
 	String uploadFile(String apiKey, File apk);
-
-	//
-	// AppiumReportResource
-	//
-
-	SuiteReport startAppiumSuite(long suiteId, Optional<String> appId, Set<Test> tests);
-
-	SuiteReport finishAppiumSuite(long suiteId, SuiteReport.Id suiteReportId);
-
-	TestReport finishAppiumTestReport(long suiteId, SuiteReport.Id suiteReportId, TestReport.Id testReportId, TestResult testResult);
-
-	//
-	// AppiumSessionResource
-	//
-
-	void updateTestReportStatus(String sessionId, boolean passed);
-
-	void updateTestReportName(String sessionId, String suiteName, String testName);
-
-	//
-	// AppiumSuiteResource
-	//
-
-	Set<DataCenterSuite> readSuiteDeviceDescriptorIds(long suiteId);
-
-	Suite updateSuite(long suiteId, Suite suite);
 
 	//
 	// AppStorageResource
