@@ -1,5 +1,6 @@
 package org.testobject.rest.api.model;
 
+import java.util.List;
 import java.util.Map;
 
 public class DynamicInstrumentationRequestData {
@@ -14,11 +15,12 @@ public class DynamicInstrumentationRequestData {
 	private final Boolean phoneOnly;
 	private final String tunnelIdentifier;
 	private final Map<String, String> testOptions;
+	private final List<String> testsToRun;
 
 	public DynamicInstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
-											 DeviceNameQuery deviceNameQuery, String platformVersion, Boolean privateDevicesOnly,
-											 Boolean tabletOnly, Boolean phoneOnly, String tunnelIdentifier,
-											 Map<String, String> testOptions) {
+			DeviceNameQuery deviceNameQuery, String platformVersion, Boolean privateDevicesOnly,
+			Boolean tabletOnly, Boolean phoneOnly, String tunnelIdentifier,
+			Map<String, String> testOptions, List<String> testsToRun) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
@@ -31,6 +33,7 @@ public class DynamicInstrumentationRequestData {
 
 		this.tunnelIdentifier = tunnelIdentifier;
 		this.testOptions = testOptions;
+		this.testsToRun = testsToRun;
 	}
 
 	public String getTestSpecAppId() {
@@ -76,5 +79,9 @@ public class DynamicInstrumentationRequestData {
 
 	public Map<String, String> getTestOptions() {
 		return testOptions;
+	}
+
+	public List<String> getTestsToRun() {
+		return testsToRun;
 	}
 }
