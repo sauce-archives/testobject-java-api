@@ -1,4 +1,4 @@
-# TestObject Java Api
+# TestObject Java Api [![Build Status](https://travis-ci.org/saucelabs/testobject-java-api.svg?branch=master)](https://travis-ci.org/saucelabs/testobject-java-api)
 
 
 ## Installation
