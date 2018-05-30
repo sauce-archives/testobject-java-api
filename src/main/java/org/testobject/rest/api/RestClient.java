@@ -19,8 +19,7 @@ import java.util.Optional;
 
 public class RestClient implements Closeable {
 
-	public static final String REST_APPIUM_PATH = "/rest/v2/appium/";
-	public static final String REST_DEVICES_PATH = "/rest/devices/v1/";
+	public static final String REST = "/rest/";
 	private final Client client;
 	private final WebTarget target;
 
