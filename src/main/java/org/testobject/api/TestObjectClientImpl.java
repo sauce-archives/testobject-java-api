@@ -1,6 +1,5 @@
 package org.testobject.api;
 
-import jersey.repackaged.com.google.common.base.Preconditions;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -162,8 +162,11 @@ public class TestObjectClientImpl implements TestObjectClient {
 			throws TimeoutException {
 
 		long waitTimeoutMinutes = TimeUnit.MILLISECONDS.toMinutes(waitTimeoutMs);
-		Preconditions.checkArgument(waitTimeoutMinutes <= TimeUnit.HOURS.toMinutes(2),
-				String.format("The timeout should be a reasonable value: no more than 120 minutes. Got %d minutes.", waitTimeoutMinutes));
+		boolean expression = waitTimeoutMinutes <= HOURS.toMinutes(2);
+		if (!expression) {
+			String errorMessage = "Timeout should be a reasonable value: no more than 120 minutes. Got " + waitTimeoutMinutes + " minutes.";
+			throw new IllegalArgumentException(String.valueOf(errorMessage));
+		}
 
 		long start = now();
 		while ((now() - start) < waitTimeoutMs) {
