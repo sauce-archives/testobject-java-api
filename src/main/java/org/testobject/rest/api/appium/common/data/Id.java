@@ -1,14 +1,15 @@
 package org.testobject.rest.api.appium.common.data;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import jersey.repackaged.com.google.common.base.Preconditions;
 
 public abstract class Id<T> {
 
 	private final T value;
 
 	protected Id(T value) {
-		Preconditions.checkNotNull(value);
+		if (value == null) {
+			throw new NullPointerException();
+		}
 		this.value = value;
 	}
 
