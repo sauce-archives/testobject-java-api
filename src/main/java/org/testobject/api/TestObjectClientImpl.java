@@ -29,9 +29,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.*;
 
 public class TestObjectClientImpl implements TestObjectClient {
 
@@ -162,10 +160,10 @@ public class TestObjectClientImpl implements TestObjectClient {
 			throws TimeoutException {
 
 		long waitTimeoutMinutes = TimeUnit.MILLISECONDS.toMinutes(waitTimeoutMs);
-		boolean expression = waitTimeoutMinutes <= HOURS.toMinutes(2);
-		if (!expression) {
+		boolean timeoutTooLong = waitTimeoutMinutes <= HOURS.toMinutes(2);
+		if (!timeoutTooLong) {
 			String errorMessage = "Timeout should be a reasonable value: no more than 120 minutes. Got " + waitTimeoutMinutes + " minutes.";
-			throw new IllegalArgumentException(String.valueOf(errorMessage));
+			throw new IllegalArgumentException(errorMessage);
 		}
 
 		long start = now();
