@@ -160,8 +160,8 @@ public class TestObjectClientImpl implements TestObjectClient {
 			throws TimeoutException {
 
 		long waitTimeoutMinutes = TimeUnit.MILLISECONDS.toMinutes(waitTimeoutMs);
-		boolean timeoutTooLong = waitTimeoutMinutes <= HOURS.toMinutes(2);
-		if (!timeoutTooLong) {
+		boolean timeoutTooLong = waitTimeoutMinutes > HOURS.toMinutes(2);
+		if (timeoutTooLong) {
 			String errorMessage = "Timeout should be a reasonable value: no more than 120 minutes. Got " + waitTimeoutMinutes + " minutes.";
 			throw new IllegalArgumentException(errorMessage);
 		}
