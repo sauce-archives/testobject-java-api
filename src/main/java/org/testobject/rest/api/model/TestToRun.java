@@ -26,19 +26,18 @@ public class TestToRun {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
+	public boolean equals(Object other) {
+		if (this == other)
 			return true;
-		if (o == null || getClass() != o.getClass())
+		if (other == null || getClass() != other.getClass())
 			return false;
-		TestToRun testToRun = (TestToRun) o;
+		TestToRun testToRun = (TestToRun) other;
 		return Objects.equals(testClass, testToRun.testClass) &&
 				Objects.equals(testMethod, testToRun.testMethod);
 	}
 
 	@Override
 	public int hashCode() {
-
 		return Objects.hash(testClass, testMethod);
 	}
 
