@@ -65,6 +65,8 @@ public interface TestObjectClient extends Closeable {
 
 	String readJunitReport(String apiKey, long testReportId);
 
+	String readJunitReport(String apiKey, List<Long> testReportIds);
+
 	InstrumentationReport waitForInstrumentationReport(String apiKey, long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs)
 			throws TimeoutException;
 
