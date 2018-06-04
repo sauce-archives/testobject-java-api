@@ -15,12 +15,12 @@ public class DynamicInstrumentationRequestData {
 	private final Boolean phoneOnly;
 	private final String tunnelIdentifier;
 	private final Map<String, String> testOptions;
-	private final List<String> testsToRun;
+	private final List<TestToRun> testsToRun;
 
 	public DynamicInstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
 			DeviceNameQuery deviceNameQuery, String platformVersion, Boolean privateDevicesOnly,
 			Boolean tabletOnly, Boolean phoneOnly, String tunnelIdentifier,
-			Map<String, String> testOptions, List<String> testsToRun) {
+			Map<String, String> testOptions, List<TestToRun> testsToRun) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
@@ -81,7 +81,7 @@ public class DynamicInstrumentationRequestData {
 		return testOptions;
 	}
 
-	public List<String> getTestsToRun() {
+	public List<TestToRun> getTestsToRun() {
 		return testsToRun;
 	}
 }

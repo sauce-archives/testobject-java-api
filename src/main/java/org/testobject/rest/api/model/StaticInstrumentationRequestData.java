@@ -12,10 +12,10 @@ public class StaticInstrumentationRequestData {
 	private final String deviceName;
 	private final String tunnelIdentifier;
 	private final Map<String, String> testOptions;
-	private final List<String> testsToRun;
+	private final List<TestToRun> testsToRun;
 
 	public StaticInstrumentationRequestData(String testName, String testSpecAppId, String appUnderTestAppId, String dataCenterId,
-			String deviceName, String tunnelIdentifier, Map<String, String> testOptions, List<String> testsToRun) {
+			String deviceName, String tunnelIdentifier, Map<String, String> testOptions, List<TestToRun> testsToRun) {
 		this.testName = testName;
 		this.testSpecAppId = testSpecAppId;
 		this.appUnderTestAppId = appUnderTestAppId;
@@ -56,7 +56,7 @@ public class StaticInstrumentationRequestData {
 		return testOptions;
 	}
 
-	public List<String> getTestsToRun() {
+	public List<TestToRun> getTestsToRun() {
 		return testsToRun;
 	}
 }
