@@ -31,9 +31,9 @@ public class TestToRun {
 			return true;
 		if (other == null || getClass() != other.getClass())
 			return false;
-		TestToRun testToRun = (TestToRun) other;
-		return Objects.equals(testClass, testToRun.testClass) &&
-				Objects.equals(testMethod, testToRun.testMethod);
+		TestToRun otherTestToRun = (TestToRun) other;
+		return Objects.equals(testClass, otherTestToRun.testClass) &&
+				Objects.equals(testMethod, otherTestToRun.testMethod);
 	}
 
 	@Override
