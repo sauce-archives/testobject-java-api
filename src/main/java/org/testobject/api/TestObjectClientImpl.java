@@ -156,6 +156,11 @@ public class TestObjectClientImpl implements TestObjectClient {
 	}
 
 	@Override
+	public String readJunitReport(String apiKey, List<Long> testReportIds) {
+		return instrumentationResource.getJUnitReport(apiKey, testReportIds);
+	}
+
+	@Override
 	public InstrumentationReport waitForInstrumentationReport(String apiKey, long testSuiteReportId, long waitTimeoutMs, long sleepTimeMs)
 			throws TimeoutException {
 

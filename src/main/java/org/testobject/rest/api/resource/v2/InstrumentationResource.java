@@ -1,5 +1,6 @@
 package org.testobject.rest.api.resource.v2;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.testobject.rest.api.model.DynamicInstrumentationRequestData;
 import org.testobject.rest.api.model.InstrumentationReport;
 import org.testobject.rest.api.model.StartInstrumentationResponse;
@@ -7,6 +8,9 @@ import org.testobject.rest.api.model.StaticInstrumentationRequestData;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+
+import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
@@ -71,6 +75,16 @@ public class InstrumentationResource {
 				.request(APPLICATION_XML)
 				.header("Authorization", getApiKeyHeader(apiKey))
 				.get(String.class);
+	}
+
+	public String getJUnitReport(String apiKey, List<Long> reportIds) {
+		return target
+				.path("v2")
+				.path("instrumentation")
+				.path("junitreport")
+				.request(APPLICATION_XML)
+				.header("Authorization", getApiKeyHeader(apiKey))
+				.post(Entity.json(reportIds), String.class);
 	}
 
 	public InstrumentationReport getTestReport(String apiKey, long reportId) {

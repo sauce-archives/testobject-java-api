@@ -8,12 +8,14 @@ import org.testobject.rest.api.model.SessionReport;
 import org.testobject.rest.api.model.TestSuiteReport;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestObjectClientTest {
 
@@ -112,6 +114,15 @@ public class TestObjectClientTest {
 		TestSuiteReport testSuiteReport = client.waitForSuiteReport(suiteId, API_KEY);
 
 		assertEquals(testSuiteReport.getId(), testSuiteReportId);
+	}
+
+	@Test
+	public void readJUnitReport() {
+		List<Long> testReportIds = Collections.singletonList(1L);
+
+		String junitReport = client.readJunitReport(API_KEY, testReportIds);
+		assertNotNull(junitReport);
+		System.out.println(junitReport);
 	}
 
 	@After
