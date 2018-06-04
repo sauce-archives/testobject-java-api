@@ -116,7 +116,7 @@ public class TestObjectClientTest {
 		assertEquals(testSuiteReport.getId(), testSuiteReportId);
 	}
 
-	@Test
+	@Test @Ignore
 	public void readJUnitReport() {
 		List<Long> testReportIds = Collections.singletonList(1L);
 
