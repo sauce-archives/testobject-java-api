@@ -34,10 +34,22 @@ public interface TestObjectClient extends Closeable {
 			String apiKey);
 
 	//
+	// ApiTestReportResource
+	//
+
+	TestReportWithDevice getTestReport(long reportId, String apiKey);
+
+	//
 	// ApiUploadResource
 	//
 
 	String uploadFile(String apiKey, File apk);
+
+	//
+	// ApiVideoResource
+	//
+
+	File saveScreenRecording(String videoId, String apiKey, File savePath);
 
 	//
 	// AppStorageResource
@@ -87,24 +99,6 @@ public interface TestObjectClient extends Closeable {
 	List<DeviceDescriptor> getAvailableDeviceDescriptors();
 
 	List<String> getAvailableDeviceDescriptorIds();
-
-	//
-	// QualityReportResource
-	//
-
-	long startQualityReport(String userId, String projectId, String apiKey);
-
-	//
-	// TestReportResource
-	//
-
-	TestReportWithDevice getTestReport(String userId, String projectId, long reportId, String apiKey);
-
-	//
-	// VideoResource
-	//
-
-	File saveScreenRecording(String userId, String projectId, String videoId, String apiKey, File savePath);
 
 	void close();
 

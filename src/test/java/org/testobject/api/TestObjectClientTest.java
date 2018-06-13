@@ -54,12 +54,6 @@ public class TestObjectClientTest {
 	}
 
 	@Test @Ignore
-	public void testStartQualityReport() {
-		long qualityReportId = client.startQualityReport(USER_ID, PROJECT_ID, API_KEY);
-		System.out.println(qualityReportId);
-	}
-
-	@Test @Ignore
 	public void testGetSessionReport() {
 		List<SessionReport> sessionReports = client.getSessionReports(USER_ID, 0, 10, 30, API_KEY).getEntities();
 
@@ -93,10 +87,10 @@ public class TestObjectClientTest {
 	public void testGetTestReportAndVideo() {
 		long testReportId = 1;
 
-		AppiumTestReport appiumTestReport = client.getTestReport(USER_ID, PROJECT_ID, testReportId, API_KEY).getReport();
+		AppiumTestReport appiumTestReport = client.getTestReport(testReportId, API_KEY).getReport();
 
 		File video = new File("/tmp/appium-website-video.mp4");
-		video = client.saveScreenRecording(USER_ID, PROJECT_ID, appiumTestReport.getVideoId(), API_KEY, video);
+		video = client.saveScreenRecording(appiumTestReport.getVideoId(), API_KEY, video);
 
 		assertTrue(video.exists());
 		assertTrue(video.length() / 1024 > 1); // video over 1kb

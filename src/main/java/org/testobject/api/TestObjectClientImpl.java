@@ -41,9 +41,8 @@ public class TestObjectClientImpl implements TestObjectClient {
 
 	private final ApiSessionReportResource apiSessionReportResource;
 	private final DeviceDescriptorsResource deviceDescriptorsResource;
-	private final QualityReportResource qualityReportResource;
-	private final TestReportResource testReportResource;
-	private final VideoResource videoResource;
+	private final ApiTestReportResource apiTestReportResource;
+	private final ApiVideoResource apiVideoResource;
 
 	private final Client client;
 
@@ -59,9 +58,8 @@ public class TestObjectClientImpl implements TestObjectClient {
 
 		apiSessionReportResource = new ApiSessionReportResource(target);
 		deviceDescriptorsResource = new DeviceDescriptorsResource(target);
-		qualityReportResource = new QualityReportResource(target);
-		testReportResource = new TestReportResource(target);
-		videoResource = new VideoResource(target);
+		apiTestReportResource = new ApiTestReportResource(target);
+		apiVideoResource = new ApiVideoResource(target);
 	}
 
 	@Override
@@ -201,19 +199,14 @@ public class TestObjectClientImpl implements TestObjectClient {
 	}
 
 	@Override
-	public long startQualityReport(String userId, String projectId, String apiKey) {
-		return qualityReportResource.startQualityReport(userId, projectId, apiKey);
+	public TestReportWithDevice getTestReport(long reportId, String apiKey) {
+		return apiTestReportResource.getTestReport(reportId, apiKey);
 	}
 
 	@Override
-	public TestReportWithDevice getTestReport(String userId, String projectId, long reportId, String apiKey) {
-		return testReportResource.getTestReport(userId, projectId, reportId, apiKey);
-	}
+	public File saveScreenRecording(String videoId, String apiKey, File file) {
 
-	@Override
-	public File saveScreenRecording(String userId, String projectId, String videoId, String apiKey, File file) {
-
-		try (InputStream inputStream = videoResource.getScreenRecording(userId, projectId, videoId, apiKey).readEntity(InputStream.class);
+		try (InputStream inputStream = apiVideoResource.getScreenRecording(videoId, apiKey).readEntity(InputStream.class);
 				OutputStream outputStream = new FileOutputStream(file)) {
 
 			int read;
