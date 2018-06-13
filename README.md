@@ -4,7 +4,7 @@
 ## Installation
 
 TestObject Java API is available from
-[Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.testobject%22%20AND%20a%3A%22testobject-java-api%22).
+[Maven Central](http://central.maven.org/maven2/org/testobject/testobject-java-api/).
 
     <dependency>
       <groupId>org.testobject</groupId>
@@ -27,7 +27,8 @@ make the whole thing succeed.
 - It takes a few minutes for Close action to succeed. Press refresh button,
 if everything went fine you should now see "Release" button enabled.
 - Press "Release", type nothing, press "Confirm".
-- It takes around 6 hours for the package to appear on MvnRepository.
+- It takes around 6 hours for the package to appear on MvnRepository. You should see 
+the new version on [Maven Central](http://central.maven.org/maven2/org/testobject/testobject-java-api/).
 
 ### Known issue: the newly deployed version does not appear
 
