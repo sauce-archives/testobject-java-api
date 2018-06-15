@@ -1,7 +1,10 @@
 package org.testobject.rest.api.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestCase {
 
 	private final String methodName;
@@ -9,18 +12,22 @@ public class TestCase {
 	private final long startTime;
 	private final long duration;
 	private final String status;
+	private final TestError testError;
 
+	@JsonCreator
 	public TestCase(
 			@JsonProperty("className") String className,
 			@JsonProperty("methodName") String methodName,
 			@JsonProperty("startTime") long startTime,
 			@JsonProperty("duration") long duration,
-			@JsonProperty("status") String status) {
+			@JsonProperty("status") String status,
+			@JsonProperty("testError") TestError testError) {
 		this.className = className;
 		this.methodName = methodName;
 		this.startTime = startTime;
 		this.duration = duration;
 		this.status = status;
+		this.testError = testError;
 	}
 
 	public String getClassName() {
@@ -41,6 +48,10 @@ public class TestCase {
 
 	public String getStatus() {
 		return status;
+	}
+
+	public TestError getTestError() {
+		return testError;
 	}
 
 	@Override
