@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 public class TestObjectClientTest {
 
 	private final String USER_ID = "USER_ID";
-	private final String PROJECT_ID = "PROJECT_ID";
 	private final String API_KEY = "API_KEY";
 
 	@Rule
@@ -87,7 +86,7 @@ public class TestObjectClientTest {
 	public void testGetTestReportAndVideo() {
 		long testReportId = 1;
 
-		AppiumTestReport appiumTestReport = client.getTestReport(testReportId, API_KEY).getReport();
+		AppiumTestReport appiumTestReport = client.getTestReport(testReportId, API_KEY);
 
 		File video = new File("/tmp/appium-website-video.mp4");
 		video = client.saveScreenRecording(appiumTestReport.getVideoId(), API_KEY, video);

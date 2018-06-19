@@ -37,7 +37,7 @@ public interface TestObjectClient extends Closeable {
 	// ApiTestReportResource
 	//
 
-	TestReportWithDevice getTestReport(long reportId, String apiKey);
+	AppiumTestReport getTestReport(long reportId, String apiKey);
 
 	//
 	// ApiUploadResource

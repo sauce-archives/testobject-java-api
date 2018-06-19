@@ -1,6 +1,6 @@
 package org.testobject.rest.api.resource.v2;
 
-import org.testobject.rest.api.model.TestReportWithDevice;
+import org.testobject.rest.api.model.AppiumTestReport;
 
 import javax.ws.rs.client.WebTarget;
 
@@ -15,13 +15,13 @@ public class ApiTestReportResource {
 		this.target = target;
 	}
 
-	public TestReportWithDevice getTestReport(long reportId, String apiKey) {
+	public AppiumTestReport getTestReport(long reportId, String apiKey) {
 		String apiKeyHeader = "Basic " + getEncoder().encodeToString((":" + apiKey).getBytes());
 		return target
 				.path("v2")
 				.path("reports").path(Long.toString(reportId))
 				.request(APPLICATION_JSON_TYPE)
 				.header("Authorization", apiKeyHeader)
-				.get(TestReportWithDevice.class);
+				.get(AppiumTestReport.class);
 	}
 }
