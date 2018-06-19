@@ -199,7 +199,7 @@ public class TestObjectClientImpl implements TestObjectClient {
 	}
 
 	@Override
-	public TestReportWithDevice getTestReport(long reportId, String apiKey) {
+	public AppiumTestReport getTestReport(long reportId, String apiKey) {
 		return apiTestReportResource.getTestReport(reportId, apiKey);
 	}
 
