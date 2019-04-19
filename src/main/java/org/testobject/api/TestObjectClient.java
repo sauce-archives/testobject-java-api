@@ -1,7 +1,6 @@
 package org.testobject.api;
 
 import org.testobject.rest.api.model.*;
-import org.testobject.rest.api.resource.v2.ApiBatchResource.InstrumentationTestSuiteRequest;
 
 import java.io.Closeable;
 import java.io.File;
@@ -23,15 +22,6 @@ public interface TestObjectClient extends Closeable {
 	TestSuiteReport waitForSuiteReport(long suiteReportId, String apiKey);
 
 	String readTestSuiteXMLReport(long suiteReportId, String apiKey);
-
-	//
-	// ApiBatchResource (InstrumentationSuiteResource)
-	//
-
-	long startInstrumentationTestSuite(long suiteId, String apiKey);
-
-	void updateInstrumentationTestSuite(long suiteId, File appApk, File instrumentationApk, InstrumentationTestSuiteRequest request,
-			String apiKey);
 
 	//
 	// ApiTestReportResource

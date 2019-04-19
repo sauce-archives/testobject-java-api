@@ -18,7 +18,6 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.testobject.rest.api.model.*;
 import org.testobject.rest.api.resource.*;
 import org.testobject.rest.api.resource.v2.*;
-import org.testobject.rest.api.resource.v2.ApiBatchResource.InstrumentationTestSuiteRequest;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
@@ -34,7 +33,6 @@ import static java.util.concurrent.TimeUnit.*;
 public class TestObjectClientImpl implements TestObjectClient {
 
 	private final ApiBatchReportResource apiBatchReportResource;
-	private final ApiBatchResource apiBatchResource;
 	private final ApiUploadResource apiUploadResource;
 	private final AppStorageResource appStorageResource;
 	private final InstrumentationResource instrumentationResource;
@@ -51,7 +49,6 @@ public class TestObjectClientImpl implements TestObjectClient {
 		WebTarget target = client.target(baseUrl);
 
 		apiBatchReportResource = new ApiBatchReportResource(target);
-		apiBatchResource = new ApiBatchResource(target);
 		apiUploadResource = new ApiUploadResource(target);
 		appStorageResource = new AppStorageResource(target);
 		instrumentationResource = new InstrumentationResource(target);
@@ -85,22 +82,6 @@ public class TestObjectClientImpl implements TestObjectClient {
 	@Override
 	public String readTestSuiteXMLReport(long suiteReportId, String apiKey) {
 		return apiBatchReportResource.getXMLReport(suiteReportId, apiKey);
-	}
-
-	@Override
-	public long startInstrumentationTestSuite(long suiteId, String apiKey) {
-		return apiBatchResource.startInstrumentationSuite(suiteId, apiKey);
-	}
-
-	@Override
-	public void updateInstrumentationTestSuite(long suiteId, File appApk, File instrumentationApk, InstrumentationTestSuiteRequest request,
-			String apiKey) {
-		String appUploadId = apiUploadResource.uploadFile(apiKey, appApk).replace("\"", "");
-		String testUploadId = apiUploadResource.uploadFile(apiKey, instrumentationApk).replace("\"", "");
-		request.testUploadId = testUploadId;
-		request.appUploadId = appUploadId;
-
-		apiBatchResource.updateInstrumentationSuite(suiteId, request, apiKey);
 	}
 
 	@Override

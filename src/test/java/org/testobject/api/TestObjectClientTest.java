@@ -5,7 +5,6 @@ import org.junit.rules.ExpectedException;
 import org.testobject.rest.api.model.AppiumTestReport;
 import org.testobject.rest.api.model.DeviceDescriptor;
 import org.testobject.rest.api.model.SessionReport;
-import org.testobject.rest.api.model.TestSuiteReport;
 
 import java.io.File;
 import java.util.Collections;
@@ -25,8 +24,6 @@ public class TestObjectClientTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private File APP_APK = new File(TestObjectClientTest.class.getResource("calculator-debug-unaligned.apk").getPath());
-	private File INSTRUMENTATION_APK = new File(TestObjectClientTest.class.getResource("calculator-debug-test-unaligned.apk").getPath());
 	private File IPA_INVALID_BAD_ZIP = new File(TestObjectClientTest.class.getResource("ipa-invalid-bad-zip-archive.ipa").getPath());
 
 	private TestObjectClient client;
@@ -94,19 +91,6 @@ public class TestObjectClientTest {
 		assertTrue(video.exists());
 		assertTrue(video.length() / 1024 > 1); // video over 1kb
 		System.out.println(video);
-	}
-
-	@Test @Ignore
-	public void testStartSuite() {
-		long suiteId = 1;
-
-		client.updateInstrumentationTestSuite(suiteId, APP_APK, INSTRUMENTATION_APK, null, API_KEY);
-
-		long testSuiteReportId = client.startInstrumentationTestSuite(suiteId, API_KEY);
-
-		TestSuiteReport testSuiteReport = client.waitForSuiteReport(suiteId, API_KEY);
-
-		assertEquals(testSuiteReport.getId(), testSuiteReportId);
 	}
 
 	@Test @Ignore
